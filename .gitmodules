@@ -7,3 +7,6 @@
 [submodule "frontend"]
 	path = frontend
 	url = git@github.com:snoke/e2e-messenger-client.git
+[submodule "symfony"]
+	path = symfony
+	url = git@github.com:snoke/e2e-messenger-backend.git
