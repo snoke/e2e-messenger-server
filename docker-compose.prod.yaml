@@ -45,8 +45,8 @@ services:
 
   symfony:
     build:
-      context: .
-      dockerfile: symfony/Dockerfile
+      context: ./symfony
+      dockerfile: Dockerfile
       args:
         INSTALL_GRPC: "1"
     restart: unless-stopped

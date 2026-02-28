@@ -53,8 +53,8 @@ services:
 
   symfony-consumer:
     build:
-      context: .
-      dockerfile: symfony/Dockerfile
+      context: ./symfony
+      dockerfile: Dockerfile
       args:
         INSTALL_GRPC: "0"
     working_dir: /app
