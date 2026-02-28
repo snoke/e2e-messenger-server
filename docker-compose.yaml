@@ -36,7 +36,7 @@ services:
         INSTALL_GRPC: "0"
     environment:
       - APP_ENV=dev
-      - DATABASE_URL=mysql://app:app@mysql:3306/app?serverVersion=mariadb-11.0&charset=utf8mb4
+      - DATABASE_URL=mysql://app:app@mysql:3306/app?serverVersion=mariadb-10.11&charset=utf8mb4
       - WS_PRESENCE_INTERPRETATION_STRATEGY=none
       - WS_PRESENCE_WRITER_TYPE=none
       - WS_TRACING_ENABLED=0
@@ -54,6 +54,15 @@ services:
     volumes:
       - ./scripts/keys/dev_private.pem:/run/keys/dev_private.pem:ro
       - ./scripts/keys/dev_public.pem:/run/keys/dev_public.pem:ro
+    labels:
+      - traefik.http.routers.api.rule=PathPrefix(`/api`) || PathPrefix(`/internal/ws`)
+      - traefik.http.routers.api.entrypoints=web
+      - traefik.http.services.api.loadbalancer.server.port=8000
+    healthcheck:
+      test: ["CMD-SHELL", "php -r \"echo file_get_contents('http://localhost:8000/api/ping');\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     command: ["sh", "-lc", "php bin/console doctrine:schema:update --force && php -S 0.0.0.0:8000 -t public public/index.php"]
     depends_on:
       - mysql
@@ -84,12 +93,3 @@ services:
 
 volumes:
   mysql-data:
-    labels:
-      - traefik.http.routers.api.rule=PathPrefix(`/api`) || PathPrefix(`/internal/ws`)
-      - traefik.http.routers.api.entrypoints=web
-      - traefik.http.services.api.loadbalancer.server.port=8000
-    healthcheck:
-      test: ["CMD-SHELL", "php -r \"echo file_get_contents('http://localhost:8000/api/ping');\""]
-      interval: 10s
-      timeout: 5s
-      retries: 5

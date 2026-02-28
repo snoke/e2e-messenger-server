@@ -52,7 +52,7 @@ services:
     restart: unless-stopped
     environment:
       - APP_ENV=prod
-      - DATABASE_URL=${DATABASE_URL:-mysql://app:app@mysql:3306/app?serverVersion=mariadb-11.0&charset=utf8mb4}
+      - DATABASE_URL=${DATABASE_URL:-mysql://app:app@mysql:3306/app?serverVersion=mariadb-10.11&charset=utf8mb4}
       - WS_MODE=${WS_MODE:-terminator}
       - WS_GATEWAY_BASE_URL=${WS_GATEWAY_BASE_URL:-}
       - WS_GATEWAY_API_KEY=${WS_GATEWAY_API_KEY:-}

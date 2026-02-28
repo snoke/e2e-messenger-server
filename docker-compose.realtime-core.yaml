@@ -60,7 +60,7 @@ services:
     working_dir: /app
     environment:
       - APP_ENV=dev
-      - DATABASE_URL=mysql://app:app@mysql:3306/app?serverVersion=mariadb-11.0&charset=utf8mb4
+      - DATABASE_URL=mysql://app:app@mysql:3306/app?serverVersion=mariadb-10.11&charset=utf8mb4
       - WS_MODE=core
       - WS_TRACING_ENABLED=0
       - WS_TRACING_EXPORTER=stdout
@@ -89,7 +89,6 @@ services:
     command: ["sh", "-lc", "php bin/console doctrine:schema:update --force && php bin/console ws:consume"]
     depends_on:
       - mysql
-    depends_on:
       - redis
     healthcheck:
       test: ["CMD-SHELL", "grep -q ws:consume /proc/1/cmdline"]
