@@ -60,6 +60,7 @@ services:
     working_dir: /app
     environment:
       - APP_ENV=dev
+      - DATABASE_URL=sqlite:////app/var/data.db
       - WS_MODE=core
       - WS_TRACING_ENABLED=0
       - WS_TRACING_EXPORTER=stdout
@@ -68,6 +69,9 @@ services:
       - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
       - WS_TRACEPARENT_FIELD=traceparent
       - WS_TRACE_ID_FIELD=trace_id
+      - JWT_SECRET_KEY=/run/keys/dev_private.pem
+      - JWT_PUBLIC_KEY=/run/keys/dev_public.pem
+      - JWT_PASSPHRASE=
       - WS_TRANSPORT_TYPE=redis_stream
       - WS_PRESENCE_TYPE=redis
       - WS_PRESENCE_INTERPRETATION_STRATEGY=none
@@ -79,7 +83,10 @@ services:
       - WS_REDIS_EVENTS_STREAM=ws.events
       - "WS_REDIS_PREFIX=presence:"
       - WS_CONSUMER_LOG_LEVEL=info
-    command: ["php", "bin/console", "ws:consume"]
+    volumes:
+      - ./scripts/keys/dev_private.pem:/run/keys/dev_private.pem:ro
+      - ./scripts/keys/dev_public.pem:/run/keys/dev_public.pem:ro
+    command: ["sh", "-lc", "php bin/console doctrine:schema:update --force && php bin/console ws:consume"]
     depends_on:
       - redis
     healthcheck:

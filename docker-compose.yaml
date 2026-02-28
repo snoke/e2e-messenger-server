@@ -36,6 +36,7 @@ services:
         INSTALL_GRPC: "0"
     environment:
       - APP_ENV=dev
+      - DATABASE_URL=sqlite:////app/var/data.db
       - WS_PRESENCE_INTERPRETATION_STRATEGY=none
       - WS_PRESENCE_WRITER_TYPE=none
       - WS_TRACING_ENABLED=0
@@ -47,8 +48,13 @@ services:
       - WS_TRACE_ID_FIELD=trace_id
       - DEMO_API_KEY=dev-demo-key
       - DEMO_JWT_PRIVATE_KEY_FILE=/run/keys/dev_private.pem
+      - JWT_SECRET_KEY=/run/keys/dev_private.pem
+      - JWT_PUBLIC_KEY=/run/keys/dev_public.pem
+      - JWT_PASSPHRASE=
     volumes:
       - ./scripts/keys/dev_private.pem:/run/keys/dev_private.pem:ro
+      - ./scripts/keys/dev_public.pem:/run/keys/dev_public.pem:ro
+    command: ["sh", "-lc", "php bin/console doctrine:schema:update --force && php -S 0.0.0.0:8000 -t public public/index.php"]
     labels:
       - traefik.http.routers.api.rule=PathPrefix(`/api`) || PathPrefix(`/internal/ws`)
       - traefik.http.routers.api.entrypoints=web

@@ -8,6 +8,11 @@ api_push_demo:
   methods: [POST]
   controller: App\Controller\DemoController::pushDemo
 
+api_register:
+  path: /api/register
+  methods: [POST]
+  controller: App\Controller\AuthController::register
+
 api_online:
   path: /api/online
   methods: [GET]
