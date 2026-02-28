@@ -36,7 +36,7 @@ services:
         INSTALL_GRPC: "0"
     environment:
       - APP_ENV=dev
-      - DATABASE_URL=sqlite:////app/var/data.db
+      - DATABASE_URL=mysql://app:app@mysql:3306/app?serverVersion=mariadb-11.0&charset=utf8mb4
       - WS_PRESENCE_INTERPRETATION_STRATEGY=none
       - WS_PRESENCE_WRITER_TYPE=none
       - WS_TRACING_ENABLED=0
@@ -55,6 +55,35 @@ services:
       - ./scripts/keys/dev_private.pem:/run/keys/dev_private.pem:ro
       - ./scripts/keys/dev_public.pem:/run/keys/dev_public.pem:ro
     command: ["sh", "-lc", "php bin/console doctrine:schema:update --force && php -S 0.0.0.0:8000 -t public public/index.php"]
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mariadb:10.11
+    environment:
+      - MYSQL_DATABASE=app
+      - MYSQL_USER=app
+      - MYSQL_PASSWORD=app
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+      - PMA_USER=app
+      - PMA_PASSWORD=app
+    ports:
+      - "8181:80"
+    depends_on:
+      - mysql
+
+volumes:
+  mysql-data:
     labels:
       - traefik.http.routers.api.rule=PathPrefix(`/api`) || PathPrefix(`/internal/ws`)
       - traefik.http.routers.api.entrypoints=web
