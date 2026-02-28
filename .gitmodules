@@ -4,3 +4,6 @@
 [submodule "gateway/gateway-rust"]
 	path = gateway/gateway-rust
 	url = git@github.com:snoke/rust-ws-gateway.git
+[submodule "frontend"]
+	path = frontend
+	url = git@github.com:snoke/e2e-messenger-client.git

@@ -21,7 +21,7 @@ This stack provides bidirectional, highly scalable realtime WebSocket for Symfon
    git clone https://github.com/snoke/Symfony-Realtime-Stack.git
    cd Symfony-Realtime-Stack
    ```
-2. Install a gateway:
+2. Install submodules:
    ```
    # Python gateway
    git submodule update --init gateway/gateway-python
@@ -29,6 +29,10 @@ This stack provides bidirectional, highly scalable realtime WebSocket for Symfon
    ```
    # Rust gateway
    git submodule update --init gateway/gateway-rust
+   ```
+   ```
+   # Frontend (Vue) optional
+   git submodule update --init frontend
    ```
 3. Generate dev keys (RS256):
    ```
@@ -54,6 +58,7 @@ This stack provides bidirectional, highly scalable realtime WebSocket for Symfon
    ```
 
    Note: `docker-compose.yaml` only defines shared gateway settings; you must include one gateway compose file to supply the build.
+   To run the Vue UI, append `-f frontend/docker-compose.yaml` to any command above.
    If Symfony runs outside Compose, override `SYMFONY_WEBHOOK_URL` to reach it (e.g. `http://host.docker.internal:8000/internal/ws/events`).
    Dev builds skip gRPC. If you need gRPC, either use `docker-compose.prod.yaml`
    or build with `INSTALL_GRPC=1`.
@@ -61,3 +66,4 @@ This stack provides bidirectional, highly scalable realtime WebSocket for Symfon
    - Chat demo is live: `http://localhost:8180/demo/chat`
    - WebSocket: `ws://localhost:8180/ws`
    - API: `http://localhost:8180/api/ping`
+   - Frontend (Vue): `http://localhost:5173`
