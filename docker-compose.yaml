@@ -36,7 +36,7 @@ services:
         INSTALL_GRPC: "0"
     environment:
       - APP_ENV=dev
-      - DATABASE_URL=mysql://app:app@mysql:3306/app?serverVersion=mariadb-10.11&charset=utf8mb4
+      - DATABASE_URL=mysql://app:app@mysql:3306/app?serverVersion=mariadb-10.11.0&charset=utf8mb4
       - WS_PRESENCE_INTERPRETATION_STRATEGY=none
       - WS_PRESENCE_WRITER_TYPE=none
       - WS_TRACING_ENABLED=0
