@@ -1,4 +1,8 @@
 services:
+  frontend:
+    environment:
+      - VITE_WS_MODE=terminator
+
   gateway:
     environment:
       - WS_MODE=terminator

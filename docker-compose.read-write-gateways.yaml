@@ -17,7 +17,7 @@ services:
       - PRESENCE_REDIS_DSN=redis://redis:6379
       - "PRESENCE_REDIS_PREFIX=presence:"
       - PRESENCE_TTL_SECONDS=120
-      - RABBITMQ_DSN=amqp://guest:guest@rabbitmq:5672/
+      - RABBITMQ_DSN=amqp://guest:guest@rabbitmq:5672/%2f
       - RABBITMQ_EXCHANGE=ws.outbox
       - RABBITMQ_ROUTING_KEY=ws.outbox
       - RABBITMQ_QUEUE=ws.outbox

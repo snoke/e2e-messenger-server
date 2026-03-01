@@ -14,7 +14,7 @@ services:
   gateway:
     environment:
       - JWT_ALG=RS256
-      - JWT_USER_ID_CLAIM=user_id
+      - JWT_USER_ID_CLAIM=username
       - JWT_PUBLIC_KEY=
       - JWT_JWKS_URL=
       - GATEWAY_API_KEY=dev-key
