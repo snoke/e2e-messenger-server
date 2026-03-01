@@ -1,11 +1,11 @@
 ## Core stack details
 What you get in `core` mode:
-- Stateless gateway publishes events to broker(s)
+- Stateless WebTransport gateway publishes events to broker(s)
 - Symfony acts as producer/consumer (no webhook round‑trip)
 - `symfony-consumer` service reads `ws.inbox` and updates `/api/ws/last-message`
 
 Core flow:
-1. Client → Gateway (WS message)
+1. Client → Gateway (WebTransport JSON stream)
 2. Gateway → Broker (`ws.inbox` stream / queue)
 3. Symfony consumer → reads event → app logic
 
@@ -40,25 +40,10 @@ Demo mapping (core): `message_received` → `chat` is handled by `ChatDemoListen
 (publisher uses subjects like `user:{id}`).
 
 
-## Minimal WS Test Client
-1. Install dependencies:
-   ```
-   python3 -m venv .venv
-   source .venv/bin/activate
-   pip install -r scripts/requirements.txt
-   ```
-2. Run client:
-   ```
-   JWT_PRIVATE_KEY_FILE=./scripts/keys/dev_private.pem WS_URL=ws://localhost:8180/ws python scripts/ws_client.py
-   ```
-3. Send a demo message on connect:
-   ```
-   WS_SEND_MESSAGE=1 WS_MESSAGE_JSON='{"type":"chat","payload":"hello world"}' \
-   JWT_PRIVATE_KEY_FILE=./scripts/keys/dev_private.pem WS_URL=ws://localhost:8180/ws \
-   python scripts/ws_client.py
-   ```
-
-Expected response: `{"type":"pong"}`
+## WebTransport Dev Notes
+- WebTransport requires TLS + HTTP/3. Use `gateway/rust-http3-gateway/scripts/gen_dev_certs.sh`.
+- For self‑signed certs, set `VITE_WT_CERT_HASH` to the base64 SHA‑256 of the cert.
+- There is no CLI test client yet for WebTransport; use the Vue UI (`http://localhost:5173`) for end‑to‑end tests.
 
 
 ## Event Schema (gateway → webhook/broker)
@@ -83,9 +68,9 @@ ordering_strategy: topic|subject (optional)
 ```
 
 Edge cases:
-- Invalid JWT → WS closed with `4401`
-- `ping` messages → `pong` (not published)
-- Non-JSON WS messages → `{ "type":"raw","payload":"" }`
+- Invalid JWT → session closed (no `auth_ok`)
+- `ping` messages → ignored (not published)
+- Non-JSON client messages → `{ "type":"raw","payload":"" }`
 - Rate-limited clients → `{ "type":"rate_limited" }`
 
 

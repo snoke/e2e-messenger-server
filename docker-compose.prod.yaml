@@ -17,31 +17,31 @@ services:
       - ./traefik/acme.json:/etc/traefik/acme.json
 
   gateway:
-    build: ./gateway/gateway-python
+    build: ./gateway/rust-http3-gateway
     restart: unless-stopped
+    ports:
+      - "443:4433/udp"
     environment:
-      - WS_MODE=${WS_MODE:-terminator}
-      - EVENTS_MODE=${EVENTS_MODE:-}
       - JWT_ALG=RS256
-      - JWT_USER_ID_CLAIM=user_id
+      - JWT_USER_ID_CLAIM=username
       - JWT_PUBLIC_KEY=
       - JWT_JWKS_URL=
       - JWT_ISSUER=${JWT_ISSUER}
       - JWT_AUDIENCE=${JWT_AUDIENCE}
       - JWT_LEEWAY=${JWT_LEEWAY:-0}
-      - SYMFONY_WEBHOOK_URL=${SYMFONY_WEBHOOK_URL:-}
-      - SYMFONY_WEBHOOK_SECRET=${SYMFONY_WEBHOOK_SECRET:-}
-      - WEBHOOK_RETRY_ATTEMPTS=${WEBHOOK_RETRY_ATTEMPTS:-3}
-      - WEBHOOK_RETRY_BASE_SECONDS=${WEBHOOK_RETRY_BASE_SECONDS:-0.5}
-      - WEBHOOK_TIMEOUT_SECONDS=${WEBHOOK_TIMEOUT_SECONDS:-5}
       - GATEWAY_API_KEY=${GATEWAY_API_KEY}
-      - LOG_LEVEL=${LOG_LEVEL:-INFO}
-      - LOG_FORMAT=json
-    healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health').read()"]
-      interval: 10s
-      timeout: 3s
-      retries: 5
+      - REDIS_DSN=${REDIS_DSN:-redis://redis:6379}
+      - REDIS_STREAM=${REDIS_STREAM:-ws.outbox}
+      - REDIS_INBOX_STREAM=${REDIS_INBOX_STREAM:-ws.inbox}
+      - REDIS_EVENTS_STREAM=${REDIS_EVENTS_STREAM:-ws.events}
+      - WEBTRANSPORT_PORT=4433
+      - HTTP_API_PORT=8080
+      - CERT_PEMFILE=/run/certs/gateway_cert.pem
+      - KEY_PEMFILE=/run/certs/gateway_key.pem
+    volumes:
+      - ./scripts/keys/dev_public.pem:/run/keys/dev_public.pem:ro
+      - ${GATEWAY_CERT_PEM:-./gateway/rust-http3-gateway/certs/dev_cert.pem}:/run/certs/gateway_cert.pem:ro
+      - ${GATEWAY_KEY_PEM:-./gateway/rust-http3-gateway/certs/dev_key.pem}:/run/certs/gateway_key.pem:ro
 
   symfony:
     build:
@@ -53,9 +53,17 @@ services:
     environment:
       - APP_ENV=prod
       - DATABASE_URL=${DATABASE_URL:-mysql://app:app@mysql:3306/app?serverVersion=mariadb-10.11.0&charset=utf8mb4}
-      - WS_MODE=${WS_MODE:-terminator}
-      - WS_GATEWAY_BASE_URL=${WS_GATEWAY_BASE_URL:-}
+      - WS_MODE=core
+      - WS_TRANSPORT_TYPE=redis_stream
+      - WS_PRESENCE_TYPE=http
+      - WS_EVENTS_TYPE=redis_stream
+      - WS_GATEWAY_BASE_URL=${WS_GATEWAY_BASE_URL:-http://gateway:8080}
       - WS_GATEWAY_API_KEY=${WS_GATEWAY_API_KEY:-}
+      - DEMO_INBOX_REDIS_DSN=${DEMO_INBOX_REDIS_DSN:-redis://redis:6379}
+      - DEMO_INBOX_REDIS_STREAM=${DEMO_INBOX_REDIS_STREAM:-ws.inbox}
+      - WS_REDIS_DSN=${WS_REDIS_DSN:-redis://redis:6379}
+      - WS_REDIS_STREAM=${WS_REDIS_STREAM:-ws.outbox}
+      - WS_REDIS_EVENTS_STREAM=${WS_REDIS_EVENTS_STREAM:-ws.events}
       - WS_PRESENCE_INTERPRETATION_STRATEGY=none
       - WS_PRESENCE_WRITER_TYPE=none
       - JWT_SECRET_KEY=/run/keys/dev_private.pem
@@ -69,6 +77,40 @@ services:
       interval: 10s
       timeout: 3s
       retries: 5
+
+  symfony-consumer:
+    build:
+      context: ./symfony
+      dockerfile: Dockerfile
+      args:
+        INSTALL_GRPC: "1"
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      - APP_ENV=prod
+      - DATABASE_URL=${DATABASE_URL:-mysql://app:app@mysql:3306/app?serverVersion=mariadb-10.11.0&charset=utf8mb4}
+      - WS_MODE=core
+      - WS_TRANSPORT_TYPE=redis_stream
+      - WS_PRESENCE_TYPE=redis
+      - WS_PRESENCE_INTERPRETATION_STRATEGY=none
+      - WS_PRESENCE_WRITER_TYPE=none
+      - DEMO_INBOX_REDIS_DSN=${DEMO_INBOX_REDIS_DSN:-redis://redis:6379}
+      - DEMO_INBOX_REDIS_STREAM=${DEMO_INBOX_REDIS_STREAM:-ws.inbox}
+      - WS_REDIS_DSN=${WS_REDIS_DSN:-redis://redis:6379}
+      - WS_REDIS_STREAM=${WS_REDIS_STREAM:-ws.outbox}
+      - WS_REDIS_EVENTS_STREAM=${WS_REDIS_EVENTS_STREAM:-ws.events}
+      - "WS_REDIS_PREFIX=presence:"
+      - WS_CONSUMER_LOG_LEVEL=info
+      - JWT_SECRET_KEY=/run/keys/dev_private.pem
+      - JWT_PUBLIC_KEY=/run/keys/dev_public.pem
+      - JWT_PASSPHRASE=
+    volumes:
+      - ./scripts/keys/dev_private.pem:/run/keys/dev_private.pem:ro
+      - ./scripts/keys/dev_public.pem:/run/keys/dev_public.pem:ro
+    command: ["sh", "-lc", "php bin/console ws:consume"]
+    depends_on:
+      - mysql
+      - redis
 
   mysql:
     image: mariadb:10.11
@@ -99,7 +141,6 @@ services:
   redis:
     image: redis:7-alpine
     restart: unless-stopped
-    profiles: ["brokers"]
     volumes:
       - redis-data:/data
 

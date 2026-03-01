@@ -12,7 +12,7 @@ rabbitmqctl set_policy ws-replay-lazy "^ws\.(inbox|events)$" '{"queue-mode":"laz
 - Observe replay API rate limits via `/metrics` counters.
 
 ## Push Demo (optional)
-The chat demo is the primary UI demo. For headless checks you can still use:
+The chat demo is the primary UI demo. The legacy WebSocket demo scripts are kept for reference:
 ```
 ./scripts/push_demo.sh
 ```

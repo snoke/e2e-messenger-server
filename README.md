@@ -1,6 +1,6 @@
 # SymfonyRealtime Stack (Configurable)
 
-This stack provides bidirectional, highly scalable realtime WebSocket for Symfony
+This stack provides bidirectional, highly scalable realtime transport for Symfony
 
 ## Why this stack exists
 - Mercure / SSE are server→client only — forcing client updates creates massive overhead
@@ -9,10 +9,8 @@ This stack provides bidirectional, highly scalable realtime WebSocket for Symfon
 - This architecture allows true E2E encryption with full self-hosting control (keys never leave the clients). The gateway payload stays blind by design — unlike many PHP-centric WS stacks (e.g., Swoole) that couple transport and business logic in the same runtime — while still keeping the integration Symfony-native.
 
 ## Modes & Routing
-- `core` (broker-first): stateless gateway with Redis/RabbitMQ streaming; Symfony acts as producer/consumer
-- `terminator` (Symfony-first): quick WebSocket + webhook setup; incremental integration
-
-   Event routing (EVENTS_MODE): `webhook | broker | both | none`
+- `core` (broker-first): stateless HTTP/3 WebTransport gateway with Redis streaming; Symfony acts as producer/consumer
+- Terminator/WebSocket mode is deprecated in this stack (kept only for legacy experiments).
 
 
 ## Quick Start
@@ -23,12 +21,8 @@ This stack provides bidirectional, highly scalable realtime WebSocket for Symfon
    ```
 2. Install submodules:
    ```
-   # Python gateway
-   git submodule update --init gateway/gateway-python
-   ```
-   ```
-   # Rust gateway
-   git submodule update --init gateway/gateway-rust
+   # HTTP/3 gateway
+   git submodule update --init gateway/rust-http3-gateway
    ```
    ```
    # Frontend (Vue) optional
@@ -38,32 +32,31 @@ This stack provides bidirectional, highly scalable realtime WebSocket for Symfon
    ```
    ./scripts/gen_dev_keys.sh
    ```
-4. Start a mode (choose one) + pick a gateway (Python or Rust):
+4. Generate HTTP/3 dev certs:
+   ```
+   ./gateway/rust-http3-gateway/scripts/gen_dev_certs.sh
+   ```
+5. (Optional, recommended) Pin the dev cert for WebTransport:
+   ```
+   CERT_HASH=$(openssl x509 -in gateway/rust-http3-gateway/certs/dev_cert.pem -outform der | openssl dgst -sha256 -binary | base64)
+   ```
+6. Start (core mode + HTTP/3 gateway):
 
-   Core mode (Python gateway):
    ```
-   docker compose -f docker-compose.yaml -f docker-compose.realtime-core.yaml -f gateway/gateway-python/docker-compose.yaml up --build
-   ```
-   Terminator mode (Python gateway):
-   ```
-   docker compose -f docker-compose.yaml -f docker-compose.terminator.yaml -f gateway/gateway-python/docker-compose.yaml up --build
-   ```
-   Core mode (Rust gateway):
-   ```
-   docker compose -f docker-compose.yaml -f docker-compose.realtime-core.yaml -f gateway/gateway-rust/docker-compose.yaml up --build
-   ```
-   Terminator mode (Rust gateway):
-   ```
-   docker compose -f docker-compose.yaml -f docker-compose.terminator.yaml -f gateway/gateway-rust/docker-compose.yaml up --build
+   VITE_WT_CERT_HASH="${CERT_HASH}" \
+   docker compose -f docker-compose.yaml -f docker-compose.realtime-core.yaml -f frontend/docker-compose.yaml up --build
    ```
 
-   Note: `docker-compose.yaml` only defines shared gateway settings; you must include one gateway compose file to supply the build.
-   To run the Vue UI, append `-f frontend/docker-compose.yaml` to any command above.
-   If Symfony runs outside Compose, override `SYMFONY_WEBHOOK_URL` to reach it (e.g. `http://host.docker.internal:8000/internal/ws/events`).
-   Dev builds skip gRPC. If you need gRPC, either use `docker-compose.prod.yaml`
-   or build with `INSTALL_GRPC=1`.
-5. Verify:
-   - Chat demo is live: `http://localhost:8180/demo/chat`
-   - WebSocket: `ws://localhost:8180/ws`
+   Note: The HTTP/3 gateway is built directly from `gateway/rust-http3-gateway`.
+   If you don't want the Vue UI, drop the `frontend/docker-compose.yaml` file.
+7. Verify:
    - API: `http://localhost:8180/api/ping`
-   - Frontend (Vue): `http://localhost:5173`
+   - WebTransport endpoint (HTTP/3): `https://localhost:4433/`
+   - Frontend (Vue): `http://localhost:5173/auth/login`
+
+## Browser Flags (WebTransport)
+Chrome / Edge:
+- `chrome://flags` → enable `#webtransport-developer-mode` and `#enable-quic`
+
+Firefox:
+- WebTransport is still experimental. Use Firefox Nightly and set `network.webtransport.enabled=true`.

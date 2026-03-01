@@ -12,6 +12,10 @@ services:
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
 
   gateway:
+    build: ./gateway/rust-http3-gateway
+    ports:
+      - "4433:4433/udp"
+      - "8080:8080"
     environment:
       - JWT_ALG=RS256
       - JWT_USER_ID_CLAIM=username
@@ -21,12 +25,23 @@ services:
       - LOG_LEVEL=INFO
       - LOG_FORMAT=json
       - JWT_PUBLIC_KEY_FILE=/run/keys/dev_public.pem
+      - REDIS_DSN=redis://redis:6379
+      - REDIS_STREAM=ws.outbox
+      - REDIS_INBOX_STREAM=ws.inbox
+      - REDIS_EVENTS_STREAM=ws.events
+      - WEBTRANSPORT_PORT=4433
+      - HTTP_API_PORT=8080
+      - CERT_PEMFILE=/run/certs/dev_cert.pem
+      - KEY_PEMFILE=/run/certs/dev_key.pem
+      - RUST_LOG=info
     volumes:
       - ./scripts/keys/dev_public.pem:/run/keys/dev_public.pem:ro
+      - ./gateway/rust-http3-gateway/certs/dev_cert.pem:/run/certs/dev_cert.pem:ro
+      - ./gateway/rust-http3-gateway/certs/dev_key.pem:/run/certs/dev_key.pem:ro
     labels:
-      - traefik.http.routers.ws.rule=PathPrefix(`/ws`) || PathPrefix(`/internal`)
+      - traefik.http.routers.ws.rule=PathPrefix(`/internal`)
       - traefik.http.routers.ws.entrypoints=web
-      - traefik.http.services.ws.loadbalancer.server.port=8000
+      - traefik.http.services.ws.loadbalancer.server.port=8080
 
   symfony:
     build:
