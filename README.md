@@ -60,3 +60,17 @@ Chrome / Edge:
 
 Firefox:
 - WebTransport is still experimental. Use Firefox Nightly and set `network.webtransport.enabled=true`.
+
+## Messenger E2EE State (Current)
+- Frontend transport is WebTransport/HTTP3 only; legacy WS path is deprecated.
+- E2EE session handling is **conversation-first** with strict `conversation_id + session_epoch`.
+- Handshake orchestration is split into dedicated modules:
+  - `frontend/src/Messenger/services/messenger.handshake.ts`
+  - `frontend/src/Messenger/services/messenger.pipeline.ts`
+  - `frontend/src/Messenger/services/messenger.transport.ts`
+- Deterministic recovery flow on decrypt problems:
+  - `established -> stale -> rekeying -> established`
+- Buffered encrypted messages are reprocessed after recovery in a controlled, single-pass manner.
+
+Known UX limitation:
+- Starting a new chat currently opens the conversation + handshake first; an initial message cannot yet be atomically submitted in the same action before the peer session is established.

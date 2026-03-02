@@ -55,7 +55,10 @@ Key files:
 - `frontend/src/Messenger/crypto/prekeys.ts` — identity + signed prekeys
 - `frontend/src/Messenger/crypto/types.ts` — profile metadata
 - `frontend/src/Messenger/crypto/strategies/*` — KEX strategies
-- `frontend/src/Messenger/services/messenger.ts` — orchestration + handshake
+- `frontend/src/Messenger/services/messenger.ts` — orchestration entrypoint
+- `frontend/src/Messenger/services/messenger.handshake.ts` — handshake state machine/coordinator
+- `frontend/src/Messenger/services/messenger.pipeline.ts` — inbound decrypt policy + buffering/reprocessing
+- `frontend/src/Messenger/services/messenger.transport.ts` — normalized send helpers (open/chat/typing)
 
 ### Crypto Profiles
 Defined in `frontend/src/Messenger/crypto/types.ts`:
@@ -92,27 +95,29 @@ Core E2EE events:
 - Ratchet state persisted locally to allow decrypt after reconnection.
 
 ## Current State / Known Issues
-E2EE is functional in-session. The main remaining edge cases are around old history and state recovery after resets.
+E2EE is functional in-session. Current design is conversation-first with strict epoch semantics.
 
-### Latest fixes (2026-03-01)
+### Latest fixes (2026-03-02)
 - **Gateway frame truncation fixed**:
   - File: `gateway/rust-http3-gateway/src/webtransport_server.rs`
   - Change: switched bidirectional stream read from single `read(...)` to `read_to_end(...)`.
   - Why: large `crypto_init` / `crypto_reply` payloads (Kyber) were truncated, parsed as `type:"raw"`, and never reached Symfony as real crypto events.
-- **Handshake loop reduction in frontend**:
-  - File: `frontend/src/Messenger/services/messenger.ts`
-  - Added stricter pending-handshake gating (`shouldRetryHandshake`, `startHandshakeForConversation`).
-  - Prevents repeated epoch bumps / duplicate handshake starts while a pending handshake is still valid.
-- **Decrypt recovery improvement**:
-  - File: `frontend/src/Messenger/services/messenger.ts`
-  - On `decrypt.failed` with pending conversation session + `missing session`, pending session is now cleared and recovery is triggered.
+- **Messenger service decoupling**:
+  - Files: `frontend/src/Messenger/services/messenger.handshake.ts`, `frontend/src/Messenger/services/messenger.pipeline.ts`, `frontend/src/Messenger/services/messenger.transport.ts`, `frontend/src/Messenger/services/messenger.ts`
+  - Handshake state machine, inbound decrypt pipeline, and send transport were separated from the monolithic orchestrator.
+- **Strict E2EE invariants**:
+  - Decrypt policy now enforces `conversation_id + session_epoch` as primary gate.
+  - Silent legacy/fallback decrypt paths were reduced/removed in history and live message flow.
+- **Deterministic recovery flow**:
+  - Explicit transitions: `established -> stale -> rekeying -> established`.
+  - Buffered inbound messages are retried after a successful state transition via established-version gating (no ad-hoc reset loops).
 - **WebTransport STOP_SENDING handling**:
   - File: `frontend/src/Messenger/services/client.ts`
   - Read loops now handle `STOP_SENDING` gracefully to avoid uncaught promise errors in console.
 - **History behavior hardened**:
   - File: `frontend/src/Messenger/services/messenger.ts`
-  - Messages without `session_epoch` are skipped (`decrypt.skip.history.no-epoch`).
-  - History decrypt failures no longer auto-trigger handshake storms.
+  - Messages without `session_epoch` are dropped from decrypt attempts.
+  - History decrypt failures are buffered + recovered through defined state-machine transitions.
 
 ### Still important when testing
 - If DB `messages` / `conversations` is cleared but browser storage is kept, ratchet/session mismatch is expected.
@@ -154,3 +159,4 @@ Endpoints:
 - Terminator/WebSocket mode is deprecated in this repo.
 - The HTTP/3 gateway is the active path.
 - If changing E2EE logic, **keep an eye on prekey bundle flow** and local state persistence.
+- Known UX gap: conversation start is not yet “compose + send first message in one step”; currently conversation creation/handshake happens first.
