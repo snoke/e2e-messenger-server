@@ -81,6 +81,7 @@ This stack provides bidirectional, highly scalable realtime transport for Symfon
 - `VITE_WEBRTC_TURN_URL`
 - `VITE_WEBRTC_TURN_USERNAME`
 - `VITE_WEBRTC_TURN_PASSWORD`
+- `VITE_GROUP_CRYPTO_MODE` (`mls` or `sender_keys`)
 - `VITE_CHAT_MAX_VIDEO_SIZE_BYTES`
 - `VITE_CHAT_MAX_VIDEO_DURATION_SECONDS`
 - `CHAT_MAX_VIDEO_SIZE_BYTES`
