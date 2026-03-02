@@ -66,6 +66,7 @@ services:
       - JWT_SECRET_KEY=/run/keys/dev_private.pem
       - JWT_PUBLIC_KEY=/run/keys/dev_public.pem
       - JWT_PASSPHRASE=
+      - CHAT_MAX_FILE_SIZE_BYTES=${CHAT_MAX_FILE_SIZE_BYTES:-5242880}
     volumes:
       - ./scripts/keys/dev_private.pem:/run/keys/dev_private.pem:ro
       - ./scripts/keys/dev_public.pem:/run/keys/dev_public.pem:ro

@@ -37,6 +37,7 @@ services:
       - WS_RABBITMQ_EVENTS_EXCHANGE=ws.events
       - WS_RABBITMQ_EVENTS_QUEUE=ws.events
       - WS_RABBITMQ_EVENTS_ROUTING_KEY=ws.events
+      - CHAT_MAX_FILE_SIZE_BYTES=${CHAT_MAX_FILE_SIZE_BYTES:-5242880}
 
   symfony-consumer:
     build:
@@ -71,6 +72,7 @@ services:
       - WS_REDIS_EVENTS_STREAM=ws.events
       - "WS_REDIS_PREFIX=presence:"
       - WS_CONSUMER_LOG_LEVEL=info
+      - CHAT_MAX_FILE_SIZE_BYTES=${CHAT_MAX_FILE_SIZE_BYTES:-5242880}
     volumes:
       - ./scripts/keys/dev_private.pem:/run/keys/dev_private.pem:ro
       - ./scripts/keys/dev_public.pem:/run/keys/dev_public.pem:ro
