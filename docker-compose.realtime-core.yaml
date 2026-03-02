@@ -2,6 +2,13 @@ services:
   frontend:
     environment:
       - VITE_WS_MODE=core
+      - VITE_WEBRTC_STUN_URL=${VITE_WEBRTC_STUN_URL:-stun:localhost:3478}
+      - VITE_WEBRTC_TURN_URL=${VITE_WEBRTC_TURN_URL:-turn:localhost:3478?transport=udp}
+      - VITE_WEBRTC_TURN_USERNAME=${VITE_WEBRTC_TURN_USERNAME:-turn}
+      - VITE_WEBRTC_TURN_PASSWORD=${VITE_WEBRTC_TURN_PASSWORD:-turn}
+      - VITE_LIVEKIT_URL=${VITE_LIVEKIT_URL:-ws://localhost:7880}
+      - VITE_CHAT_MAX_VIDEO_SIZE_BYTES=${VITE_CHAT_MAX_VIDEO_SIZE_BYTES:-15728640}
+      - VITE_CHAT_MAX_VIDEO_DURATION_SECONDS=${VITE_CHAT_MAX_VIDEO_DURATION_SECONDS:-20}
 
   gateway:
     environment:
@@ -38,6 +45,12 @@ services:
       - WS_RABBITMQ_EVENTS_QUEUE=ws.events
       - WS_RABBITMQ_EVENTS_ROUTING_KEY=ws.events
       - CHAT_MAX_FILE_SIZE_BYTES=${CHAT_MAX_FILE_SIZE_BYTES:-5242880}
+      - CHAT_MAX_VIDEO_SIZE_BYTES=${CHAT_MAX_VIDEO_SIZE_BYTES:-15728640}
+      - CHAT_MAX_VIDEO_DURATION_SECONDS=${CHAT_MAX_VIDEO_DURATION_SECONDS:-20}
+      - LIVEKIT_URL=${LIVEKIT_URL:-ws://localhost:7880}
+      - LIVEKIT_API_KEY=${LIVEKIT_API_KEY:-devkey}
+      - LIVEKIT_API_SECRET=${LIVEKIT_API_SECRET:-secret}
+      - LIVEKIT_TOKEN_TTL=${LIVEKIT_TOKEN_TTL:-600}
 
   symfony-consumer:
     build:
@@ -73,6 +86,8 @@ services:
       - "WS_REDIS_PREFIX=presence:"
       - WS_CONSUMER_LOG_LEVEL=info
       - CHAT_MAX_FILE_SIZE_BYTES=${CHAT_MAX_FILE_SIZE_BYTES:-5242880}
+      - CHAT_MAX_VIDEO_SIZE_BYTES=${CHAT_MAX_VIDEO_SIZE_BYTES:-15728640}
+      - CHAT_MAX_VIDEO_DURATION_SECONDS=${CHAT_MAX_VIDEO_DURATION_SECONDS:-20}
     volumes:
       - ./scripts/keys/dev_private.pem:/run/keys/dev_private.pem:ro
       - ./scripts/keys/dev_public.pem:/run/keys/dev_public.pem:ro
@@ -103,3 +118,38 @@ services:
     volumes:
       - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
       - ./rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins:ro
+
+  coturn:
+    image: coturn/coturn:latest
+    command:
+      - -n
+      - --log-file=stdout
+      - --realm=${TURN_REALM:-localhost}
+      - --fingerprint
+      - --lt-cred-mech
+      - --user=${TURN_USERNAME:-turn}:${TURN_PASSWORD:-turn}
+      - --min-port=${TURN_MIN_PORT:-49160}
+      - --max-port=${TURN_MAX_PORT:-49200}
+      - --no-cli
+      - --no-tls
+      - --no-dtls
+    ports:
+      - "3478:3478/udp"
+      - "3478:3478/tcp"
+      - "${TURN_MIN_PORT:-49160}-${TURN_MAX_PORT:-49200}:${TURN_MIN_PORT:-49160}-${TURN_MAX_PORT:-49200}/udp"
+      - "${TURN_MIN_PORT:-49160}-${TURN_MAX_PORT:-49200}:${TURN_MIN_PORT:-49160}-${TURN_MAX_PORT:-49200}/tcp"
+
+  livekit:
+    image: livekit/livekit-server:latest
+    command:
+      - --dev
+      - --bind
+      - 0.0.0.0
+      - --keys
+      - "${LIVEKIT_API_KEY:-devkey}: ${LIVEKIT_API_SECRET:-secret}"
+      - --udp-port
+      - "7882"
+    ports:
+      - "7880:7880"
+      - "7881:7881/tcp"
+      - "7882:7882/udp"

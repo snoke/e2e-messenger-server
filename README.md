@@ -53,6 +53,38 @@ This stack provides bidirectional, highly scalable realtime transport for Symfon
    - API: `http://localhost:8180/api/ping`
    - WebTransport endpoint (HTTP/3): `https://localhost:4433/`
    - Frontend (Vue): `http://localhost:5173/auth/login`
+   - LiveKit signaling: `ws://localhost:7880`
+   - TURN/STUN: `stun:localhost:3478`, `turn:localhost:3478`
+
+## Calls (LiveKit SFU)
+- SFU is provided by a dedicated `livekit` service (not the chat gateway).
+- Room mapping is deterministic: `room_id = conversation_id`.
+- Access token endpoint: `GET /api/calls/token?conversation_id={id}`.
+- Symfony validates JWT + conversation membership before returning a short-lived LiveKit token.
+- TURN/STUN uses coturn (`3478` + relay range) and is also passed to the frontend WebRTC config.
+
+### Signaling Layer
+- Chat/E2EE payloads remain unchanged.
+- Call signaling is separated as dedicated realtime events:
+  - `call_join`
+  - `call_leave`
+  - `call_mute`
+  - `call_camera`
+
+### Env Variables
+- `LIVEKIT_URL` (e.g. `ws://localhost:7880` in dev, `wss://...` in prod)
+- `LIVEKIT_API_KEY`
+- `LIVEKIT_API_SECRET`
+- `LIVEKIT_TOKEN_TTL`
+- `VITE_LIVEKIT_URL`
+- `VITE_WEBRTC_STUN_URL`
+- `VITE_WEBRTC_TURN_URL`
+- `VITE_WEBRTC_TURN_USERNAME`
+- `VITE_WEBRTC_TURN_PASSWORD`
+- `VITE_CHAT_MAX_VIDEO_SIZE_BYTES`
+- `VITE_CHAT_MAX_VIDEO_DURATION_SECONDS`
+- `CHAT_MAX_VIDEO_SIZE_BYTES`
+- `CHAT_MAX_VIDEO_DURATION_SECONDS`
 
 ## Browser Flags (WebTransport)
 Chrome / Edge:

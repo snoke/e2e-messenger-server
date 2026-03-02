@@ -70,6 +70,12 @@ services:
       - JWT_PUBLIC_KEY=/run/keys/dev_public.pem
       - JWT_PASSPHRASE=
       - CHAT_MAX_FILE_SIZE_BYTES=${CHAT_MAX_FILE_SIZE_BYTES:-5242880}
+      - CHAT_MAX_VIDEO_SIZE_BYTES=${CHAT_MAX_VIDEO_SIZE_BYTES:-15728640}
+      - CHAT_MAX_VIDEO_DURATION_SECONDS=${CHAT_MAX_VIDEO_DURATION_SECONDS:-20}
+      - LIVEKIT_URL=${LIVEKIT_URL:-ws://localhost:7880}
+      - LIVEKIT_API_KEY=${LIVEKIT_API_KEY:-devkey}
+      - LIVEKIT_API_SECRET=${LIVEKIT_API_SECRET:-secret}
+      - LIVEKIT_TOKEN_TTL=${LIVEKIT_TOKEN_TTL:-600}
     volumes:
       - ./scripts/keys/dev_private.pem:/run/keys/dev_private.pem:ro
       - ./scripts/keys/dev_public.pem:/run/keys/dev_public.pem:ro
@@ -106,6 +112,8 @@ services:
       - JWT_PUBLIC_KEY=/run/keys/dev_public.pem
       - JWT_PASSPHRASE=
       - CHAT_MAX_FILE_SIZE_BYTES=${CHAT_MAX_FILE_SIZE_BYTES:-5242880}
+      - CHAT_MAX_VIDEO_SIZE_BYTES=${CHAT_MAX_VIDEO_SIZE_BYTES:-15728640}
+      - CHAT_MAX_VIDEO_DURATION_SECONDS=${CHAT_MAX_VIDEO_DURATION_SECONDS:-20}
     volumes:
       - ./scripts/keys/dev_private.pem:/run/keys/dev_private.pem:ro
       - ./scripts/keys/dev_public.pem:/run/keys/dev_public.pem:ro
@@ -154,6 +162,21 @@ services:
       - rabbitmq-data:/var/lib/rabbitmq
       - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
       - ./rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins:ro
+
+  livekit:
+    image: livekit/livekit-server:latest
+    restart: unless-stopped
+    command:
+      - --bind
+      - 0.0.0.0
+      - --keys
+      - "${LIVEKIT_API_KEY:-devkey}: ${LIVEKIT_API_SECRET:-secret}"
+      - --udp-port
+      - "7882"
+    ports:
+      - "7880:7880"
+      - "7881:7881/tcp"
+      - "7882:7882/udp"
 
 volumes:
   redis-data:
