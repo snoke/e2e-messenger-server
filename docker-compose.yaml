@@ -116,6 +116,7 @@ services:
       - VITE_E2EE_ENABLED=true
       - VITE_E2EE_DEBUG=true
       - VITE_GROUP_CRYPTO_MODE=${VITE_GROUP_CRYPTO_MODE:-sender_keys}
+      - VITE_CHAT_HISTORY_PAGE_SIZE=${VITE_CHAT_HISTORY_PAGE_SIZE:-5}
     ports:
       - "5173:5173"
     volumes:

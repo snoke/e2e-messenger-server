@@ -1,10 +1,14 @@
 services:
   gateway:
-    image: symfony-realtime-stack-gateway-ws
-    build: ./gateway/e2e-ws-gateway
-    command: ["rust_gateway"]
+    image: symfony-realtime-stack-supergateway
+    build: ./gateway/rust-http3-gateway
+    command: null
     ports:
       - "8080:8000"
+    environment:
+      - GATEWAY_TRANSPORT=websocket
+      - WEBSOCKET_PORT=8000
+      - HTTP_API_PORT=8080
 
   frontend:
     environment:

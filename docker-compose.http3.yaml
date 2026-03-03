@@ -7,6 +7,7 @@ services:
       - "4433:4433/udp"
       - "8080:8080"
     environment:
+      - GATEWAY_TRANSPORT=webtransport
       - WEBTRANSPORT_PORT=4433
       - HTTP_API_PORT=8080
       - CERT_PEMFILE=/run/certs/dev_cert.pem
