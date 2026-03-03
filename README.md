@@ -10,7 +10,7 @@ This stack provides bidirectional, highly scalable realtime transport for Symfon
 
 ## Modes & Routing
 - `core` (broker-first): stateless HTTP/3 WebTransport gateway with Redis streaming; Symfony acts as producer/consumer
-- Terminator/WebSocket mode is deprecated in this stack (kept only for legacy experiments).
+- Optional WS gateway compatibility is supported through the same frontend transport interface (config switch).
 
 
 ## Quick Start
@@ -40,21 +40,34 @@ This stack provides bidirectional, highly scalable realtime transport for Symfon
    ```
    CERT_HASH=$(openssl x509 -in gateway/rust-http3-gateway/certs/dev_cert.pem -outform der | openssl dgst -sha256 -binary | base64)
    ```
-6. Start (core mode + HTTP/3 gateway):
+6. Start (pick one transport overlay):
 
+   HTTP/3:
    ```
    VITE_WT_CERT_HASH="${CERT_HASH}" \
-   docker compose -f docker-compose.yaml -f docker-compose.realtime-core.yaml -f frontend/docker-compose.yaml up --build
+   docker compose -f docker-compose.yaml -f docker-compose.http3.yaml -f docker-compose.realtime-core.yaml -f frontend/docker-compose.yaml up --build
    ```
 
-   Note: The HTTP/3 gateway is built directly from `gateway/rust-http3-gateway`.
-   If you don't want the Vue UI, drop the `frontend/docker-compose.yaml` file.
+   WebSocket:
+   ```
+   WS_GATEWAY_BASE_URL=http://gateway:8000 \
+   docker compose -f docker-compose.yaml -f docker-compose.websocket.yaml -f docker-compose.realtime-core.yaml -f frontend/docker-compose.yaml up --build
+   ```
+
+   Notes:
+   - HTTP/3 overlay builds `gateway/rust-http3-gateway`.
+   - WebSocket overlay builds `gateway/e2e-ws-gateway`.
+   - If you don't want the Vue UI, drop `frontend/docker-compose.yaml`.
 7. Verify:
    - API: `http://localhost:8180/api/ping`
    - WebTransport endpoint (HTTP/3): `https://localhost:4433/`
    - Frontend (Vue): `http://localhost:5173/auth/login`
    - LiveKit signaling: `ws://localhost:7880`
    - TURN/STUN: `stun:localhost:3478`, `turn:localhost:3478`
+
+Transport switch:
+- via compose overlay: `docker-compose.http3.yaml` or `docker-compose.websocket.yaml`
+- frontend mode still reads `VITE_REALTIME_TRANSPORT` internally (`http3` or `ws`)
 
 ## Calls (LiveKit SFU)
 - SFU is provided by a dedicated `livekit` service (not the chat gateway).
@@ -72,15 +85,18 @@ This stack provides bidirectional, highly scalable realtime transport for Symfon
   - `call_camera`
 
 ### Env Variables
+- `VITE_REALTIME_TRANSPORT` (`http3` or `ws`)
 - `LIVEKIT_URL` (e.g. `ws://localhost:7880` in dev, `wss://...` in prod)
 - `LIVEKIT_API_KEY`
 - `LIVEKIT_API_SECRET`
 - `LIVEKIT_TOKEN_TTL`
 - `VITE_LIVEKIT_URL`
+- `VITE_WS_URL`
 - `VITE_WEBRTC_STUN_URL`
 - `VITE_WEBRTC_TURN_URL`
 - `VITE_WEBRTC_TURN_USERNAME`
 - `VITE_WEBRTC_TURN_PASSWORD`
+- `VITE_DIRECT_CRYPTO_MODE` (`double_ratchet`)
 - `VITE_GROUP_CRYPTO_MODE` (`mls` or `sender_keys`)
 - `VITE_CHAT_MAX_VIDEO_SIZE_BYTES`
 - `VITE_CHAT_MAX_VIDEO_DURATION_SECONDS`
@@ -95,7 +111,8 @@ Firefox:
 - WebTransport is still experimental. Use Firefox Nightly and set `network.webtransport.enabled=true`.
 
 ## Messenger E2EE State (Current)
-- Frontend transport is WebTransport/HTTP3 only; legacy WS path is deprecated.
+- Frontend transport is adapter-based (`http3`/`ws`) behind one shared realtime interface.
+- Realtime envelope contract is unified across transports: `{"type": "...", ...}` and server events as `{"type":"event","payload":{...}}`.
 - E2EE session handling is **conversation-first** with strict `conversation_id + session_epoch`.
 - Handshake orchestration is split into dedicated modules:
   - `frontend/src/Messenger/services/messenger.handshake.ts`

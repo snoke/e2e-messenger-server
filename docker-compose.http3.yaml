@@ -1,0 +1,22 @@
+services:
+  gateway:
+    image: symfony-realtime-stack-gateway-http3
+    build: ./gateway/rust-http3-gateway
+    command: null
+    ports:
+      - "4433:4433/udp"
+      - "8080:8080"
+    environment:
+      - WEBTRANSPORT_PORT=4433
+      - HTTP_API_PORT=8080
+      - CERT_PEMFILE=/run/certs/dev_cert.pem
+      - KEY_PEMFILE=/run/certs/dev_key.pem
+    volumes:
+      - ./scripts/keys/dev_public.pem:/run/keys/dev_public.pem:ro
+      - ./gateway/rust-http3-gateway/certs/dev_cert.pem:/run/certs/dev_cert.pem:ro
+      - ./gateway/rust-http3-gateway/certs/dev_key.pem:/run/certs/dev_key.pem:ro
+
+  frontend:
+    environment:
+      - VITE_REALTIME_TRANSPORT=http3
+      - VITE_WT_URL=${VITE_WT_URL:-https://localhost:4433/}

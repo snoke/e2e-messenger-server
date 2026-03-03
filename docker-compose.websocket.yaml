@@ -1,0 +1,12 @@
+services:
+  gateway:
+    image: symfony-realtime-stack-gateway-ws
+    build: ./gateway/e2e-ws-gateway
+    command: ["rust_gateway"]
+    ports:
+      - "8080:8000"
+
+  frontend:
+    environment:
+      - VITE_REALTIME_TRANSPORT=ws
+      - VITE_WS_URL=${VITE_WS_URL:-ws://localhost:8080/ws}

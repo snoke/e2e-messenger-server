@@ -2,6 +2,8 @@ services:
   frontend:
     environment:
       - VITE_WS_MODE=core
+      - VITE_REALTIME_TRANSPORT=${VITE_REALTIME_TRANSPORT:-}
+      - VITE_WS_URL=${VITE_WS_URL:-}
       - VITE_GROUP_CRYPTO_MODE=${VITE_GROUP_CRYPTO_MODE:-mls}
       - VITE_WEBRTC_STUN_URL=${VITE_WEBRTC_STUN_URL:-stun:localhost:3478}
       - VITE_WEBRTC_TURN_URL=${VITE_WEBRTC_TURN_URL:-turn:localhost:3478?transport=udp}
@@ -30,7 +32,7 @@ services:
       - WS_PRESENCE_INTERPRETATION_STRATEGY=none
       - WS_PRESENCE_WRITER_TYPE=none
       - WS_EVENTS_TYPE=redis_stream
-      - WS_GATEWAY_BASE_URL=http://gateway:8080
+      - WS_GATEWAY_BASE_URL=${WS_GATEWAY_BASE_URL:-http://gateway:8080}
       - WS_TRACING_ENABLED=0
       - WS_TRACING_EXPORTER=stdout
       - OTEL_SERVICE_NAME=symfony
@@ -81,7 +83,7 @@ services:
       - WS_PRESENCE_TYPE=http
       - WS_PRESENCE_INTERPRETATION_STRATEGY=none
       - WS_PRESENCE_WRITER_TYPE=none
-      - WS_GATEWAY_BASE_URL=http://gateway:8080
+      - WS_GATEWAY_BASE_URL=${WS_GATEWAY_BASE_URL:-http://gateway:8080}
       - DEMO_INBOX_REDIS_DSN=redis://redis:6379
       - DEMO_INBOX_REDIS_STREAM=ws.inbox
       - WS_REDIS_DSN=redis://redis:6379
