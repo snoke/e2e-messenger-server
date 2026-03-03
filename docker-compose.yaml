@@ -115,7 +115,7 @@ services:
       - VITE_PROXY_TARGET=http://symfony:8000
       - VITE_E2EE_ENABLED=true
       - VITE_E2EE_DEBUG=true
-      - VITE_GROUP_CRYPTO_MODE=${VITE_GROUP_CRYPTO_MODE:-mls}
+      - VITE_GROUP_CRYPTO_MODE=${VITE_GROUP_CRYPTO_MODE:-sender_keys}
     ports:
       - "5173:5173"
     volumes:
