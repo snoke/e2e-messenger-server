@@ -10,6 +10,9 @@ services:
       - GATEWAY_TRANSPORT=webtransport
       - WEBTRANSPORT_PORT=4433
       - HTTP_API_PORT=8080
+      - MAX_CONNECTIONS_PER_USER=10
+      - CONNECTION_STALE_SECONDS=45
+      - CONNECTION_PRUNE_INTERVAL_SECONDS=10
       - CERT_PEMFILE=/run/certs/dev_cert.pem
       - KEY_PEMFILE=/run/certs/dev_key.pem
     volumes:
@@ -21,3 +24,4 @@ services:
     environment:
       - VITE_REALTIME_TRANSPORT=http3
       - VITE_WT_URL=${VITE_WT_URL:-https://localhost:4433/}
+      - VITE_WT_CERT_HASH=${VITE_WT_CERT_HASH:-}
