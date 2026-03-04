@@ -8,6 +8,9 @@
 /.venv/
 /scripts/keys/*.pem
 /scripts/keys/*.key
+/mls/ts-mls-client/node_modules/
+/mls/ts-mls-client/.env
+node_modules/
 __pycache__/
 *.pyc
 CODEX.md

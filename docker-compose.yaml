@@ -123,5 +123,34 @@ services:
       - ./frontend:/app
       - /app/node_modules
 
+  ts-mls:
+    image: node:20-bookworm-slim
+    working_dir: /workspace/ts-mls
+    command: ["sh", "-lc", "npm install && sleep infinity"]
+    volumes:
+      - ./mls/ts-mls:/workspace/ts-mls
+    restart: unless-stopped
+
+  ts-mls-client:
+    image: node:20-bookworm-slim
+    working_dir: /workspace/ts-mls-client
+    command: ["sh", "-lc", "npm install && npm run start"]
+    environment:
+      - TS_MLS_GATEWAY_WS_URL=${TS_MLS_GATEWAY_WS_URL:-ws://gateway:8080/internal/ws}
+      - TS_MLS_CIPHERSUITE=${TS_MLS_CIPHERSUITE:-MLS_256_XWING_CHACHA20POLY1305_SHA512_Ed25519}
+      - TS_MLS_LOGIN_URL=${TS_MLS_LOGIN_URL:-http://symfony:8000/api/login_check}
+      - TS_MLS_USERNAME=${TS_MLS_USERNAME:-test@test.de}
+      - TS_MLS_PASSWORD=${TS_MLS_PASSWORD:-test}
+      - TS_MLS_IDENTITY=${TS_MLS_IDENTITY:-test@test.de}
+      - TS_MLS_GATEWAY_TOKEN=${TS_MLS_GATEWAY_TOKEN:-}
+      - TS_MLS_CLIENT_INSTANCE_ID=${TS_MLS_CLIENT_INSTANCE_ID:-}
+    volumes:
+      - ./mls/ts-mls-client:/workspace/ts-mls-client
+      - ./mls/ts-mls:/workspace/ts-mls
+    depends_on:
+      - gateway
+      - symfony
+    restart: unless-stopped
+
 volumes:
   mysql-data:
