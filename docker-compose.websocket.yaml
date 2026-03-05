@@ -5,6 +5,7 @@ services:
     command: null
     ports:
       - "8080:8000"
+      - "8081:8080"
     environment:
       - GATEWAY_TRANSPORT=websocket
       - WEBSOCKET_PORT=8000
