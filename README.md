@@ -5,7 +5,7 @@ Self-hosted realtime messenger stack for Symfony with fully end-to-end encryptio
 ## Current State (March 2026)
 - Core mode is broker-first: client events go through gateway -> Redis (`ws.inbox`) -> Symfony consumer.
 - Outbound events go Symfony -> Redis (`ws.outbox`) -> gateway -> clients.
-- Group crypto default is `sender_keys` (MLS hooks still exist but are not the default path).
+- Group crypto default is `mls` with `ts-mls` adapter enabled by default.
 - Client init uses a sequential contract (`users -> contacts -> conversations`) with `request_id` correlation.
 - Legacy `bootstrap_snapshot/bootstrap_done` can still arrive and are treated as compatibility events only.
 
