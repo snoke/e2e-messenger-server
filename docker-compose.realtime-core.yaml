@@ -98,6 +98,7 @@ services:
     volumes:
       - ./scripts/keys/dev_private.pem:/run/keys/dev_private.pem:ro
       - ./scripts/keys/dev_public.pem:/run/keys/dev_public.pem:ro
+      - chat-attachments:/app/var/chat_attachments
     command: ["sh", "-lc", "php bin/console ws:consume"]
     depends_on:
       - mysql
