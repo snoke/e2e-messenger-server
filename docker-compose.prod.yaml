@@ -172,6 +172,8 @@ services:
     command:
       - --bind
       - 0.0.0.0
+      - --node-ip
+      - ${LIVEKIT_NODE_IP:-127.0.0.1}
       - --keys
       - "${LIVEKIT_API_KEY:-devkey}: ${LIVEKIT_API_SECRET:-secret}"
       - --udp-port

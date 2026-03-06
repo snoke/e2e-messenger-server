@@ -5,8 +5,9 @@ services:
       - VITE_REALTIME_TRANSPORT=${VITE_REALTIME_TRANSPORT:-}
       - VITE_WS_URL=${VITE_WS_URL:-}
       - VITE_GROUP_CRYPTO_MODE=${VITE_GROUP_CRYPTO_MODE:-sender_keys}
-      - VITE_WEBRTC_STUN_URL=${VITE_WEBRTC_STUN_URL:-stun:localhost:3478}
-      - VITE_WEBRTC_TURN_URL=${VITE_WEBRTC_TURN_URL:-turn:localhost:3478?transport=udp}
+      - VITE_WEBRTC_STUN_URL=${VITE_WEBRTC_STUN_URL:-stun:127.0.0.1:3478}
+      - VITE_WEBRTC_TURN_URL=${VITE_WEBRTC_TURN_URL:-turn:127.0.0.1:3478?transport=udp}
+      - VITE_WEBRTC_TURN_URL_TCP=${VITE_WEBRTC_TURN_URL_TCP:-turn:127.0.0.1:3478?transport=tcp}
       - VITE_WEBRTC_TURN_USERNAME=${VITE_WEBRTC_TURN_USERNAME:-turn}
       - VITE_WEBRTC_TURN_PASSWORD=${VITE_WEBRTC_TURN_PASSWORD:-turn}
       - VITE_LIVEKIT_URL=${VITE_LIVEKIT_URL:-ws://localhost:7880}
@@ -134,18 +135,31 @@ services:
 
   coturn:
     image: coturn/coturn:latest
-    command:
-      - -n
-      - --log-file=stdout
-      - --realm=${TURN_REALM:-localhost}
-      - --fingerprint
-      - --lt-cred-mech
-      - --user=${TURN_USERNAME:-turn}:${TURN_PASSWORD:-turn}
-      - --min-port=${TURN_MIN_PORT:-49160}
-      - --max-port=${TURN_MAX_PORT:-49200}
-      - --no-cli
-      - --no-tls
-      - --no-dtls
+    command: >
+      sh -ec '
+        RELAY_IP="$$(hostname -i | cut -d" " -f1)";
+        EXTERNAL_IP="$${TURN_EXTERNAL_IP:-$${TURN_RELAY_IP:-}}";
+        EXTERNAL_ARG="";
+        if [ -n "$${EXTERNAL_IP}" ]; then
+          EXTERNAL_ARG="--external-ip=$${EXTERNAL_IP}";
+        fi;
+        exec turnserver \
+          -n \
+          --log-file=stdout \
+          --verbose \
+          --realm=${TURN_REALM:-localhost} \
+          --fingerprint \
+          --listening-ip=0.0.0.0 \
+          --relay-ip="$${RELAY_IP}" \
+          $${EXTERNAL_ARG} \
+          --lt-cred-mech \
+          --user=${TURN_USERNAME:-turn}:${TURN_PASSWORD:-turn} \
+          --min-port=${TURN_MIN_PORT:-49160} \
+          --max-port=${TURN_MAX_PORT:-49200} \
+          --no-cli \
+          --no-tls \
+          --no-dtls
+      '
     ports:
       - "3478:3478/udp"
       - "3478:3478/tcp"
@@ -155,9 +169,13 @@ services:
   livekit:
     image: livekit/livekit-server:latest
     command:
+      - --config
+      - /etc/livekit.yaml
       - --dev
       - --bind
       - 0.0.0.0
+      - --node-ip
+      - ${LIVEKIT_NODE_IP:-127.0.0.1}
       - --keys
       - "${LIVEKIT_API_KEY:-devkey}: ${LIVEKIT_API_SECRET:-secret}"
       - --udp-port
@@ -166,3 +184,5 @@ services:
       - "7880:7880"
       - "7881:7881/tcp"
       - "7882:7882/udp"
+    volumes:
+      - ./livekit.yaml:/etc/livekit.yaml:ro

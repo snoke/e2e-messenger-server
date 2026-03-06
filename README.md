@@ -1,6 +1,6 @@
-# Symfony Realtime Stack
+# e2e-messenger-server
 
-Self-hosted realtime messenger stack for Symfony with end-to-end encryption, Redis stream core, and selectable transport (`websocket` or `http3/webtransport`).
+Self-hosted realtime messenger stack for Symfony with fully end-to-end encryption, Rust Gateway (blind payload), Redis stream core, and selectable transport (`http1.1 upgrade/websocket` or `http3/webtransport`).
 
 ## Current State (March 2026)
 - Core mode is broker-first: client events go through gateway -> Redis (`ws.inbox`) -> Symfony consumer.
@@ -10,9 +10,9 @@ Self-hosted realtime messenger stack for Symfony with end-to-end encryption, Red
 - Legacy `bootstrap_snapshot/bootstrap_done` can still arrive and are treated as compatibility events only.
 
 ## Architecture
-- `frontend/`: Vue/Vite messenger client (E2EE, transport adapters, init orchestrator)
+- `frontend/`: Vue/Vite messenger client (E2EE en-/decryption, transport adapters, orchestrator)
 - `gateway/rust-http3-gateway/`: Rust gateway for WebSocket and WebTransport
-- `symfony/`: Symfony API + demo coordinator + realtime consumer
+- `symfony/`: Symfony API + coordinator + realtime consumer
 - `redis`: broker backbone for realtime inbox/outbox/events
 - `mysql`: app persistence
 - `coturn` + `livekit`: calls/media stack
@@ -62,10 +62,10 @@ export VITE_WT_CERT_HASH="$CERT_HASH"
 - LiveKit signaling: `ws://localhost:7880`
 
 ## Transport Matrix (Local Dev)
-- `Chrome + WebSocket`: stable (recommended default)
+- `Chrome + WebSocket`: stable
 - `Firefox + WebSocket`: stable
-- `Chrome + HTTP/3 WebTransport`: usable for targeted tests
-- `Firefox + HTTP/3 WebTransport`: experimental/unstable, not default for daily dev
+- `Chrome + HTTP/3 WebTransport`: stable
+- `Firefox + HTTP/3 WebTransport`: experimental/unstable
 
 ## Realtime Init Contract
 The client owns initialization as a step-by-step state machine:
