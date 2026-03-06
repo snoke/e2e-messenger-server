@@ -1,3 +1,4 @@
+DEPRECATED 
 ## Core stack details
 What you get in `core` mode:
 - Stateless WebTransport gateway publishes events to broker(s)

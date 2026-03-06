@@ -1,129 +1,102 @@
-# SymfonyRealtime Stack (Configurable)
+# Symfony Realtime Stack
 
-This stack provides bidirectional, highly scalable realtime transport for Symfony
+Self-hosted realtime messenger stack for Symfony with end-to-end encryption, Redis stream core, and selectable transport (`websocket` or `http3/webtransport`).
 
-## Why this stack exists
-- Mercure / SSE are server→client only — forcing client updates creates massive overhead
-- Pusher / SaaS solutions are convenient, but your data, presence, security, and GDPR compliance are hosted externally
-- High connection counts make booting full Symfony per WebSocket message inefficient
-- This architecture allows true E2E encryption with full self-hosting control (keys never leave the clients). The gateway payload stays blind by design — unlike many PHP-centric WS stacks (e.g., Swoole) that couple transport and business logic in the same runtime — while still keeping the integration Symfony-native.
+## Current State (March 2026)
+- Core mode is broker-first: client events go through gateway -> Redis (`ws.inbox`) -> Symfony consumer.
+- Outbound events go Symfony -> Redis (`ws.outbox`) -> gateway -> clients.
+- Group crypto default is `sender_keys` (MLS hooks still exist but are not the default path).
+- Client init uses a sequential contract (`users -> contacts -> conversations`) with `request_id` correlation.
+- Legacy `bootstrap_snapshot/bootstrap_done` can still arrive and are treated as compatibility events only.
 
-## Modes & Routing
-- `core` (broker-first): stateless HTTP/3 WebTransport gateway with Redis streaming; Symfony acts as producer/consumer
-- Optional WS gateway compatibility is supported through the same frontend transport interface (config switch).
-
+## Architecture
+- `frontend/`: Vue/Vite messenger client (E2EE, transport adapters, init orchestrator)
+- `gateway/rust-http3-gateway/`: Rust gateway for WebSocket and WebTransport
+- `symfony/`: Symfony API + demo coordinator + realtime consumer
+- `redis`: broker backbone for realtime inbox/outbox/events
+- `mysql`: app persistence
+- `coturn` + `livekit`: calls/media stack
 
 ## Quick Start
-1. Clone this repo:
-   ```
-   git clone https://github.com/snoke/Symfony-Realtime-Stack.git
-   cd Symfony-Realtime-Stack
-   ```
-2. Install submodules:
-   ```
-   # HTTP/3 gateway
-   git submodule update --init gateway/rust-http3-gateway
-   ```
-   ```
-   # Frontend (Vue) optional
-   git submodule update --init frontend
-   ```
-3. Generate dev keys (RS256):
-   ```
-   ./scripts/gen_dev_keys.sh
-   ```
-4. Generate HTTP/3 dev certs:
-   ```
-   ./gateway/rust-http3-gateway/scripts/gen_dev_certs.sh
-   ```
-5. (Optional, recommended) Pin the dev cert for WebTransport:
-   ```
-   CERT_HASH=$(openssl x509 -in gateway/rust-http3-gateway/certs/dev_cert.pem -outform der | openssl dgst -sha256 -binary | base64)
-   ```
-6. Start (pick one transport overlay):
 
-   HTTP/3:
-   ```
-   VITE_WT_CERT_HASH="${CERT_HASH}" \
-   docker compose -f docker-compose.yaml -f docker-compose.http3.yaml -f docker-compose.realtime-core.yaml -f frontend/docker-compose.yaml up --build
-   ```
+### 1. Init submodules
+```bash
+git submodule update --init --recursive
+```
 
-   WebSocket:
-   ```
-   WS_GATEWAY_BASE_URL=http://gateway:8000 \
-   docker compose -f docker-compose.yaml -f docker-compose.websocket.yaml -f docker-compose.realtime-core.yaml -f frontend/docker-compose.yaml up --build
-   ```
+### 2. Create dev JWT keys
+```bash
+./scripts/gen_dev_keys.sh
+```
 
-   Notes:
-   - HTTP/3 overlay builds `gateway/rust-http3-gateway`.
-   - WebSocket overlay builds `gateway/e2e-ws-gateway`.
-   - If you don't want the Vue UI, drop `frontend/docker-compose.yaml`.
-7. Verify:
-   - API: `http://localhost:8180/api/ping`
-   - WebTransport endpoint (HTTP/3): `https://localhost:4433/`
-   - Frontend (Vue): `http://localhost:5173/auth/login`
-   - LiveKit signaling: `ws://localhost:7880`
-   - TURN/STUN: `stun:localhost:3478`, `turn:localhost:3478`
+### 3. (Only for HTTP/3) Create dev certs
+```bash
+./gateway/rust-http3-gateway/scripts/gen_dev_certs.sh
+```
 
-Transport switch:
-- via compose overlay: `docker-compose.http3.yaml` or `docker-compose.websocket.yaml`
-- frontend mode still reads `VITE_REALTIME_TRANSPORT` internally (`http3` or `ws`)
+### 4. Start stack
 
-## Calls (LiveKit SFU)
-- SFU is provided by a dedicated `livekit` service (not the chat gateway).
-- Room mapping is deterministic: `room_id = conversation_id`.
-- Access token endpoint: `GET /api/calls/token?conversation_id={id}`.
-- Symfony validates JWT + conversation membership before returning a short-lived LiveKit token.
-- TURN/STUN uses coturn (`3478` + relay range) and is also passed to the frontend WebRTC config.
+Recommended local default (WebSocket):
+```bash
+docker compose -f docker-compose.yaml -f docker-compose.realtime-core.yaml -f docker-compose.websocket.yaml up -d
+```
 
-### Signaling Layer
-- Chat/E2EE payloads remain unchanged.
-- Call signaling is separated as dedicated realtime events:
-  - `call_join`
-  - `call_leave`
-  - `call_mute`
-  - `call_camera`
+HTTP/3 / WebTransport:
+```bash
+docker compose -f docker-compose.yaml -f docker-compose.realtime-core.yaml -f docker-compose.http3.yaml up -d
+```
 
-### Env Variables
-- `VITE_REALTIME_TRANSPORT` (`http3` or `ws`)
-- `LIVEKIT_URL` (e.g. `ws://localhost:7880` in dev, `wss://...` in prod)
-- `LIVEKIT_API_KEY`
-- `LIVEKIT_API_SECRET`
-- `LIVEKIT_TOKEN_TTL`
-- `VITE_LIVEKIT_URL`
-- `VITE_WS_URL`
-- `VITE_WEBRTC_STUN_URL`
-- `VITE_WEBRTC_TURN_URL`
-- `VITE_WEBRTC_TURN_USERNAME`
-- `VITE_WEBRTC_TURN_PASSWORD`
-- `VITE_DIRECT_CRYPTO_MODE` (`double_ratchet`)
-- `VITE_GROUP_CRYPTO_MODE` (`mls` or `sender_keys`)
-- `VITE_CHAT_MAX_FILE_SIZE_BYTES`
-- `VITE_CHAT_HISTORY_PAGE_SIZE` (default `5`)
-- `VITE_CHAT_MAX_VIDEO_SIZE_BYTES`
-- `VITE_CHAT_MAX_VIDEO_DURATION_SECONDS`
-- `CHAT_MAX_FILE_SIZE_BYTES`
-- `CHAT_MAX_VIDEO_SIZE_BYTES`
-- `CHAT_MAX_VIDEO_DURATION_SECONDS`
+Optional for Chromium WebTransport cert pin:
+```bash
+CERT_HASH=$(openssl x509 -in gateway/rust-http3-gateway/certs/dev_cert.pem -outform der | openssl dgst -sha256 -binary | base64)
+export VITE_WT_CERT_HASH="$CERT_HASH"
+```
 
-## Browser Flags (WebTransport)
-Chrome / Edge:
-- `chrome://flags` → enable `#webtransport-developer-mode` and `#enable-quic`
+### 5. Open services
+- Frontend: `http://localhost:5173/auth/login`
+- Symfony API ping: `http://localhost:8180/api/ping`
+- Gateway internal API: `http://localhost:8081/health`
+- WebSocket endpoint: `ws://localhost:8080/ws`
+- WebTransport endpoint: `https://127.0.0.1:4433/`
+- phpMyAdmin: `http://localhost:8181`
+- LiveKit signaling: `ws://localhost:7880`
 
-Firefox:
-- WebTransport is still experimental. Use Firefox Nightly and set `network.webtransport.enabled=true`.
+## Transport Matrix (Local Dev)
+- `Chrome + WebSocket`: stable (recommended default)
+- `Firefox + WebSocket`: stable
+- `Chrome + HTTP/3 WebTransport`: usable for targeted tests
+- `Firefox + HTTP/3 WebTransport`: experimental/unstable, not default for daily dev
 
-## Messenger E2EE State (Current)
-- Frontend transport is adapter-based (`http3`/`ws`) behind one shared realtime interface.
-- Realtime envelope contract is unified across transports: `{"type": "...", ...}` and server events as `{"type":"event","payload":{...}}`.
-- E2EE session handling is **conversation-first** with strict `conversation_id + session_epoch`.
-- Handshake orchestration is split into dedicated modules:
-  - `frontend/src/Messenger/services/messenger.handshake.ts`
-  - `frontend/src/Messenger/services/messenger.pipeline.ts`
-  - `frontend/src/Messenger/services/messenger.transport.ts`
-- Deterministic recovery flow on decrypt problems:
-  - `established -> stale -> rekeying -> established`
-- Buffered encrypted messages are reprocessed after recovery in a controlled, single-pass manner.
+## Realtime Init Contract
+The client owns initialization as a step-by-step state machine:
+1. `users_request` -> `users` (+ optional `users_done`)
+2. `contacts_request` -> `contacts` (+ optional `contacts_done`)
+3. `conversations_request` -> `conversations` (+ optional `conversations_done`)
 
-Known UX limitation:
-- Starting a new chat currently opens the conversation + handshake first; an initial message cannot yet be atomically submitted in the same action before the peer session is established.
+Rules:
+- exactly one init step in flight
+- every step request carries `request_id`
+- responses must echo `request_id`
+- retries resend the same `request_id`
+- legacy bootstrap events must not restart init or trigger handshake flows
+
+## Known Caveats
+- Unread handling is currently message/read-event driven; there is no dedicated server-side channel-state snapshot API yet.
+- If a backend response misses `request_id`, the client intentionally ignores it during init.
+- Duplicate connect/auth log lines can happen during hot-reload/browser reload phases; one active client instance per tab is expected after settle.
+
+## Useful Commands
+Tail gateway logs:
+```bash
+docker compose -f docker-compose.yaml -f docker-compose.realtime-core.yaml -f docker-compose.websocket.yaml logs -f gateway
+```
+
+Stop stack:
+```bash
+docker compose -f docker-compose.yaml -f docker-compose.realtime-core.yaml -f docker-compose.websocket.yaml down
+```
+
+## Repository Layout
+- `docker-compose*.yaml`: base + overlays (`realtime-core`, `websocket`, `http3`)
+- `scripts/`: keygen, smoke checks, helper scripts
+- `docs/archive/`: old docs kept for reference only
