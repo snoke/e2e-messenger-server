@@ -1,0 +1,4 @@
+rtc:
+  # Firefox advertises host candidates via mDNS by default.
+  # Enabling mDNS allows resolving those candidates when possible.
+  use_mdns: true
