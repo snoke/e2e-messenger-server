@@ -112,6 +112,8 @@ services:
 
   frontend:
     build: ./frontend
+    command: >
+      sh -lc "if [ ! -d node_modules ] || [ ! -d node_modules/rollup ] || [ ! -d node_modules/vite ] || [ ! -d node_modules/ts-mls ] || [ ! -d node_modules/@fortawesome/fontawesome-free ]; then npm install; fi; if [ ! -d node_modules/@rollup/rollup-linux-arm64-musl ]; then npm install --no-save @rollup/rollup-linux-arm64-musl; fi; npm run dev"
     environment:
       - VITE_PROXY_TARGET=http://symfony:8000
       - VITE_E2EE_ENABLED=true
