@@ -71,6 +71,7 @@ services:
     working_dir: /app
     environment:
       - APP_ENV=dev
+      - APP_DEBUG=0
       - DATABASE_URL=mysql://app:app@mysql:3306/app?serverVersion=mariadb-10.11.0&charset=utf8mb4
       - WS_MODE=core
       - WS_TRACING_ENABLED=0
@@ -102,7 +103,7 @@ services:
       - ./scripts/keys/dev_private.pem:/run/keys/dev_private.pem:ro
       - ./scripts/keys/dev_public.pem:/run/keys/dev_public.pem:ro
       - chat-attachments:/app/var/chat_attachments
-    command: ["sh", "-lc", "php bin/console ws:consume"]
+    command: ["sh", "-lc", "php -d memory_limit=512M bin/console ws:consume --no-debug"]
     depends_on:
       - mysql
       - redis
