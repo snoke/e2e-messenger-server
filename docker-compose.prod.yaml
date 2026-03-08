@@ -55,6 +55,7 @@ services:
     restart: unless-stopped
     environment:
       - APP_ENV=prod
+      - APP_SECRET=${APP_SECRET:-change-me-prod-secret}
       - DATABASE_URL=${DATABASE_URL:-mysql://app:app@mysql:3306/app?serverVersion=mariadb-10.11.0&charset=utf8mb4}
       - WS_MODE=core
       - WS_TRANSPORT_TYPE=redis_stream
@@ -98,6 +99,7 @@ services:
     working_dir: /app
     environment:
       - APP_ENV=prod
+      - APP_SECRET=${APP_SECRET:-change-me-prod-secret}
       - DATABASE_URL=${DATABASE_URL:-mysql://app:app@mysql:3306/app?serverVersion=mariadb-10.11.0&charset=utf8mb4}
       - WS_MODE=core
       - WS_TRANSPORT_TYPE=redis_stream

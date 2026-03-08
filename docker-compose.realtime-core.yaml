@@ -30,6 +30,7 @@ services:
 
   symfony:
     environment:
+      - APP_SECRET=${APP_SECRET:-dev-app-secret}
       - WS_MODE=core
       - WS_TRANSPORT_TYPE=redis_stream
       - WS_PRESENCE_TYPE=http
@@ -72,6 +73,7 @@ services:
     environment:
       - APP_ENV=dev
       - APP_DEBUG=0
+      - APP_SECRET=${APP_SECRET:-dev-app-secret}
       - DATABASE_URL=mysql://app:app@mysql:3306/app?serverVersion=mariadb-10.11.0&charset=utf8mb4
       - WS_MODE=core
       - WS_TRACING_ENABLED=0

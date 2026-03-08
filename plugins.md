@@ -80,11 +80,11 @@ Dieses Dokument beschreibt den aktuellen Stand der Desktop-Plugins:
 
 ## 9) Identity
 
-- Funktionen: Profilwerte pflegen, aktive Sessions/Clients anzeigen.
-- Funktionsweise: Profil lokal; Client-Liste ueber Realtime (`online_request`).
-- Security: Session/Client-Transparenz vorhanden; Profilwerte derzeit nicht zentral synchronisiert.
-- Scope-Ende: Profil aktuell lokal pro Browser (kein globaler User-Profile-Store).
-- Ausbau: Profil server-synchron (optional clientseitig verschluesselt), Avatar-Upload ueber UserStorage.
+- Funktionen: Profilwerte pflegen, aktive Sessions/Clients anzeigen, Avatar im Profilordner verwalten.
+- Funktionsweise: Profil ueber Realtime (`identity_profile_request` / `identity_profile_upsert`); Client-Liste ueber Realtime (`online_request`).
+- Security: Optional clientseitig verschluesseltes Profil-Payload; Session/Client-Transparenz vorhanden.
+- Scope-Ende: Kein vollstaendiger Policy-/Approval-Flow fuer Profilaenderungen.
+- Ausbau: feinere Profilrechte, Audit-Verknuepfung, weiterfuehrende Device-Binding-Optionen.
 
 ## 10) Notes
 
@@ -109,6 +109,14 @@ Dieses Dokument beschreibt den aktuellen Stand der Desktop-Plugins:
 - Security: Zustandsaenderungen und Profile laufen ueber authentifizierten Realtime-Kanal.
 - Scope-Ende: Kein externes Discovery/Adressbuch-Import, keine Team-Rollen/Policies.
 - Ausbau: Kontaktgruppen/Tags, Import/Export, Policy-Regeln (z. B. Blocklisten-Defaults).
+
+## 13) About VØID
+
+- Funktionen: App-Version, Build-Nummer, Commit, Build-Zeit und Runtime-Mode anzeigen.
+- Funktionsweise: Read-only Desktop-Plugin als Modal-Inhalt.
+- Security: Keine sensitiven Nutzdaten; nur Build-Metadaten.
+- Scope-Ende: Keine Diagnostics/Logs/Healthchecks integriert.
+- Ausbau: Support-Bundle-Export (Version + Feature-Flags + Browser-Capabilities).
 
 ## Priorisierte naechste Schritte (empfohlen)
 
