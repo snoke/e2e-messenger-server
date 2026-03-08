@@ -23,6 +23,8 @@ services:
       - LOG_LEVEL=INFO
       - LOG_FORMAT=json
       - JWT_PUBLIC_KEY_FILE=/run/keys/dev_public.pem
+      - AUTH_BACKEND_BASE_URL=${AUTH_BACKEND_BASE_URL:-http://symfony:8000}
+      - AUTH_REQUEST_TIMEOUT_MS=${AUTH_REQUEST_TIMEOUT_MS:-8000}
       - REDIS_DSN=redis://redis:6379
       - REDIS_STREAM=ws.outbox
       - REDIS_INBOX_STREAM=ws.inbox
