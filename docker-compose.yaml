@@ -2,14 +2,15 @@ services:
   traefik:
     image: traefik:v3.0
     command:
-      - --providers.file.filename=/etc/traefik/traefik.yml
-      - --entrypoints.web.address=:80
-      - --entrypoints.websecure.address=:443
+      - --configFile=/etc/traefik/traefik.yml
     ports:
       - "8180:80"
       - "8443:443"
     volumes:
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/dynamic.yml:/etc/traefik/dynamic.yml:ro
+      - ./scripts/keys/lan_tls_fullchain.crt:/etc/traefik/certs/lan_tls.crt:ro
+      - ./scripts/keys/lan_tls.key:/etc/traefik/certs/lan_tls.key:ro
 
   gateway:
     image: alpine:3.20
@@ -131,6 +132,7 @@ services:
       - VITE_PROXY_TARGET=http://symfony:8000
       - VITE_E2EE_ENABLED=true
       - VITE_E2EE_DEBUG=true
+      - VITE_WS_URL=${VITE_WS_URL:-wss://192.168.8.201:8443/ws}
       - VITE_GROUP_CRYPTO_MODE=${VITE_GROUP_CRYPTO_MODE:-mls}
       - VITE_MLS_CLIENT_ADAPTER=${VITE_MLS_CLIENT_ADAPTER:-ts_mls}
       - VITE_CALL_MEDIA_E2EE_ENABLED=${VITE_CALL_MEDIA_E2EE_ENABLED:-false}
