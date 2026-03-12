@@ -104,6 +104,11 @@ http:
           - "192.168.0.0/16"
 
 tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: "/etc/traefik/certs/lan_tls.crt"
+        keyFile: "/etc/traefik/certs/lan_tls.key"
   certificates:
     - certFile: "/etc/traefik/certs/lan_tls.crt"
       keyFile: "/etc/traefik/certs/lan_tls.key"
