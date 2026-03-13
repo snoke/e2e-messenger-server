@@ -127,7 +127,7 @@ services:
   frontend:
     build: ./frontend
     command: >
-      sh -lc "if [ ! -d node_modules ] || [ ! -d node_modules/rollup ] || [ ! -d node_modules/vite ] || [ ! -d node_modules/ts-mls ] || [ ! -d node_modules/@fortawesome/fontawesome-free ]; then npm install; fi; if [ ! -d node_modules/@rollup/rollup-linux-arm64-musl ]; then npm install --no-save @rollup/rollup-linux-arm64-musl; fi; npm run dev"
+      sh -lc "if [ ! -d node_modules ] || [ ! -d node_modules/rollup ] || [ ! -d node_modules/vite ] || [ ! -d node_modules/ts-mls ] || [ ! -d node_modules/@fortawesome/fontawesome-free ] || [ ! -d node_modules/vuefinder ] || [ ! -d node_modules/vue-advanced-chat ] || [ ! -d node_modules/@tiptap ] || [ ! -d node_modules/@kyvg/vue3-notification ]; then npm install --include=optional; fi; if [ ! -d node_modules/@rollup/rollup-linux-arm64-musl ] || [ ! -d node_modules/@esbuild/linux-arm64 ]; then npm install --no-save @rollup/rollup-linux-arm64-musl @esbuild/linux-arm64; fi; npm run dev"
     environment:
       - VITE_PROXY_TARGET=http://symfony:8000
       - VITE_E2EE_ENABLED=true

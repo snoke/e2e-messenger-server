@@ -175,6 +175,7 @@ services:
 
   redis:
     image: redis:7-alpine
+    command: ["redis-server", "--stop-writes-on-bgsave-error", "no"]
     restart: unless-stopped
     volumes:
       - redis-data:/data

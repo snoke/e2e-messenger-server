@@ -1,6 +1,7 @@
 services:
   redis:
     image: redis:7-alpine
+    command: ["redis-server", "--stop-writes-on-bgsave-error", "no"]
 
   rabbitmq:
     image: rabbitmq:3-management
