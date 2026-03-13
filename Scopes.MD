@@ -14,6 +14,11 @@ UI‑scopes represent visible/active UI surfaces. They do **not** control realti
 - `chat_conversation_ui`
 - `calls_ui`
 
+Recommended binding:
+- Use the `ScopeBoundary` component for template‑bound UI scopes.
+- Or use `useUiScope(\"...\")` inside `setup()` for explicit control.
+- With `keep-alive`, ensure `onActivated/onDeactivated` paths are handled.
+
 ### Operation‑Scopes (processing only)
 Operation‑scopes control runtime processing, network traffic, and crypto state. They are activated by **operations**, not by UI presence directly.
 
@@ -41,6 +46,7 @@ Each operation‑scope has a single owner. Only the owner may process and mutate
 ### Calls (Owner: calls plugin)
 - Owns `calls_ops`
 - Responsibilities: call join/leave, call session state, MLS control conversation, media key exchange.
+- Ops activation is handled by the calls runtime/owner (not by the UI component).
 
 ### File Transfer (Owner: file‑transfer plugin)
 - Owns `file_transfer_ops`
@@ -78,6 +84,7 @@ Examples:
 - `call_join` operation always activates `calls_ops` first.
 - `open_conversation` activates `conversation_ops` for the target conversation.
 - `start_file_transfer` activates `file_transfer_ops` for the transfer lifecycle.
+- Incoming domain events may also trigger an operation (e.g., `file_transfer_offer` → activate `file_transfer_ops`).
 
 Result: the same operation behaves identically whether initiated from notifications, chat UI, or calls UI.
 
