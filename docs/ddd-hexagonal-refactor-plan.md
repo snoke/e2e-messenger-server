@@ -16,7 +16,7 @@
 - Core/Void Realtime Dispatch: **fertig (modulare Registry)**
 - AnonymousDropbox: **fertig (Interface dünn, Application-Actions)**
 - ContactBook: **fertig (Interface dünn, Application-Actions)**
-- UserStorage: **fertig (Interface dünn, Application-Actions)**
+- UserStorage: **fertig (Interface dünn, Application-Actions)** (Backend-Domäne; UI ersetzt durch Vue-Storage/Vue-Finder)
 - Chat: **fertig (Interface dünn, Application-Actions)**
 - Calls: **fertig (Interface dünn, Application-Actions)**
 - AuditTimeline / DeadManSwitch / Identity / KeyTrust: **fertig (Interface dünn, Application-Actions)**
@@ -25,6 +25,7 @@
 Hinweis:
 - Dieser Stand zieht die Realtime-Fachlogik aus den Interface-Handlern in Application-Actions.
 - Nächster architektonischer Schritt bleibt optional: feingranulare Domain-Extraktion (Policies/VO/Aggregates) aus den Actions.
+- UI-Hinweis: Das frühere Frontend-Plugin `UserStorage` wurde entfernt; UI läuft jetzt über Vue-Storage/Vue-Finder.
 
 ## 1. Ziel und Scope
 

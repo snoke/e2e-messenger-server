@@ -94,12 +94,12 @@ Dieses Dokument beschreibt den aktuellen Stand der Desktop-Plugins:
 - Scope-Ende: Kein kollaboratives Editing/CRDT, kein vollwertiger Docs-Editor-Stack.
 - Ausbau: Rich-Editor (z. B. Tiptap/ProseMirror), Version-History, Vorlagen, Freigabe-Modelle.
 
-## 11) UserStorage
+## 11) Vue-Storage (Vue-Finder)
 
-- Funktionen: Dateien hochladen/listen/herunterladen/loeschen, Ordnerpfade, Desktop- und Headless-Nutzung.
-- Funktionsweise: Chunked Upload/Download (`user_storage_*` Message-Typen) ueber Realtime.
-- Security: End-to-end Dateiverschluesselung auf Client-Seite; Hash-Checks fuer Chunks.
-- Scope-Ende: Kein ausgereiftes Sharing/Linking/Quota-Management auf Produktniveau.
+- Funktionen: Datei-/Ordner-UI ueber alle Storage-Adapter (Cloud/UserStorage, OPFS, lokale Quellen).
+- Funktionsweise: Vue-Finder UI + Adapter-Layer; Cloud-Adapter nutzt den UserStorage Realtime-Flow (`user_storage_*`).
+- Security: Clientseitige Verschluesselung pro Adapter; Chunk-Integrity-Checks bei Cloud/UserStorage.
+- Scope-Ende: Kein vollstaendiges Sharing/Linking/Quota-Produktniveau.
 - Ausbau: resumable Uploads, Quotas, sichere Share-Links, Hintergrund-Sync.
 
 ## 12) ContactBook
