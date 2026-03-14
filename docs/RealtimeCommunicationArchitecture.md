@@ -262,3 +262,61 @@ Any payload that exceeds a scope is a contract violation.
 10. Notifications are never derived from other responses.
 11. No implicit routing fallbacks.
 12. New features must follow this document end-to-end.
+
+---
+
+## 9) MLS-Scoped Signal Pattern (Reusable)
+
+This pattern formalizes MLS-bound operation contexts (e.g., Calls media-key control, File-Transfer control).
+It is **not** intended for normal chat messages.
+
+### 9.1 Minimal Model (Behavior)
+
+- **Context established gate**: processing starts only when MLS context is ready.
+- **Epoch-safe signaling**: outbound signals always include the **current** MLS epoch.
+- **Stale signal drop**: inbound `incomingEpoch < localEpoch` is dropped.
+- **Future epoch defer**: inbound `incomingEpoch > localEpoch` is queued.
+- **Ready-triggered resend/flush**: when context is ready, queued signals are flushed and last state may be re-sent.
+
+### 9.2 Minimal API (Pseudocode)
+
+```ts
+type ContextId = number;
+type Epoch = number;
+
+type EncryptedSignal = {
+  contextId: ContextId;
+  session_epoch: Epoch;
+  ciphertext: string;
+  nonce: string;
+  suite: string;
+  header: Record<string, unknown>;
+};
+
+type PlainSignal = Record<string, unknown>;
+
+type MlsScopedChannel = {
+  isReady: (contextId: ContextId) => boolean;
+  ensureReady: (contextId: ContextId) => Promise<boolean>;
+  send: (contextId: ContextId, payload: PlainSignal, reason?: string) => Promise<boolean>;
+  onSignal: (contextId: ContextId, signal: EncryptedSignal) => Promise<void>;
+  notifyReady: (contextId: ContextId) => void;
+};
+
+type MlsTransport = {
+  getEpoch: (contextId: ContextId) => Epoch;
+  encrypt: (contextId: ContextId, epoch: Epoch, payload: PlainSignal) => Promise<EncryptedSignal | null>;
+  decrypt: (contextId: ContextId, epoch: Epoch, signal: EncryptedSignal) => Promise<PlainSignal | null>;
+};
+```
+
+### 9.3 Usage Guidance
+
+**Apply to:**
+- Calls media-key control
+- File-transfer handshake / file-key control
+- Other MLS-bound operation contexts
+
+**Do not apply to:**
+- Standard chat message flow
+- Notifications feed
