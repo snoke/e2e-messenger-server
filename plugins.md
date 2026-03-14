@@ -80,13 +80,21 @@ Dieses Dokument beschreibt den aktuellen Stand der Desktop-Plugins:
 
 ## 9) Identity
 
-- Funktionen: Profilwerte pflegen, aktive Sessions/Clients anzeigen, Avatar im Profilordner verwalten.
-- Funktionsweise: Profil ueber Realtime (`identity_profile_request` / `identity_profile_upsert`); Client-Liste ueber Realtime (`online_request`).
-- Security: Optional clientseitig verschluesseltes Profil-Payload; Session/Client-Transparenz vorhanden.
+- Funktionen: Profilwerte pflegen, Avatar im Profilordner verwalten.
+- Funktionsweise: Profil ueber Realtime (`identity_profile_request` / `identity_profile_upsert`).
+- Security: Optional clientseitig verschluesseltes Profil-Payload.
 - Scope-Ende: Kein vollstaendiger Policy-/Approval-Flow fuer Profilaenderungen.
 - Ausbau: feinere Profilrechte, Audit-Verknuepfung, weiterfuehrende Device-Binding-Optionen.
 
-## 10) Notes
+## 10) Client Devices
+
+- Funktionen: Aktive Sessions/Clients anzeigen.
+- Funktionsweise: Client-Liste ueber Realtime (`online_request`).
+- Security: Session/Client-Transparenz vorhanden.
+- Scope-Ende: Kein vollstaendiger Policy-/Approval-Flow fuer Device-Entscheidungen.
+- Ausbau: Device-Labeling, gezielte Revokes, Device-Binding-Optionen.
+
+## 11) Notes
 
 - Funktionen: Notizen erstellen/oeffnen/bearbeiten, Markdown/TXT, Speicherung in UserStorage.
 - Funktionsweise: Editor + verschluesselte Dateiablage ueber Realtime UserStorage-Flow.
@@ -94,7 +102,7 @@ Dieses Dokument beschreibt den aktuellen Stand der Desktop-Plugins:
 - Scope-Ende: Kein kollaboratives Editing/CRDT, kein vollwertiger Docs-Editor-Stack.
 - Ausbau: Rich-Editor (z. B. Tiptap/ProseMirror), Version-History, Vorlagen, Freigabe-Modelle.
 
-## 11) Vue-Storage (Vue-Finder)
+## 12) Vue-Storage (Vue-Finder)
 
 - Funktionen: Datei-/Ordner-UI ueber alle Storage-Adapter (Cloud/UserStorage, OPFS, lokale Quellen).
 - Funktionsweise: Vue-Finder UI + Adapter-Layer; Cloud-Adapter nutzt den UserStorage Realtime-Flow (`user_storage_*`).
@@ -102,7 +110,7 @@ Dieses Dokument beschreibt den aktuellen Stand der Desktop-Plugins:
 - Scope-Ende: Kein vollstaendiges Sharing/Linking/Quota-Produktniveau.
 - Ausbau: resumable Uploads, Quotas, sichere Share-Links, Hintergrund-Sync.
 
-## 12) ContactBook
+## 13) ContactBook
 
 - Funktionen: Kontakte anfragen/annehmen/blockieren/unblocken, Profildaten pflegen.
 - Funktionsweise: Realtime fuer Kontaktzustand + Profile Requests; lokale Cache-Schicht in IndexedDB.
