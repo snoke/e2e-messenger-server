@@ -132,7 +132,7 @@ services:
       - VITE_PROXY_TARGET=http://symfony:8000
       - VITE_E2EE_ENABLED=true
       - VITE_E2EE_DEBUG=true
-      - VITE_WS_URL=${VITE_WS_URL:-wss://192.168.8.201:8443/ws}
+      - VITE_WS_URL=${VITE_WS_URL:-}
       - VITE_LIVEKIT_URL=${VITE_LIVEKIT_URL:-ws://localhost:7880}
       - VITE_WEBRTC_STUN_URL=${VITE_WEBRTC_STUN_URL:-stun:127.0.0.1:3478}
       - VITE_WEBRTC_TURN_URL=${VITE_WEBRTC_TURN_URL:-turn:127.0.0.1:3478?transport=udp}

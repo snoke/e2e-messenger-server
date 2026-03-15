@@ -14,4 +14,4 @@ services:
   frontend:
     environment:
       - VITE_REALTIME_TRANSPORT=ws
-      - VITE_WS_URL=${VITE_WS_URL:-wss://localhost:8443/ws}
+      - VITE_WS_URL=${VITE_WS_URL:-}

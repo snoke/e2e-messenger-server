@@ -4,9 +4,18 @@ http:
       rule: "PathPrefix(`/ws`) || PathPrefix(`/internal`)"
       service: ws
       entryPoints:
-        - web
         - websecure
       tls: {}
+      middlewares:
+        - secure-headers
+        - cors
+        - rate-limit
+        - ip-allowlist
+    ws-http:
+      rule: "PathPrefix(`/ws`) || PathPrefix(`/internal`)"
+      service: ws
+      entryPoints:
+        - web
       middlewares:
         - secure-headers
         - cors
@@ -16,9 +25,18 @@ http:
       rule: "PathPrefix(`/health`) || PathPrefix(`/ready`) || PathPrefix(`/metrics`)"
       service: gateway-http
       entryPoints:
-        - web
         - websecure
       tls: {}
+      middlewares:
+        - secure-headers
+        - cors
+        - rate-limit
+        - ip-allowlist
+    gateway-health-http:
+      rule: "PathPrefix(`/health`) || PathPrefix(`/ready`) || PathPrefix(`/metrics`)"
+      service: gateway-http
+      entryPoints:
+        - web
       middlewares:
         - secure-headers
         - cors
@@ -28,9 +46,18 @@ http:
       rule: "PathPrefix(`/api`) || PathPrefix(`/demo`)"
       service: api
       entryPoints:
-        - web
         - websecure
       tls: {}
+      middlewares:
+        - secure-headers
+        - cors
+        - rate-limit
+        - ip-allowlist
+    api-http:
+      rule: "PathPrefix(`/api`) || PathPrefix(`/demo`)"
+      service: api
+      entryPoints:
+        - web
       middlewares:
         - secure-headers
         - cors
@@ -40,9 +67,18 @@ http:
       rule: "PathPrefix(`/`)"
       service: frontend
       entryPoints:
-        - web
         - websecure
       tls: {}
+      middlewares:
+        - secure-headers
+        - cors
+        - ip-allowlist
+      priority: 1
+    frontend-http:
+      rule: "PathPrefix(`/`)"
+      service: frontend
+      entryPoints:
+        - web
       middlewares:
         - secure-headers
         - cors
