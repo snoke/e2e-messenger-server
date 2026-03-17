@@ -158,6 +158,14 @@ Nonce rule (enforced):
 
 # 7) Auth + Vault Unlock Flows (Current) [Implemented]
 
+## 7.0 Server-side Handling (Verification)
+Server-side actions **only persist wrapped material** and do not decrypt user secrets.
+
+Evidence (code):
+- `symfony/src/Plugins/UserVault/Application/Realtime/Action/UserVaultInitAction.php` stores `wrapped_uvk_*` and `wrapped_user_key_private`.
+- `symfony/src/Plugins/UserVault/Application/Realtime/Action/UserVaultUpdateUserKeyAction.php` stores `wrapped_user_key_private`.
+- `symfony/src/Service/ConversationKeyService.php` stores `wrapped_chk` only.
+
 ## 7.1 Signup (Password)
 1. Client generates UVK + Recovery Key.
 2. Ensure Device KEK exists (create if missing, IndexedDB).

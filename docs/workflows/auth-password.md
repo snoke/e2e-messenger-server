@@ -5,7 +5,7 @@
 2. Server returns JWT token.
 3. Client fetches vault (`user_vault_fetch`).
 4. Client generates UVK and user key if missing.
-5. Client persists user key (`user_vault_update_user_key`).
+5. Client persists user key (public key + wrapped private) via `user_vault_update_user_key`.
 6. Client registers device vault (`user_device_vault_register`).
 7. Global crypto readiness becomes true.
 
@@ -29,7 +29,7 @@ sequenceDiagram
 2. Server returns JWT token.
 3. Client fetches vault (`user_vault_fetch`).
 4. Client unwraps UVK using password KDF.
-5. Client ensures user key exists and is persisted.
+5. Client ensures user key exists and is persisted (public key + wrapped private).
 6. Client registers device vault if needed.
 7. Global crypto readiness becomes true.
 

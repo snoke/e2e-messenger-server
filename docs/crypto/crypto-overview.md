@@ -28,6 +28,7 @@ flowchart TD
 ## Server Visibility
 - Sees only wrapped keys and ciphertext.
 - Never sees plaintext CHK, MLS state, or UVK.
+- Server is not provided with user key or CHK material and therefore cannot unwrap or decrypt them.
 
 ## Related
 - Key lifecycle: `docs/crypto/lifecycle-matrix.md`

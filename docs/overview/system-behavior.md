@@ -88,7 +88,7 @@ MLS is used only for live transport (realtime encryption of messages, typing, et
 ### Server storage
 
 The server stores only wrapped CHKs per member in `conversation_key_records`.
-The server never sees plaintext CHKs.
+The server is not provided with CHK material and therefore cannot decrypt or unwrap it.
 
 ### Distribution and accept delivery (current model)
 

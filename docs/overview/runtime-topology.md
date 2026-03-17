@@ -37,6 +37,7 @@ Redis is transport only. The database is the source of truth.
 ## Storage Flow
 - Messages are stored encrypted (CHK) in MySQL.
 - Attachments are stored as encrypted blobs; keys are wrapped and stored server-side.
+- Server is not provided with storage key material and therefore cannot decrypt or unwrap storage keys.
 
 ## Services Required for Full Functionality
 - `gateway`

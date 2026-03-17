@@ -24,6 +24,7 @@ This document explains **what the system is** and how the major pieces fit toget
 ## Security Boundary (High Level)
 - The server never sees plaintext CHK, MLS secrets, or vault secrets.
 - The server stores only wrapped keys and ciphertexts.
+- The server is not provided with key material and therefore cannot unwrap or decrypt client secrets.
 - Clients decrypt locally and keep secrets RAM-only.
 
 ## High-Level Data Flow

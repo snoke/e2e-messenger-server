@@ -7,7 +7,7 @@ Last verified: 2026-03-17.
 - Realtime via WebSocket/WebTransport only (no ad-hoc REST for core flows).
 - Source of truth: MySQL; Redis is transport.
 - Client storage: IndexedDB for keys/caches/metadata.
-- Crypto: plaintext only on client; server stores ciphertext and wraps.
+- Crypto: plaintext only on client; server stores ciphertext and wrapped keys only, and is not provided with key material to decrypt them.
 
 ## Inventory (from `frontend/src/plugins`)
 - `about-void`: build/version info modal.

@@ -10,4 +10,4 @@
 
 Notes:
 - No plaintext secret key material is stored or processed on the server.
-- Server sees ciphertext, public keys, and metadata only.
+- Server sees ciphertext, public keys, and metadata only, and is not provided with key material to decrypt them.
