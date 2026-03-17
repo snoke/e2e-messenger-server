@@ -21,6 +21,6 @@ This document defines **who owns which data** and **where truth lives**. It prev
 - Client never mutates membership or persistence state directly.
 
 ## Related
-- `docs/overview/system-overview.md`
-- `docs/crypto/README.md`
-- `docs/architecture/realtime-architecture.md`
+- [`docs/overview/system-overview.md`](../overview/system-overview.md)
+- [`docs/crypto/README.md`](../crypto/README.md)
+- [`docs/architecture/realtime-architecture.md`](realtime-architecture.md)

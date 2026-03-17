@@ -1,8 +1,8 @@
 # Dev Status Snapshot (2026-03-07)
 
 This is a historical snapshot. For current dev instructions and state, use:
-- `docs/ops/local-dev.md`
-- `docs/ops/docker-compose-matrix.md`
+- [`docs/ops/local-dev.md`](../ops/local-dev.md)
+- [`docs/ops/docker-compose-matrix.md`](../ops/docker-compose-matrix.md)
 
 ## Repository
 
@@ -14,8 +14,8 @@ This is a historical snapshot. For current dev instructions and state, use:
 
 - `frontend`: `dfdb642` (`MLS runtime hardening and secure store updates`)
 - `symfony`: `64db9e6` (`Add membership state semantics for MLS group flow`)
-- `gateway/e2e-ws-gateway`: `acf1fc6`
-- `gateway/rust-http3-gateway`: `2fd5ccc`
+- [`gateway/e2e-ws-gateway`](../../gateway/e2e-ws-gateway): `acf1fc6`
+- [`gateway/rust-http3-gateway`](../../gateway/rust-http3-gateway): `2fd5ccc`
 
 ## Current Runtime Defaults
 

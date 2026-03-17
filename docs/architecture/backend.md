@@ -31,11 +31,11 @@ sequenceDiagram
 - Services perform domain logic and persistence.
 
 ## Key Entry Points
-- Chat actions: `symfony/src/Plugins/Chat/Application/Realtime/Action/*`
-- Chat coordinator: `symfony/src/Plugins/Chat/Application/ChatRealtimeCoordinator.php`
-- Realtime publisher: `symfony/src/Service/RealtimePublisher.php`
-- ContactBook actions: `symfony/src/Plugins/ContactBook/Application/Realtime/*`
-- User vault actions: `symfony/src/Plugins/UserVault/Application/Realtime/*`
+- Chat actions: `[symfony/src/Plugins/Chat/Application/Realtime/Action/](../../symfony/src/Plugins/Chat/Application/Realtime/Action)*`
+- Chat coordinator: [`symfony/src/Plugins/Chat/Application/ChatRealtimeCoordinator.php`](../../symfony/src/Plugins/Chat/Application/ChatRealtimeCoordinator.php)
+- Realtime publisher: [`symfony/src/Service/RealtimePublisher.php`](../../symfony/src/Service/RealtimePublisher.php)
+- ContactBook actions: `[symfony/src/Plugins/ContactBook/Application/Realtime/](../../symfony/src/Plugins/ContactBook/Application/Realtime)*`
+- User vault actions: `[symfony/src/Plugins/UserVault/Application/Realtime/](../../symfony/src/Plugins/UserVault/Application/Realtime)*`
 
 ## Key Domain Services
 - ConversationKeyService: server-side storage of CHK wraps.
@@ -48,6 +48,6 @@ sequenceDiagram
 - Domain changes emit `*_state`, `*_updated`, or `*_committed` events.
 
 ## Related
-- Realtime standard: `docs/architecture/realtime-architecture.md`
-- Commands/events: `docs/reference/commands-events.md`
-- Crypto: `docs/crypto/README.md`
+- Realtime standard: [`docs/architecture/realtime-architecture.md`](realtime-architecture.md)
+- Commands/events: [`docs/reference/commands-events.md`](../reference/commands-events.md)
+- Crypto: [`docs/crypto/README.md`](../crypto/README.md)

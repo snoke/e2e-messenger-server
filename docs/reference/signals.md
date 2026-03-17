@@ -40,33 +40,33 @@ Notes:
 `scope_key` is used to map the signal back to a conversation without exposing `conversation_id`.
 
 Implementation references:
-- **Backend**: `symfony/src/Entity/Conversation.php` (`scopeKey`)
-- **Builder**: `symfony/src/Plugins/Chat/Application/ConversationItemBuilder.php` (generated and persisted)
+- **Backend**: [`symfony/src/Entity/Conversation.php`](../../symfony/src/Entity/Conversation.php) (`scopeKey`)
+- **Builder**: [`symfony/src/Plugins/Chat/Application/ConversationItemBuilder.php`](../../symfony/src/Plugins/Chat/Application/ConversationItemBuilder.php) (generated and persisted)
 - **Frontend mapping**:
-  - `frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts`
-  - `frontend/src/app/core/messaging/services/messenger/realtime/presence.ts`
+  - [`frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts`](../../frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts)
+  - [`frontend/src/app/core/messaging/services/messenger/realtime/presence.ts`](../../frontend/src/app/core/messaging/services/messenger/realtime/presence.ts)
 
 ## 4) Current Usage
 
 Currently, signals are used for **chat typing** only.
 
 Sender path:
-- `frontend/src/app/core/messaging/services/messenger/send.ts`
+- [`frontend/src/app/core/messaging/services/messenger/send.ts`](../../frontend/src/app/core/messaging/services/messenger/send.ts)
   - builds MLS ciphertext
   - sends `type: "signal"` when `scopeKey` is available
   - falls back to `chat_typing_state` if `scopeKey` is missing
 
 Receiver path:
-- `frontend/src/app/core/messaging/services/messenger/realtime/presence.ts`
+- [`frontend/src/app/core/messaging/services/messenger/realtime/presence.ts`](../../frontend/src/app/core/messaging/services/messenger/realtime/presence.ts)
   - accepts `type: "signal"`
   - resolves `scope_key` → `conversation_id`
   - decrypts MLS payload
   - applies typing update
 
 Backend routing:
-- `gateway/rust-http3-gateway/src/project/command_registry.rs` (registers `signal`)
-- `symfony/src/Plugins/Chat/Application/Realtime/Action/SignalAction.php`
-- `symfony/src/Plugins/Chat/Interface/Realtime/MessageHandler/ChatMessageHandlerRegistry.php`
+- [`gateway/rust-http3-gateway/src/project/command_registry.rs`](../../gateway/rust-http3-gateway/src/project/command_registry.rs) (registers `signal`)
+- [`symfony/src/Plugins/Chat/Application/Realtime/Action/SignalAction.php`](../../symfony/src/Plugins/Chat/Application/Realtime/Action/SignalAction.php)
+- [`symfony/src/Plugins/Chat/Interface/Realtime/MessageHandler/ChatMessageHandlerRegistry.php`](../../symfony/src/Plugins/Chat/Interface/Realtime/MessageHandler/ChatMessageHandlerRegistry.php)
 
 ## 5) Security Properties
 
@@ -94,7 +94,7 @@ There is **no runtime flag** yet. For metadata debugging you can temporarily rev
 
 ### Option A: Force the Legacy Path in Frontend (fastest)
 
-In `frontend/src/app/core/messaging/services/messenger/send.ts`:
+In [`frontend/src/app/core/messaging/services/messenger/send.ts`](../../frontend/src/app/core/messaging/services/messenger/send.ts):
 - temporarily bypass the `scope_key` branch so it always sends `chat_typing_state`.
 
 This makes websocket traffic show:
@@ -111,8 +111,8 @@ This is fragile because the next conversations refresh re‑hydrates `scope_key`
 ### Option C: Disable the Signal Command on Backend
 
 Temporarily remove/disable:
-- `signal` entry in `symfony/src/Plugins/Chat/Interface/Realtime/MessageHandler/ChatMessageHandlerRegistry.php`
-- `signal` registration in `gateway/rust-http3-gateway/src/project/command_registry.rs`
+- `signal` entry in [`symfony/src/Plugins/Chat/Interface/Realtime/MessageHandler/ChatMessageHandlerRegistry.php`](../../symfony/src/Plugins/Chat/Interface/Realtime/MessageHandler/ChatMessageHandlerRegistry.php)
+- `signal` registration in [`gateway/rust-http3-gateway/src/project/command_registry.rs`](../../gateway/rust-http3-gateway/src/project/command_registry.rs)
 
 This forces clients to use the legacy `chat_typing_state` path (assuming Option A or B is applied).
 

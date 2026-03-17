@@ -18,5 +18,5 @@ Conversation readiness is **per conversation** and depends on a CHK being availa
 - `crypto_error`: input disabled, error state shown
 
 ## Related
-- Invite/accept flow: `docs/workflows/invite-accept.md`
-- CHK lifecycle: `docs/crypto/chk.md`
+- Invite/accept flow: [`docs/workflows/invite-accept.md`](../workflows/invite-accept.md)
+- CHK lifecycle: [`docs/crypto/chk.md`](../crypto/chk.md)

@@ -46,7 +46,7 @@ flowchart LR
 - UI visibility does not control crypto state or realtime processing.
 
 ## Where to Go Next
-- Runtime topology: `docs/overview/runtime-topology.md`
-- Runtime behavior: `docs/overview/system-behavior.md`
-- Realtime architecture standard: `docs/architecture/realtime-architecture.md`
-- Crypto overview: `docs/crypto/crypto-overview.md`
+- Runtime topology: [`docs/overview/runtime-topology.md`](runtime-topology.md)
+- Runtime behavior: [`docs/overview/system-behavior.md`](system-behavior.md)
+- Realtime architecture standard: [`docs/architecture/realtime-architecture.md`](../architecture/realtime-architecture.md)
+- Crypto overview: [`docs/crypto/crypto-overview.md`](../crypto/crypto-overview.md)

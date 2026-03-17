@@ -18,5 +18,5 @@ These rules apply to all frontend plugins.
 - Operation scopes drive processing.
 
 Related:
-- `docs/reference/scopes.md`
-- `docs/architecture/frontend.md`
+- [`docs/reference/scopes.md`](../reference/scopes.md)
+- [`docs/architecture/frontend.md`](../architecture/frontend.md)

@@ -31,5 +31,5 @@ sequenceDiagram
 - Full tenant user listing is not exposed in normal UI flows.
 
 Related:
-- `docs/overview/system-behavior.md`
-- `docs/reference/scopes.md`
+- [`docs/overview/system-behavior.md`](../overview/system-behavior.md)
+- [`docs/reference/scopes.md`](../reference/scopes.md)

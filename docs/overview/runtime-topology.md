@@ -50,6 +50,6 @@ Redis is transport only. The database is the source of truth.
 If `symfony-consumer` is down, realtime commands will time out.
 
 ## Related
-- `docs/workflows/workflow-protocol.md`
-- `docs/architecture/realtime-architecture.md`
-- `docs/overview/system-behavior.md`
+- [`docs/workflows/workflow-protocol.md`](../workflows/workflow-protocol.md)
+- [`docs/architecture/realtime-architecture.md`](../architecture/realtime-architecture.md)
+- [`docs/overview/system-behavior.md`](system-behavior.md)

@@ -6,10 +6,10 @@ Scope: Frontend plugins, Gateway routing, Symfony realtime handlers, and event d
 This document defines the **target standard** (Soll-Zustand). New features must follow this flow end-to-end.
 
 References:
-- `docs/reference/scopes.md` (frontend scope model)
-- `docs/workflows/workflow-protocol.md` (live vs committed semantics)
-- `gateway/rust-http3-gateway/src/routes.rs` (RoutingClass and MessageSemanticType)
-- `gateway/rust-http3-gateway/src/project/command_registry.rs` (command registry and relay auth)
+- [`docs/reference/scopes.md`](../reference/scopes.md) (frontend scope model)
+- [`docs/workflows/workflow-protocol.md`](../workflows/workflow-protocol.md) (live vs committed semantics)
+- [`gateway/rust-http3-gateway/src/routes.rs`](../../gateway/rust-http3-gateway/src/routes.rs) (RoutingClass and MessageSemanticType)
+- [`gateway/rust-http3-gateway/src/project/command_registry.rs`](../../gateway/rust-http3-gateway/src/project/command_registry.rs) (command registry and relay auth)
 
 ---
 
@@ -35,7 +35,7 @@ Owners are the only modules allowed to mutate domain state and issue domain comm
 - Operation-scopes drive processing and network traffic
 - UI-scopes never enable crypto or request data directly
 
-See `docs/reference/scopes.md` for the definitive list of scopes and scope rules.
+See [`docs/reference/scopes.md`](../reference/scopes.md) for the definitive list of scopes and scope rules.
 
 ### 1.4 Allowed Requests / Responses per Plugin
 - Each plugin may **send only commands/queries within its owned domain**
@@ -91,7 +91,7 @@ Operation requests are routed via exactly one dispatcher.
 
 ## 3) Gateway Routing Model
 
-Routing classes are defined in `gateway/rust-http3-gateway/src/routes.rs`.
+Routing classes are defined in [`gateway/rust-http3-gateway/src/routes.rs`](../../gateway/rust-http3-gateway/src/routes.rs).
 
 ### 3.1 Routing Classes
 - `preauth`
@@ -137,7 +137,7 @@ Relay commands must also be registered in:
 
 ## 5) Scope and Visibility Rules
 
-Visibility is governed by operation scopes defined in `docs/reference/scopes.md`.
+Visibility is governed by operation scopes defined in [`docs/reference/scopes.md`](../reference/scopes.md).
 
 ### Scope Rules (Summary)
 - notifications scope: notification feed and invites only
@@ -181,6 +181,6 @@ This is the binding rule for conversation history keys:
 - If the wrap is missing at accept time, accept fails.
 
 Related:
-- `docs/crypto/chk.md`
-- `docs/workflows/invite-accept.md`
-- `docs/adr/adr-chk-invite-accept.md`
+- [`docs/crypto/chk.md`](../crypto/chk.md)
+- [`docs/workflows/invite-accept.md`](../workflows/invite-accept.md)
+- [`docs/adr/adr-chk-invite-accept.md`](../adr/adr-chk-invite-accept.md)

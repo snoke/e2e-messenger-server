@@ -31,6 +31,6 @@ flowchart TD
 - Server is not provided with user key or CHK material and therefore cannot unwrap or decrypt them.
 
 ## Related
-- Key lifecycle: `docs/crypto/lifecycle-matrix.md`
-- CHK: `docs/crypto/chk.md`
-- Wrapping: `docs/crypto/wrapping.md`
+- Key lifecycle: [`docs/crypto/lifecycle-matrix.md`](lifecycle-matrix.md)
+- CHK: [`docs/crypto/chk.md`](chk.md)
+- Wrapping: [`docs/crypto/wrapping.md`](wrapping.md)

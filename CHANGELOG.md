@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Docs: add gateway image quickstart to avoid repo clone.
 - Docs: add ready-to-download gateway compose files for quickstart.
 - Docs: remove smoke test instructions from README.
-- Docs: move detailed core/terminator/test client/event schema to `docs/archive/dev-status-2026-03-07.md`.
+- Docs: move detailed core/terminator/test client/event schema to [docs/archive/dev-status-2026-03-07.md](docs/archive/dev-status-2026-03-07.md).
 - Python gateway hot path optimizations (control-message fast path, pre-serialized event payloads for WS/broker/webhook).
 - Presence updates now use Redis pipelines and a queued refresh worker to reduce load.
 - Outbox consumer starts at latest when replay is disabled (`REPLAY_STRATEGY=none`).

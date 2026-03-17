@@ -13,12 +13,12 @@ A user is global-crypto-ready when all are true:
 - Ensures contact and chat flows can derive keys immediately.
 
 ## Where It Is Enforced
-- `frontend/src/app/core/messaging/services/sessionGate.ts`
+- [`frontend/src/app/core/messaging/services/sessionGate.ts`](../../frontend/src/app/core/messaging/services/sessionGate.ts)
 - Gating applied in routing and UI shells.
 
 ## Logs
 The frontend emits a `[crypto_ready]` log when the state becomes ready.
 
 ## Related
-- Conversation readiness: `docs/states/conversation-crypto-ready.md`
-- Auth flows: `docs/workflows/auth-password.md` and `docs/workflows/auth-identity.md`
+- Conversation readiness: [`docs/states/conversation-crypto-ready.md`](conversation-crypto-ready.md)
+- Auth flows: [`docs/workflows/auth-password.md`](../workflows/auth-password.md) and [`docs/workflows/auth-identity.md`](../workflows/auth-identity.md)

@@ -13,5 +13,5 @@
 - LiveKit integration in frontend and backend call actions.
 
 Related:
-- `docs/ops/tech-debt.md`
-- `docs/workflows/message-send-receive.md`
+- [`docs/ops/tech-debt.md`](../ops/tech-debt.md)
+- [`docs/workflows/message-send-receive.md`](../workflows/message-send-receive.md)

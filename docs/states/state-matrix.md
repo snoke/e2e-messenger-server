@@ -20,5 +20,5 @@ stateDiagram-v2
 ```
 
 ## Related
-- Global state: `docs/states/global-crypto-ready.md`
-- Conversation state: `docs/states/conversation-crypto-ready.md`
+- Global state: [`docs/states/global-crypto-ready.md`](global-crypto-ready.md)
+- Conversation state: [`docs/states/conversation-crypto-ready.md`](conversation-crypto-ready.md)

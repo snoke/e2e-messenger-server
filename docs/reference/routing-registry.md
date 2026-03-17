@@ -3,8 +3,8 @@
 Authoritative routing is defined in the gateway registry.
 
 ## Source of Truth
-- `gateway/rust-http3-gateway/src/routes.rs`
-- `gateway/rust-http3-gateway/src/project/command_registry.rs`
+- [`gateway/rust-http3-gateway/src/routes.rs`](../../gateway/rust-http3-gateway/src/routes.rs)
+- [`gateway/rust-http3-gateway/src/project/command_registry.rs`](../../gateway/rust-http3-gateway/src/project/command_registry.rs)
 
 ## Registry Invariants
 - Unknown commands are rejected.
@@ -16,4 +16,4 @@ Authoritative routing is defined in the gateway registry.
 - Ensure frontend and backend agree on command names.
 
 Related:
-- `docs/reference/commands-events.md`
+- [`docs/reference/commands-events.md`](commands-events.md)

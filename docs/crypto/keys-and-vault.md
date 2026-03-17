@@ -34,6 +34,6 @@ This document explains the key hierarchy and how vault unlock works.
 - Device key: IndexedDB CryptoKey handle.
 
 ## Related
-- CHK: `docs/crypto/chk.md`
-- Wrapping: `docs/crypto/wrapping.md`
-- Global crypto readiness: `docs/states/global-crypto-ready.md`
+- CHK: [`docs/crypto/chk.md`](chk.md)
+- Wrapping: [`docs/crypto/wrapping.md`](wrapping.md)
+- Global crypto readiness: [`docs/states/global-crypto-ready.md`](../states/global-crypto-ready.md)

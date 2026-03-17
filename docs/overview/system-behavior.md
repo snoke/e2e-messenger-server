@@ -29,7 +29,7 @@ A user is considered crypto‑ready when all of the following are true:
 - Device vault is registered (`deviceRegistered`).
 - User Key material is available (`userKeyReady`).
 
-The gate is enforced in `frontend/src/app/core/messaging/services/sessionGate.ts` and used by the UI.
+The gate is enforced in [`frontend/src/app/core/messaging/services/sessionGate.ts`](../../frontend/src/app/core/messaging/services/sessionGate.ts) and used by the UI.
 This is **global readiness**. Conversation readiness is handled separately (see below).
 
 ### Sign‑in / unlock sequence (runtime)
@@ -43,9 +43,9 @@ This is **global readiness**. Conversation readiness is handled separately (see 
 
 **Key files**
 
-- `frontend/src/app/core/messaging/services/messenger/vaultUnlock.ts`
-- `frontend/src/app/core/messaging/services/messenger/userKey.ts`
-- `frontend/src/app/core/messaging/services/sessionGate.ts`
+- [`frontend/src/app/core/messaging/services/messenger/vaultUnlock.ts`](../../frontend/src/app/core/messaging/services/messenger/vaultUnlock.ts)
+- [`frontend/src/app/core/messaging/services/messenger/userKey.ts`](../../frontend/src/app/core/messaging/services/messenger/userKey.ts)
+- [`frontend/src/app/core/messaging/services/sessionGate.ts`](../../frontend/src/app/core/messaging/services/sessionGate.ts)
 
 ## Realtime Session and Scopes
 
@@ -57,8 +57,8 @@ Realtime is driven by `realtimeRouter.ts`. It routes incoming frames to modules 
 
 **Key files**
 
-- `frontend/src/app/core/messaging/services/realtimeRouter.ts`
-- `frontend/src/app/core/messaging/services/messenger/realtimeModules.ts`
+- [`frontend/src/app/core/messaging/services/realtimeRouter.ts`](../../frontend/src/app/core/messaging/services/realtimeRouter.ts)
+- [`frontend/src/app/core/messaging/services/messenger/realtimeModules.ts`](../../frontend/src/app/core/messaging/services/messenger/realtimeModules.ts)
 
 ## Conversations and MLS
 
@@ -73,8 +73,8 @@ MLS is used only for live transport (realtime encryption of messages, typing, et
 
 **Key files**
 
-- `frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts`
-- `frontend/src/app/core/messaging/services/messenger/realtime/crypto.ts`
+- [`frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts`](../../frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts)
+- [`frontend/src/app/core/messaging/services/messenger/realtime/crypto.ts`](../../frontend/src/app/core/messaging/services/messenger/realtime/crypto.ts)
 
 ## CHK (Conversation History Key)
 
@@ -100,9 +100,9 @@ The server is not provided with CHK material and therefore cannot decrypt or unw
 
 **Key files**
 
-- `frontend/src/app/core/messaging/services/messenger/conversationKeys.ts`
-- `symfony/src/Plugins/Chat/Application/Realtime/Action/GroupAddAction.php`
-- `symfony/src/Plugins/Chat/Application/Realtime/Action/GroupMembershipAcceptAction.php`
+- [`frontend/src/app/core/messaging/services/messenger/conversationKeys.ts`](../../frontend/src/app/core/messaging/services/messenger/conversationKeys.ts)
+- [`symfony/src/Plugins/Chat/Application/Realtime/Action/GroupAddAction.php`](../../symfony/src/Plugins/Chat/Application/Realtime/Action/GroupAddAction.php)
+- [`symfony/src/Plugins/Chat/Application/Realtime/Action/GroupMembershipAcceptAction.php`](../../symfony/src/Plugins/Chat/Application/Realtime/Action/GroupMembershipAcceptAction.php)
 
 ### State‑based distribution (non‑invite cases)
 
@@ -110,7 +110,7 @@ If active members exist without a wrap (legacy state, recovery, or migration), t
 
 **Key files**
 
-- `frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts`
+- [`frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts`](../../frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts)
 
 ## Crypto State Gating in UI
 
@@ -128,8 +128,8 @@ Behavior:
 
 **Key files**
 
-- `frontend/src/app/core/messaging/services/messenger.ts`
-- `frontend/src/plugins/vue-chat/components/VueChatHome.vue`
+- [`frontend/src/app/core/messaging/services/messenger.ts`](../../frontend/src/app/core/messaging/services/messenger.ts)
+- [`frontend/src/plugins/vue-chat/components/VueChatHome.vue`](../../frontend/src/plugins/vue-chat/components/VueChatHome.vue)
 
 ## CHK Fetch Behavior (Recovery Only)
 
@@ -148,8 +148,8 @@ Current approach:
 
 **Key files**
 
-- `frontend/src/app/core/messaging/services/messenger/backgroundEventBridge.ts`
-- `frontend/src/app/core/messaging/services/messenger/notificationCenter.ts`
+- [`frontend/src/app/core/messaging/services/messenger/backgroundEventBridge.ts`](../../frontend/src/app/core/messaging/services/messenger/backgroundEventBridge.ts)
+- [`frontend/src/app/core/messaging/services/messenger/notificationCenter.ts`](../../frontend/src/app/core/messaging/services/messenger/notificationCenter.ts)
 
 ## Contacts vs Users Directory
 
@@ -162,9 +162,9 @@ The system is intended to expose **contacts only**, not the full tenant user lis
 
 **Key files**
 
-- `symfony/src/Plugins/ContactBook/Application/Realtime/ContactRealtimeSupport.php`
-- `symfony/src/Plugins/Chat/Application/UserDirectoryService.php`
-- `frontend/src/app/core/messaging/services/messenger/userDirectory.ts`
+- [`symfony/src/Plugins/ContactBook/Application/Realtime/ContactRealtimeSupport.php`](../../symfony/src/Plugins/ContactBook/Application/Realtime/ContactRealtimeSupport.php)
+- [`symfony/src/Plugins/Chat/Application/UserDirectoryService.php`](../../symfony/src/Plugins/Chat/Application/UserDirectoryService.php)
+- [`frontend/src/app/core/messaging/services/messenger/userDirectory.ts`](../../frontend/src/app/core/messaging/services/messenger/userDirectory.ts)
 
 ## Typical Invite/Accept Flow (With CHK)
 

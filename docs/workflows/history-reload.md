@@ -24,5 +24,5 @@ sequenceDiagram
 - CHK availability is conversation-specific.
 
 Related:
-- `docs/states/conversation-crypto-ready.md`
-- `docs/crypto/chk.md`
+- [`docs/states/conversation-crypto-ready.md`](../states/conversation-crypto-ready.md)
+- [`docs/crypto/chk.md`](../crypto/chk.md)

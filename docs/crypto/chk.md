@@ -44,6 +44,6 @@ sequenceDiagram
 - Pending members are blocked.
 
 ## Related
-- Wrapping: `docs/crypto/wrapping.md`
-- ADR: `docs/adr/adr-chk-invite-accept.md`
-- Invite flow: `docs/workflows/invite-accept.md`
+- Wrapping: [`docs/crypto/wrapping.md`](wrapping.md)
+- ADR: [`docs/adr/adr-chk-invite-accept.md`](../adr/adr-chk-invite-accept.md)
+- Invite flow: [`docs/workflows/invite-accept.md`](../workflows/invite-accept.md)

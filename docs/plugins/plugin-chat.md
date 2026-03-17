@@ -12,10 +12,10 @@
 - Invite/accept pre-provisions CHK wraps.
 
 ## Key Files
-- `frontend/src/plugins/vue-chat/components/VueChatHome.vue`
-- `frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts`
-- `frontend/src/app/core/messaging/services/messenger/conversationKeys.ts`
+- [`frontend/src/plugins/vue-chat/components/VueChatHome.vue`](../../frontend/src/plugins/vue-chat/components/VueChatHome.vue)
+- [`frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts`](../../frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts)
+- [`frontend/src/app/core/messaging/services/messenger/conversationKeys.ts`](../../frontend/src/app/core/messaging/services/messenger/conversationKeys.ts)
 
 Related:
-- `docs/workflows/invite-accept.md`
-- `docs/crypto/chk.md`
+- [`docs/workflows/invite-accept.md`](../workflows/invite-accept.md)
+- [`docs/crypto/chk.md`](../crypto/chk.md)

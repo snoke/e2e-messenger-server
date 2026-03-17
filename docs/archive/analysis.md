@@ -9,6 +9,6 @@ This file preserves historical analysis. It is **not** a source of truth for the
 - Invite pre‑provisions CHK wraps; accept delivers the wrap.
 
 For authoritative details, see:
-- `docs/architecture/realtime-architecture.md`
-- `docs/overview/system-behavior.md`
-- `docs/crypto/README.md`
+- [`docs/architecture/realtime-architecture.md`](../architecture/realtime-architecture.md)
+- [`docs/overview/system-behavior.md`](../overview/system-behavior.md)
+- [`docs/crypto/README.md`](../crypto/README.md)

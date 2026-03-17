@@ -1,7 +1,7 @@
 # DDD/Hexagonal Refactoring Plan (Symfony Backend)
 
 This is a historical planning document. For current backend structure, see:
-- `docs/architecture/backend.md`
+- [`docs/architecture/backend.md`](../architecture/backend.md)
 
 ## Status
 

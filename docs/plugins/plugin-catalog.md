@@ -1,6 +1,6 @@
 # Plugin Catalog
 
-This document reflects the **current plugin inventory** in `frontend/src/plugins` and summarizes their roles.
+This document reflects the **current plugin inventory** in [`frontend/src/plugins`](../../frontend/src/plugins) and summarizes their roles.
 Last verified: 2026-03-17.
 
 ## Shared Principles
@@ -9,7 +9,7 @@ Last verified: 2026-03-17.
 - Client storage: IndexedDB for keys/caches/metadata.
 - Crypto: plaintext only on client; server stores ciphertext and wrapped keys only, and is not provided with key material to decrypt them.
 
-## Inventory (from `frontend/src/plugins`)
+## Inventory (from [`frontend/src/plugins`](../../frontend/src/plugins))
 - `about-void`: build/version info modal.
 - `anonymous-dropbox`: public encrypted dropbox flow.
 - `audit-timeline`: audit event timeline viewer.
@@ -51,7 +51,7 @@ Last verified: 2026-03-17.
 
 ### File Transfer
 - Realtime negotiation and chunked transfer.
-- Crypto path depends on transfer mode (see `docs/ops/tech-debt.md`).
+- Crypto path depends on transfer mode (see [`docs/ops/tech-debt.md`](../ops/tech-debt.md)).
 
 ### Notification
 - Notification center is the delivery authority.
@@ -60,7 +60,7 @@ Last verified: 2026-03-17.
 ## Storage/Vault Plugins
 - `password-manager` and `secret-vault` store encrypted blobs in UserStorage.
 - `vue-storage` / `storage` / `opfs-storage` provide UI and adapters.
-- UserStorage is file-only (see `docs/storage/user-storage-file-only.md`).
+- UserStorage is file-only (see [`docs/storage/user-storage-file-only.md`](../storage/user-storage-file-only.md)).
 
 ## Identity/Contacts
 - `identity` handles profile values and avatar.
@@ -73,6 +73,6 @@ Last verified: 2026-03-17.
 - For authoritative flows, prefer the domain service in core messaging.
 
 ## Related
-- Plugin standards: `docs/plugins/plugin-standards.md`
-- Scopes: `docs/reference/scopes.md`
-- Crypto: `docs/crypto/README.md`
+- Plugin standards: [`docs/plugins/plugin-standards.md`](plugin-standards.md)
+- Scopes: [`docs/reference/scopes.md`](../reference/scopes.md)
+- Crypto: [`docs/crypto/README.md`](../crypto/README.md)

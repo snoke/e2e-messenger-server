@@ -19,5 +19,5 @@
 4. Check DB for missing key wraps.
 
 ## Related
-- Known errors: `docs/ops/known-errors.md`
-- System behavior: `docs/overview/system-behavior.md`
+- Known errors: [`docs/ops/known-errors.md`](known-errors.md)
+- System behavior: [`docs/overview/system-behavior.md`](../overview/system-behavior.md)

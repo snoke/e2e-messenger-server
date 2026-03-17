@@ -23,5 +23,5 @@ flowchart LR
 ```
 
 ## Related
-- `docs/architecture/frontend.md`
-- `docs/overview/system-behavior.md`
+- [`docs/architecture/frontend.md`](../architecture/frontend.md)
+- [`docs/overview/system-behavior.md`](../overview/system-behavior.md)

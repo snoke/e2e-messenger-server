@@ -16,5 +16,5 @@
 - Old wraps must be removed to prevent stale access.
 
 Related:
-- `docs/crypto/chk.md`
-- `docs/workflows/invite-accept.md`
+- [`docs/crypto/chk.md`](../crypto/chk.md)
+- [`docs/workflows/invite-accept.md`](invite-accept.md)

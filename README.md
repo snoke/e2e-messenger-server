@@ -106,4 +106,4 @@ docker compose -f docker-compose.yaml -f docker-compose.realtime-core.yaml -f do
 ## Repository Layout
 - `docker-compose*.yaml`: base + overlays (`realtime-core`, `websocket`, `http3`)
 - `scripts/`: keygen, smoke checks, helper scripts
-- `docs/archive/`: old docs kept for reference only
+- [docs/archive/](docs/archive/): old docs kept for reference only

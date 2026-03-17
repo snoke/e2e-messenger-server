@@ -162,9 +162,9 @@ Nonce rule (enforced):
 Server-side actions **only persist wrapped material** and do not decrypt user secrets.
 
 Evidence (code):
-- `symfony/src/Plugins/UserVault/Application/Realtime/Action/UserVaultInitAction.php` stores `wrapped_uvk_*` and `wrapped_user_key_private`.
-- `symfony/src/Plugins/UserVault/Application/Realtime/Action/UserVaultUpdateUserKeyAction.php` stores `wrapped_user_key_private`.
-- `symfony/src/Service/ConversationKeyService.php` stores `wrapped_chk` only.
+- [`symfony/src/Plugins/UserVault/Application/Realtime/Action/UserVaultInitAction.php`](../../symfony/src/Plugins/UserVault/Application/Realtime/Action/UserVaultInitAction.php) stores `wrapped_uvk_*` and `wrapped_user_key_private`.
+- [`symfony/src/Plugins/UserVault/Application/Realtime/Action/UserVaultUpdateUserKeyAction.php`](../../symfony/src/Plugins/UserVault/Application/Realtime/Action/UserVaultUpdateUserKeyAction.php) stores `wrapped_user_key_private`.
+- [`symfony/src/Service/ConversationKeyService.php`](../../symfony/src/Service/ConversationKeyService.php) stores `wrapped_chk` only.
 
 ## 7.1 Signup (Password)
 1. Client generates UVK + Recovery Key.

@@ -3,8 +3,8 @@
 This is a **reference index**; authoritative lists live in the gateway registry.
 
 ## Source of Truth
-- `gateway/rust-http3-gateway/src/project/command_registry.rs`
-- `gateway/rust-http3-gateway/src/routes.rs`
+- [`gateway/rust-http3-gateway/src/project/command_registry.rs`](../../gateway/rust-http3-gateway/src/project/command_registry.rs)
+- [`gateway/rust-http3-gateway/src/routes.rs`](../../gateway/rust-http3-gateway/src/routes.rs)
 
 ## How to Add a Command
 1. Add the command to `COMMAND_REGISTRY` with routing class and message type.
@@ -24,5 +24,5 @@ This is a **reference index**; authoritative lists live in the gateway registry.
 - Responses: `*_ok`, `*_error`, `*_state`, `*_committed`
 
 Related:
-- Realtime standard: `docs/architecture/realtime-architecture.md`
-- Scope model: `docs/reference/scopes.md`
+- Realtime standard: [`docs/architecture/realtime-architecture.md`](../architecture/realtime-architecture.md)
+- Scope model: [`docs/reference/scopes.md`](scopes.md)

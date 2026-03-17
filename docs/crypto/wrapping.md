@@ -26,5 +26,5 @@ Example shape:
 - Fetch is recovery only, blocked for pending members.
 
 ## Related
-- CHK: `docs/crypto/chk.md`
-- Keys & vault: `docs/crypto/keys-and-vault.md`
+- CHK: [`docs/crypto/chk.md`](chk.md)
+- Keys & vault: [`docs/crypto/keys-and-vault.md`](keys-and-vault.md)

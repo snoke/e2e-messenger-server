@@ -3,10 +3,10 @@
 This file consolidates runtime configuration entry points.
 
 ## Source of Truth
-- `docker-compose.yaml`
-- `docker-compose.websocket.yaml`
-- `docker-compose.realtime-core.yaml`
-- `docker-compose.http3.yaml`
+- [`docker-compose.yaml`](../../docker-compose.yaml)
+- [`docker-compose.websocket.yaml`](../../docker-compose.websocket.yaml)
+- [`docker-compose.realtime-core.yaml`](../../docker-compose.realtime-core.yaml)
+- [`docker-compose.http3.yaml`](../../docker-compose.http3.yaml)
 
 ## Common Environment Variables
 - `WS_GATEWAY_BASE_URL`

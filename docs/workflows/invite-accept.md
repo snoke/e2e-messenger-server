@@ -34,5 +34,5 @@ sequenceDiagram
 - Accept without wrap is a hard error.
 
 Related:
-- `docs/crypto/chk.md`
-- `docs/adr/adr-chk-invite-accept.md`
+- [`docs/crypto/chk.md`](../crypto/chk.md)
+- [`docs/adr/adr-chk-invite-accept.md`](../adr/adr-chk-invite-accept.md)

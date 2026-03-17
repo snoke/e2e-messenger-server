@@ -10,7 +10,7 @@ Rust gateway for realtime transport, routing, and relay. It is **not** authorita
 - Fan out outbound events to the correct subjects.
 
 ## Routing Model
-Routing classes are defined in `gateway/rust-http3-gateway/src/routes.rs`.
+Routing classes are defined in [`gateway/rust-http3-gateway/src/routes.rs`](../../gateway/rust-http3-gateway/src/routes.rs).
 - `preauth` for auth/bootstrap.
 - `gateway_local` for technical messages.
 - `relay_hotpath` for low-latency relays.
@@ -31,5 +31,5 @@ Routing classes are defined in `gateway/rust-http3-gateway/src/routes.rs`.
 - WebTransport (HTTP/3) in advanced setups.
 
 ## Related
-- Routing registry: `docs/reference/routing-registry.md`
-- Realtime standard: `docs/architecture/realtime-architecture.md`
+- Routing registry: [`docs/reference/routing-registry.md`](../reference/routing-registry.md)
+- Realtime standard: [`docs/architecture/realtime-architecture.md`](realtime-architecture.md)

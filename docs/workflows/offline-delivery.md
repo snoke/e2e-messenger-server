@@ -16,5 +16,5 @@
 - History is the source of truth for offline delivery.
 
 Related:
-- `docs/workflows/history-reload.md`
-- `docs/crypto/chk.md`
+- [`docs/workflows/history-reload.md`](history-reload.md)
+- [`docs/crypto/chk.md`](../crypto/chk.md)

@@ -92,5 +92,5 @@ Important:
 - Subjects are resolved server-side.
 
 ## 9. Related
-- `docs/architecture/realtime-architecture.md`
-- `docs/workflows/message-send-receive.md`
+- [`docs/architecture/realtime-architecture.md`](../architecture/realtime-architecture.md)
+- [`docs/workflows/message-send-receive.md`](message-send-receive.md)

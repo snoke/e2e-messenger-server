@@ -35,5 +35,5 @@ sequenceDiagram
 - `user_vault_fetch` is **not** part of the normal identity flow (device vault is used).
 
 Related:
-- `docs/crypto/security-current.md`
-- `docs/states/global-crypto-ready.md`
+- [`docs/crypto/security-current.md`](../crypto/security-current.md)
+- [`docs/states/global-crypto-ready.md`](../states/global-crypto-ready.md)

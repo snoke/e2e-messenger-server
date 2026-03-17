@@ -39,12 +39,12 @@ Strict semantics:
 - Wraps are deleted on leave/remove, and re‑invite creates a new wrap.
 
 **Key files**
-- `frontend/src/app/core/messaging/services/messenger/conversation.ts`
-- `frontend/src/app/core/messaging/services/messenger/conversationKeys.ts`
-- `symfony/src/Plugins/Chat/Application/Realtime/Action/GroupAddAction.php`
-- `symfony/src/Plugins/Chat/Application/Realtime/Action/GroupMembershipAcceptAction.php`
-- `symfony/src/Plugins/Chat/Application/Realtime/Action/ConversationKeyFetchAction.php`
-- `symfony/src/Service/ConversationKeyService.php`
+- [`frontend/src/app/core/messaging/services/messenger/conversation.ts`](../../frontend/src/app/core/messaging/services/messenger/conversation.ts)
+- [`frontend/src/app/core/messaging/services/messenger/conversationKeys.ts`](../../frontend/src/app/core/messaging/services/messenger/conversationKeys.ts)
+- [`symfony/src/Plugins/Chat/Application/Realtime/Action/GroupAddAction.php`](../../symfony/src/Plugins/Chat/Application/Realtime/Action/GroupAddAction.php)
+- [`symfony/src/Plugins/Chat/Application/Realtime/Action/GroupMembershipAcceptAction.php`](../../symfony/src/Plugins/Chat/Application/Realtime/Action/GroupMembershipAcceptAction.php)
+- [`symfony/src/Plugins/Chat/Application/Realtime/Action/ConversationKeyFetchAction.php`](../../symfony/src/Plugins/Chat/Application/Realtime/Action/ConversationKeyFetchAction.php)
+- [`symfony/src/Service/ConversationKeyService.php`](../../symfony/src/Service/ConversationKeyService.php)
 
 ## Validation / Tests
 - Invite succeeds only if wrap exists.

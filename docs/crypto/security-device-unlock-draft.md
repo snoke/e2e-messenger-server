@@ -116,31 +116,31 @@ This explicitly includes:
 ## 5. Mapping to Existing Code
 
 **Existing vault logic (RAM-only UVK)**
-- `frontend/src/app/core/messaging/services/messenger/userVault.ts`
+- [`frontend/src/app/core/messaging/services/messenger/userVault.ts`](../../frontend/src/app/core/messaging/services/messenger/userVault.ts)
   - `activeUvk` is in-memory only
   - `fetchUserVault()`, `initUserVault()`
 
 **Password login unlocks UVK**
-- `frontend/src/plugins/auth/app/components/AuthLogin.vue`
+- [`frontend/src/plugins/auth/app/components/AuthLogin.vue`](../../frontend/src/plugins/auth/app/components/AuthLogin.vue)
   - fetch + unwrap + `setActiveUvk`
 
 **Identity login does NOT unlock UVK**
-- `frontend/src/plugins/identity-auth/components/IdentityAuthLogin.vue`
+- [`frontend/src/plugins/identity-auth/components/IdentityAuthLogin.vue`](../../frontend/src/plugins/identity-auth/components/IdentityAuthLogin.vue)
 
 **Storage requires UVK**
-- `frontend/src/app/core/messaging/services/messenger/userStorage.ts`
+- [`frontend/src/app/core/messaging/services/messenger/userStorage.ts`](../../frontend/src/app/core/messaging/services/messenger/userStorage.ts)
   - throws `user_storage_missing_uvk`
 
 **Local device keys**
 - Identity device key in IndexedDB
-  - `frontend/src/plugins/device-key-manager/services/deviceKeyStore.ts`
+  - [`frontend/src/plugins/device-key-manager/services/deviceKeyStore.ts`](../../frontend/src/plugins/device-key-manager/services/deviceKeyStore.ts)
 
 **Local secure store (IndexedDB CryptoKeys)**
-- `frontend/src/app/core/messaging/crypto/shared/secureStore.ts`
+- [`frontend/src/app/core/messaging/crypto/shared/secureStore.ts`](../../frontend/src/app/core/messaging/crypto/shared/secureStore.ts)
 
 **Server vault storage**
-- `symfony/src/Entity/UserKeyVault.php`
-- `symfony/src/Plugins/UserVault/...` actions
+- [`symfony/src/Entity/UserKeyVault.php`](../../symfony/src/Entity/UserKeyVault.php)
+- [`symfony/src/Plugins/UserVault/...`](../../symfony/src/Plugins/UserVault/...) actions
 
 ---
 

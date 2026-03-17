@@ -38,5 +38,5 @@ sequenceDiagram
 - Vault unlock is mandatory before protected UI access.
 
 Related:
-- `docs/crypto/keys-and-vault.md`
-- `docs/states/global-crypto-ready.md`
+- [`docs/crypto/keys-and-vault.md`](../crypto/keys-and-vault.md)
+- [`docs/states/global-crypto-ready.md`](../states/global-crypto-ready.md)

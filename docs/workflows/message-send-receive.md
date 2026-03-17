@@ -28,5 +28,5 @@ sequenceDiagram
 - Dedupe is `(conversation_id, message_id)`.
 
 Related:
-- `docs/workflows/workflow-protocol.md`
-- `docs/crypto/crypto-overview.md`
+- [`docs/workflows/workflow-protocol.md`](workflow-protocol.md)
+- [`docs/crypto/crypto-overview.md`](../crypto/crypto-overview.md)

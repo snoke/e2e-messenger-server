@@ -10,7 +10,7 @@ docker compose -f docker-compose.yaml -f docker-compose.websocket.yaml -f docker
 Then open the frontend at `http://localhost:5173`.
 
 ## Quick Start (Minimal / Manual)
-If you do not include `docker-compose.realtime-core.yaml`, you **must** run these separately:
+If you do not include [`docker-compose.realtime-core.yaml`](../../docker-compose.realtime-core.yaml), you **must** run these separately:
 - `redis`
 - `symfony-consumer`
 
@@ -28,8 +28,8 @@ docker compose -f docker-compose.yaml -f docker-compose.websocket.yaml up -d --b
 - `frontend`
 
 ## Common Commands
-- Logs: `docker compose -f docker-compose.yaml -f docker-compose.websocket.yaml logs -f symfony`.
-- Consumer logs: `docker compose -f docker-compose.yaml -f docker-compose.websocket.yaml logs -f symfony-consumer`.
+- Logs: `docker compose -f [docker-compose.yaml](../../docker-compose.yaml) -f [docker-compose.websocket.yaml](../../docker-compose.websocket.yaml) logs -f symfony`.
+- Consumer logs: `docker compose -f [docker-compose.yaml](../../docker-compose.yaml) -f [docker-compose.websocket.yaml](../../docker-compose.websocket.yaml) logs -f symfony-consumer`.
 
 ## Notes
 - `symfony-consumer` is required for realtime command handling.
