@@ -1,5 +1,8 @@
 # DDD/Hexagonal Refactoring Plan (Symfony Backend)
 
+This is a historical planning document. For current backend structure, see:
+- `docs/architecture/backend.md`
+
 ## Status
 
 - `MessageHandlerCollection` wurde von einer monolithischen, hardcodierten Handler-Megamap auf modulare Registries umgestellt.

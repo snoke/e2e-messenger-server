@@ -167,8 +167,9 @@ Nonce rule (enforced):
 6. Store token in localStorage.
 7. Call `user_vault_init` with wrapped UVK payload.
 8. Mark vault authenticated + set active UVK in RAM.
-9. Wrap UVK with Device KEK and register via `user_device_vault_register`.
-10. Show recovery key screen (one‑time display).
+9. Ensure user key exists (generate if missing) and persist via `user_vault_update_user_key`.
+10. Wrap UVK with Device KEK and register via `user_device_vault_register`.
+11. Show recovery key screen (one‑time display).
 
 Note: `user_vault_init` requires an **authenticated realtime connection** (must have `auth_ok`).
 
@@ -179,15 +180,18 @@ Note: `user_vault_init` requires an **authenticated realtime connection** (must 
 4. Derive password KEK and unwrap UVK locally.
 5. Set UVK active in RAM.
 6. Ensure Device KEK exists (create if missing, IndexedDB).
-7. Register device wrap if missing (`user_device_vault_register`).
+7. Ensure user key exists and is persisted (`user_vault_update_user_key` if missing).
+8. Register device wrap if missing (`user_device_vault_register`).
 
 ## 7.3 Identity Login (Passwordless)
 1. Send `auth_identity_request`.
 2. Store token.
 3. Attempt device unlock via `user_device_vault_fetch`.
 4. If `wrapped_uvk_for_device` exists, unwrap with Device KEK (IndexedDB).
-5. If successful: UVK in RAM → `vault_unlocked`.
-6. If missing/fails: `vault_locked` until recovery or pairing approval.
+5. Ensure user key exists and is persisted (`user_vault_update_user_key` if missing).
+   (This may trigger an internal `user_vault_fetch` for key material.)
+6. If successful: UVK in RAM → `vault_unlocked`.
+7. If missing/fails: `vault_locked` until recovery or pairing approval.
 
 ## 7.3.1 Browser Restart (Known Device)
 1. Browser reopens → `auth_token` present.
@@ -195,7 +199,8 @@ Note: `user_vault_init` requires an **authenticated realtime connection** (must 
 3. Client calls `user_device_vault_fetch`.
 4. Server returns `wrapped_uvk_for_device` if device is registered.
 5. Client unwraps using Device KEK from IndexedDB.
-6. UVK restored to RAM → `vault_unlocked`.
+6. Ensure user key exists and is persisted (`user_vault_update_user_key` if missing).
+7. UVK restored to RAM → `vault_unlocked`.
 
 If Device KEK is missing or no device wrap exists, vault remains locked.
 
@@ -219,6 +224,7 @@ If Device KEK is missing or no device wrap exists, vault remains locked.
 **Vault:**
 - `user_vault_init`
 - `user_vault_fetch`
+- `user_vault_update_user_key`
 - `user_vault_update_password`
 - `user_vault_update_recovery`
 

@@ -2,6 +2,10 @@
 
 Self-hosted realtime messenger stack for Symfony with fully end-to-end encryption, Rust Gateway (blind payload), Redis stream core, and selectable transport (`http1.1 upgrade/websocket` or `http3/webtransport`).
 
+## Documentation
+
+- Start here: `docs/README.md`
+
 ## Current State (March 2026)
 - Core mode is broker-first: client events go through gateway -> Redis (`ws.inbox`) -> Symfony consumer.
 - Outbound events go Symfony -> Redis (`ws.outbox`) -> gateway -> clients.
@@ -67,18 +71,21 @@ export VITE_WT_CERT_HASH="$CERT_HASH"
 - `Chrome + HTTP/3 WebTransport`: stable
 - `Firefox + HTTP/3 WebTransport`: experimental/unstable
 
-## Realtime Init Contract
-The client owns initialization as a step-by-step state machine:
-1. `users_request` -> `users` (+ optional `users_done`)
-2. `contacts_request` -> `contacts` (+ optional `contacts_done`)
-3. `conversations_request` -> `conversations` (+ optional `conversations_done`)
+## Realtime Init Contract (Current)
+The client owns initialization as a step-by-step state machine.
+
+Current init step:
+1. `contacts_request` -> `contacts` (+ optional `contacts_done`)
+
+Notes:
+- Conversation lists are loaded by chat list operations (`chat_conversations_request`), not by the generic init sequence.
+- Legacy bootstrap events (`bootstrap_snapshot/bootstrap_done`) may still arrive and are treated as compatibility signals only.
 
 Rules:
 - exactly one init step in flight
 - every step request carries `request_id`
 - responses must echo `request_id`
 - retries resend the same `request_id`
-- legacy bootstrap events must not restart init or trigger handshake flows
 
 ## Known Caveats
 - Unread handling is currently message/read-event driven; there is no dedicated server-side channel-state snapshot API yet.

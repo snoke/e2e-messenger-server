@@ -21,7 +21,7 @@ This document describes the current runtime behavior of the project. It is focus
 
 ## Auth, Vault, and Crypto Readiness
 
-### What “crypto ready” means
+### What “crypto ready” means (global)
 
 A user is considered crypto‑ready when all of the following are true:
 
@@ -30,6 +30,7 @@ A user is considered crypto‑ready when all of the following are true:
 - User Key material is available (`userKeyReady`).
 
 The gate is enforced in `frontend/src/app/core/messaging/services/sessionGate.ts` and used by the UI.
+This is **global readiness**. Conversation readiness is handled separately (see below).
 
 ### Sign‑in / unlock sequence (runtime)
 
@@ -89,21 +90,23 @@ MLS is used only for live transport (realtime encryption of messages, typing, et
 The server stores only wrapped CHKs per member in `conversation_key_records`.
 The server never sees plaintext CHKs.
 
-### Distribution and fetch
+### Distribution and accept delivery (current model)
 
 - Creator generates CHK in RAM.
-- Creator wraps CHK for each member (user‑scoped).
-- Creator sends `conversation_key_init` to persist wraps.
-- Members use `conversation_key_fetch` to retrieve their wrapped CHK.
+- Creator **pre‑provisions a member‑specific wrap at invite time** and persists it server‑side.
+- Pending members **cannot** fetch wraps (`conversation_key_fetch` is blocked for pending).
+- When the invited member accepts, the **accept response includes the prepared wrap**.
+- The accepting client unwraps immediately and becomes conversation‑ready.
 
 **Key files**
 
 - `frontend/src/app/core/messaging/services/messenger/conversationKeys.ts`
-- `symfony/src/Plugins/Chat/Application/Realtime/Action/ConversationKeyFetchAction.php`
+- `symfony/src/Plugins/Chat/Application/Realtime/Action/GroupAddAction.php`
+- `symfony/src/Plugins/Chat/Application/Realtime/Action/GroupMembershipAcceptAction.php`
 
-### State‑based distribution
+### State‑based distribution (non‑invite cases)
 
-Distribution is driven by **active member state**, not just local diffs. If active members exist without a wrap, the creator distributes missing wraps.
+If active members exist without a wrap (legacy state, recovery, or migration), the creator can still distribute missing wraps based on active member state.
 
 **Key files**
 
@@ -128,22 +131,10 @@ Behavior:
 - `frontend/src/app/core/messaging/services/messenger.ts`
 - `frontend/src/plugins/vue-chat/components/VueChatHome.vue`
 
-## CHK Fetch Retry and Ready State
+## CHK Fetch Behavior (Recovery Only)
 
-### Bug that was fixed
-
-The retry path previously ran only the low‑level fetch/unwrap and never set the crypto state to ready, so the UI stayed stuck on “Secure channel initializing…”.
-
-### Current behavior
-
-- `conversation_key_fetch_empty` schedules a retry.
-- Retry uses `ensureConversationHistoryKey(...)` and triggers hooks.
-- When a retry succeeds, `onKeyReady(...)` updates the crypto state to ready.
-
-**Key files**
-
-- `frontend/src/app/core/messaging/services/messenger/conversationKeys.ts`
-- `frontend/src/app/core/messaging/services/messenger.ts`
+`conversation_key_fetch` exists as a recovery path, but **pending members are blocked**.  
+The normal flow for an invited user is **accept → wrap delivered → unwrap** (no retry loop).
 
 ## Notifications for Inactive Chats
 
@@ -165,7 +156,9 @@ Current approach:
 The system is intended to expose **contacts only**, not the full tenant user list.
 
 - Contacts are requested via the contacts flow.
-- `users` is no longer the authoritative directory for key distribution in normal UI.
+- `users` is not the authoritative directory for key distribution in normal UI.
+
+**Known gap:** some environments still emit `users` payloads. This is a bug or legacy behavior and should be treated as inconsistent with the intended model.
 
 **Key files**
 
@@ -176,10 +169,10 @@ The system is intended to expose **contacts only**, not the full tenant user lis
 ## Typical Invite/Accept Flow (With CHK)
 
 1. A creates group (MLS state created).
-2. A creates CHK and persists wraps for members.
+2. A creates CHK and **pre‑provisions Bob’s wrap at invite time**.
 3. A invites B (MLS commit + welcome for B).
-4. B accepts, applies welcome, and fetches CHK.
-5. B unwraps CHK and becomes crypto‑ready.
+4. B accepts → **accept response includes the prepared wrap**.
+5. B unwraps CHK immediately and becomes conversation‑ready.
 6. History can now be decrypted; UI is enabled.
 
 ## Where to Start Debugging
@@ -190,4 +183,3 @@ The system is intended to expose **contacts only**, not the full tenant user lis
   - Check background event bridge and notification center.
 - Key mismatch issues:
   - Compare `user_vault_fetch_ok` user_key_public with DB.
-

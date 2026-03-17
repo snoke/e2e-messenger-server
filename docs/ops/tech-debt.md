@@ -24,17 +24,20 @@
 - MLS bleibt **Live-Transport** (Realtime).
 - History/Storage wird **mit CHK** verschlüsselt.
 - **CHK wird user-bound** und serverseitig als Wrap gespeichert.
-- `conversation_key_fetch` ist die **Source of Truth** für History-Keys.
+- **Invite pre‑provisioniert** den Wrap; **Accept liefert ihn direkt** zurück.
+- `conversation_key_fetch` ist **Recovery**, nicht Normalfall.
 
 **Details (vereinfacht)**
 - Live-Message: MLS encrypt → Realtime Transport.
 - Storage-Message: CHK encrypt → DB.
 - CHK wird pro Member **gewrappt** und serverseitig gespeichert.
-- Neue Geräte holen CHK über `conversation_key_fetch` und entschlüsseln History.
+- **Invite** erzeugt den Wrap; **Accept** liefert ihn zurück.
+- Neue Geräte nutzen `conversation_key_fetch` **nur als Recovery**.
 
 **Implikation**
 - History ist **stabil und reload/device-unabhängig**.
 - MLS-State muss **nicht** für History erhalten bleiben.
+- **Accept = Access + Key‑Delivery** (kein post‑accept Race).
 
 ## 3) Was wäre ein Umbau auf MLS-only History?
 
@@ -86,21 +89,21 @@
 - Device-Key Auth → Session
 - UVK/Vault init
 - User Key erzeugen + sichern
-- CHK kann danach fetched/unwraped werden
+- CHK wird bei Invite vorbereitet und bei Accept geliefert
 
 **Sign-in**
 - Device-Key Auth → Session
 - Vault fetch → UVK unlock
-- User Key unwrap → CHK fetch möglich
+- User Key unwrap → Accept liefert CHK (Fetch nur Recovery)
 
 **Device Change**
 - Neues Device auth
 - Vault unlock → User Key verfügbar
-- `conversation_key_fetch` → History lesbar
+- `conversation_key_fetch` (Recovery) → History lesbar
 
 **Reload**
 - Session + Vault unlock
-- CHK fetch → History lesbar
+- CHK fetch (Recovery) → History lesbar
 
 **Ergebnis**
 - **History ist stabil und user-bound**.
@@ -137,7 +140,7 @@
 **Kurz: Nur wenn Persistenz garantiert bleibt.**
 
 Smarte/tragfähige Varianten:
-- **CHK pro Conversation** (status quo) → simpel, stabil.
+- **CHK pro Conversation** (status quo, invite‑preprovisioniert) → simpel, stabil.
 - **CHK-Rotation bei Membership** → höherer Aufwand, besserer Schadensradius.
 - **Hybrid (MLS live + persistente Wraps)** → ok, aber Source of Truth bleibt Persistenz.
 
@@ -152,4 +155,3 @@ Nicht smart/robust:
 - MLS-only History würde den User-Flow verschlechtern.
 - Der aktuelle CHK-Ansatz ist **architektonisch korrekt**.
 - Optionaler Ausbau: **CHK-Rotation bei Membership-Changes**.
-

@@ -1,4 +1,8 @@
-# Dev Status (2026-03-07)
+# Dev Status Snapshot (2026-03-07)
+
+This is a historical snapshot. For current dev instructions and state, use:
+- `docs/ops/local-dev.md`
+- `docs/ops/docker-compose-matrix.md`
 
 ## Repository
 

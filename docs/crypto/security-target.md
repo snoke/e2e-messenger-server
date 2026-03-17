@@ -14,9 +14,9 @@ This specification eliminates architectural ambiguity and prevents design drift.
 **Client = decryption capability**
 
 The backend stores and distributes encrypted data only.  
-The backend never gains plaintext access to long-lived secrets.
+The backend never gains plaintext access to secret key material.
 
-All long-lived secrets are decrypted exclusively on client devices.
+All secret key material is decrypted exclusively on client devices.
 
 Server-side storage contains only:
 
@@ -55,10 +55,13 @@ Properties:
 - Device keys are **non-exportable**.
 - Devices join messaging groups through standard MLS flows.
 - Messaging group state is **device-local**.
-- Old chat history is **not restored automatically** on new devices.
-- MLS private state is never restored from the backend.
+- **MLS private state is never restored** from the backend.
+- **Chat history is restored via CHK** (storage domain), not via MLS state.
 
-Messaging security is therefore **device-centric**.
+Messaging security is therefore **device-centric** for live transport.
+
+### Note on History
+Conversation history is **not** restored from MLS state. It is restored via **CHK** in the storage domain.
 
 Messaging key hierarchies must never be merged with storage key hierarchies.
 
