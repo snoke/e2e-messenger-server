@@ -4,7 +4,7 @@ Self-hosted realtime messenger stack for Symfony with fully end-to-end encryptio
 
 ## Documentation
 
-- Start here: `docs/README.md`
+- Start here: [docs/README.md](docs/README.md)
 
 ## Current State (March 2026)
 - Core mode is broker-first: client events go through gateway -> Redis (`ws.inbox`) -> Symfony consumer.
