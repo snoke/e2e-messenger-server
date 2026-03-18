@@ -55,6 +55,7 @@ Properties:
 - Device keys are **non-exportable**.
 - Devices join messaging groups through standard MLS flows.
 - Messaging group state is **device-local**.
+- MLS uses **X‑Wing (X25519 + ML‑KEM‑768)** for post‑quantum key agreement.
 - **MLS private state is never restored** from the backend.
 - **Chat history is restored via CHK** (storage domain), not via MLS state.
 
@@ -106,6 +107,7 @@ Usage:
 - device identity
 - MLS membership
 - MLS KeyPackages
+- WebAuthn (passkey) authentication with PRF-based UVK unwrap
 
 Properties:
 
@@ -120,6 +122,7 @@ Examples:
 - identity keypair
 - MLS init keys
 - MLS KeyPackages
+- WebAuthn credentials (authenticator-bound)
 
 ---
 

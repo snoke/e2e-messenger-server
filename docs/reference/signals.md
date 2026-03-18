@@ -34,6 +34,7 @@ Notes:
 - `type` is always `"signal"`, **not** `"typing"` or other domain types.
 - `scope_key` is a per‑conversation opaque identifier (persisted on `Conversation.scopeKey`).
 - The payload inside `ciphertext` is a JSON object (currently `{ type: "typing", isTyping: true|false }`).
+- `crypto_profile` includes `XWING`, which denotes **X‑Wing (X25519 + ML‑KEM‑768)** for post‑quantum key agreement.
 
 ## 3) Scope Key
 

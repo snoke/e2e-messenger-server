@@ -34,8 +34,11 @@ This is **global readiness**. Conversation readiness is handled separately (see 
 
 ### Sign‑in / unlock sequence (runtime)
 
-1. User authenticates (password or identity auth).
-2. Client fetches vault via realtime (`user_vault_fetch`).
+1. User authenticates (password, identity, or WebAuthn).
+2. Client unlocks vault:
+   - Password: `user_vault_fetch` + KDF unwrap
+   - Identity: `user_device_vault_fetch` + device unwrap
+   - WebAuthn: `POST /api/webauthn/login/*` + PRF unwrap
 3. Client unwraps UVK and loads or generates the user key.
 4. Client persists user key (`user_vault_update_user_key`).
 5. Client registers device vault (`user_device_vault_register`).
@@ -46,6 +49,8 @@ This is **global readiness**. Conversation readiness is handled separately (see 
 - [`frontend/src/app/core/messaging/services/messenger/vaultUnlock.ts`](../../frontend/src/app/core/messaging/services/messenger/vaultUnlock.ts)
 - [`frontend/src/app/core/messaging/services/messenger/userKey.ts`](../../frontend/src/app/core/messaging/services/messenger/userKey.ts)
 - [`frontend/src/app/core/messaging/services/sessionGate.ts`](../../frontend/src/app/core/messaging/services/sessionGate.ts)
+- [`frontend/src/plugins/webauthn-auth/webauthnClient.ts`](../../frontend/src/plugins/webauthn-auth/webauthnClient.ts)
+- [`symfony/src/Controller/WebAuthnController.php`](../../symfony/src/Controller/WebAuthnController.php)
 
 ## Realtime Session and Scopes
 
@@ -70,6 +75,7 @@ Realtime is driven by `realtimeRouter.ts`. It routes incoming frames to modules 
 4. MLS commit/welcome flows are queued for new members.
 
 MLS is used only for live transport (realtime encryption of messages, typing, etc.).
+MLS key agreement uses **X‑Wing (X25519 + ML‑KEM‑768)** for post‑quantum KEX.
 
 **Key files**
 

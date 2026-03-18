@@ -12,6 +12,12 @@
 3. User unlocks via recovery or approval.
 4. Device wrap is registered.
 
+## New Device (WebAuthn)
+1. User logs in via WebAuthn on the new device (new credential).
+2. Server returns PRF salt for the credential.
+3. Client unwraps UVK locally and completes bootstrap.
+4. Device wrap is registered for future device unlocks.
+
 ## Recovery Key Flow
 1. User provides recovery key.
 2. Client unwraps UVK.

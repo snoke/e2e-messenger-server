@@ -21,4 +21,4 @@ The frontend emits a `[crypto_ready]` log when the state becomes ready.
 
 ## Related
 - Conversation readiness: [`docs/states/conversation-crypto-ready.md`](conversation-crypto-ready.md)
-- Auth flows: [`docs/workflows/auth-password.md`](../workflows/auth-password.md) and [`docs/workflows/auth-identity.md`](../workflows/auth-identity.md)
+- Auth flows: [`docs/workflows/auth-password.md`](../workflows/auth-password.md), [`docs/workflows/auth-identity.md`](../workflows/auth-identity.md), and [`docs/workflows/auth-webauthn.md`](../workflows/auth-webauthn.md)

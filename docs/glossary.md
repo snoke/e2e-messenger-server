@@ -39,6 +39,7 @@ This glossary defines core terms used across the documentation.
 
 ## M
 - **MLS (Message Layer Security)**: Live transport encryption for group messaging.
+- **ML‑KEM (Kyber)**: Post‑quantum key encapsulation mechanism used inside X‑Wing.
 
 ## N
 - **Notification Center**: Client-side delivery authority for notifications.
@@ -48,9 +49,12 @@ This glossary defines core terms used across the documentation.
 
 ## P
 - **Pending Member**: Invitee who has not accepted. No access to CHK.
+- **Passkey (WebAuthn)**: A WebAuthn credential stored in an authenticator (OS or hardware).
+- **PRF (Pseudo-Random Function)**: WebAuthn extension used to derive a stable secret from a credential for UVK wrap/unwrap.
 
 ## R
 - **Realtime Router**: Frontend component that routes inbound frames to modules.
+- **RP ID (Relying Party ID)**: WebAuthn domain identifier (e.g., `localhost` in dev).
 
 ## S
 - **Scope Key**: Opaque identifier used for MLS signal routing without exposing conversation_id.
@@ -61,3 +65,5 @@ This glossary defines core terms used across the documentation.
 
 ## W
 - **Wrap Algorithm**: Algorithm used to wrap keys, e.g., `user_ecdh_p256_hkdf_sha256_aes_gcm_256`.
+- **WebAuthn**: Browser credential API used for passkey authentication and PRF-based UVK unwrap.
+- **X‑Wing**: Hybrid post‑quantum key agreement combining **X25519** with **ML‑KEM‑768 (Kyber)** in MLS.

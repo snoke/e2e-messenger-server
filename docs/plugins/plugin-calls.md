@@ -4,6 +4,7 @@
 - Call signaling and session control.
 - Join/leave, mute, camera, invite.
 - Optional media E2EE using MLS-protected control messages.
+- MLS key agreement uses **X‑Wing (X25519 + ML‑KEM‑768)**.
 
 ## Media Path
 - Signaling over realtime.

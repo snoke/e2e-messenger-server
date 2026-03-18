@@ -5,6 +5,7 @@ This section documents **runtime workflows** and use cases. Each file is a step-
 ## Auth
 - Password auth: [docs/workflows/auth-password.md](auth-password.md)
 - Identity auth: [docs/workflows/auth-identity.md](auth-identity.md)
+- WebAuthn auth: [docs/workflows/auth-webauthn.md](auth-webauthn.md)
 
 ## Contacts and Conversations
 - Contact request/accept: [docs/workflows/contact-request.md](contact-request.md)

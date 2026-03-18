@@ -8,6 +8,7 @@
 
 ## Crypto
 - MLS for live transport.
+- MLS key agreement uses **X‑Wing (X25519 + ML‑KEM‑768)**.
 - CHK for history storage.
 - Invite/accept pre-provisions CHK wraps.
 

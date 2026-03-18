@@ -7,6 +7,7 @@
 
 ## Cryptographic Domains
 - **MLS**: live transport encryption for realtime messages and signals.
+- **MLS Key Agreement**: X‑Wing (X25519 + ML‑KEM‑768) for post-quantum key exchange.
 - **CHK**: storage/history encryption for messages at rest.
 - **Vault / UVK**: protects user-bound key material.
 

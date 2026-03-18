@@ -32,6 +32,17 @@ Status Legend:
 - These return a **JWT token**.
 - After successful pre‑auth, the gateway validates the token and emits `auth_ok` on the same connection.
 
+### WebAuthn Auth (HTTP)
+WebAuthn is **HTTP-based**, not a realtime pre‑auth command.
+
+Endpoints:
+- `POST /api/webauthn/register/begin`
+- `POST /api/webauthn/register/finish`
+- `POST /api/webauthn/login/begin`
+- `POST /api/webauthn/login/finish`
+
+These return the same JWT token and then follow the same vault bootstrap.
+
 ## 2.2 Token Handling (Client)
 - Token is stored in **localStorage** (`auth_token`).
 - On websocket reconnect, the client sends `auth` with the token.
@@ -81,6 +92,11 @@ Encrypted Files
 - **Must not** reuse identity key or secure‑store KEKs.
 - If IndexedDB is cleared, device unlock is lost for that device.
 
+## 3.5 WebAuthn Credential + PRF (Implemented)
+- WebAuthn credential private keys live in the authenticator (OS / hardware).
+- Client derives a PRF output from the authenticator to wrap/unwrap UVK.
+- Server stores only the credential metadata and the **wrapped UVK** per credential.
+
 ---
 
 # 4) Cryptographic Algorithms (Implemented) [Implemented]
@@ -89,6 +105,7 @@ Encrypted Files
 - **Recovery KEK:** HKDF‑SHA256 (recovery key = 32 bytes random)
 - **File Encryption:** ChaCha20‑Poly1305 (256‑bit key, 96‑bit nonce)
 - **Profile Encryption:** AES‑GCM
+- **MLS KEX:** X‑Wing (X25519 + ML‑KEM‑768) in `MLS_256_XWING_CHACHA20POLY1305_SHA512_MLDSA87`
 
 Nonce rule (enforced):
 - Nonce must be unique **per encryption key**.
@@ -104,8 +121,11 @@ Nonce rule (enforced):
 | Wrapped UVK (password) | ❌ | ❌ | ❌ | ✅ | `user_key_vault` |
 | Wrapped UVK (recovery) | ❌ | ❌ | ❌ | ✅ | `user_key_vault` |
 | Wrapped UVK (device) | ❌ | ❌ | ❌ | ✅ | `user_device_vault` |
+| Wrapped UVK (webauthn) | ❌ | ❌ | ❌ | ✅ | `user_webauthn_vaults` |
 | Device KEK (non‑exportable) | ❌ | ✅ | ❌ | ❌ | IndexedDB handle |
 | Identity device keypair | ❌ | ✅ | ❌ | ❌ | IndexedDB handle |
+| WebAuthn credential (public) | ❌ | ❌ | ❌ | ✅ | `user_webauthn_credentials` |
+| PRF salt | ❌ | ❌ | ❌ | ✅ | `user_webauthn_vaults`, `user_webauthn_challenges` |
 | Auth token | ❌ | ❌ | ✅ | ❌ | `auth_token` |
 | File keys (wrapped) | ❌ | ❌ | ❌ | ✅ | `file_key_records` |
 | Recovery Key (raw) | ✅ (signup only) | ❌ | ❌ | ❌ | one‑time display, not persisted |
@@ -153,6 +173,28 @@ Nonce rule (enforced):
 - `wrapped_file_key`
 - `wrap_algorithm`
 - `created_at`
+
+## 6.6 `user_webauthn_credentials`
+- `user_id`
+- `credential_id`
+- `credential_json`
+- `created_at`, `updated_at`, `last_used_at`
+
+## 6.7 `user_webauthn_vaults`
+- `user_id`
+- `credential_id`
+- `wrapped_uvk`
+- `wrap_alg`
+- `prf_salt`
+- `created_at`, `updated_at`
+
+## 6.8 `user_webauthn_challenges`
+- `user_id`
+- `request_id`
+- `type` (`register` | `login`)
+- `payload`
+- `prf_salt`
+- `created_at`, `expires_at`
 
 ---
 
@@ -212,6 +254,26 @@ Note: `user_vault_init` requires an **authenticated realtime connection** (must 
 
 If Device KEK is missing or no device wrap exists, vault remains locked.
 
+## 7.4 Signup (WebAuthn)
+1. Client calls `POST /api/webauthn/register/begin`.
+2. Server returns WebAuthn `publicKey` options + `prf_salt`.
+3. Client calls `navigator.credentials.create`.
+4. Client derives PRF output and wraps UVK locally.
+5. Client sends credential + wrapped UVK to `POST /api/webauthn/register/finish`.
+6. Server stores credential + wrapped UVK and returns token.
+7. Client ensures user key material and registers device vault.
+8. Global crypto readiness becomes true.
+
+## 7.5 Login (WebAuthn)
+1. Client calls `POST /api/webauthn/login/begin` (email).
+2. Server returns `publicKey` options + `prf_salt` for a matching credential.
+3. Client calls `navigator.credentials.get`.
+4. Client derives PRF output and unwraps UVK locally.
+5. If UVK unwrap fails, login is aborted and `login/finish` is **not** called.
+6. Client calls `POST /api/webauthn/login/finish` with assertion.
+7. Server returns token.
+8. Client ensures user key material and registers device vault.
+
 ## 7.4 Recovery
 1. Fetch `user_key_vault`.
 2. Derive recovery KEK (HKDF).
@@ -228,6 +290,12 @@ If Device KEK is missing or no device wrap exists, vault remains locked.
 - `auth_register_request`
 - `auth_login_request`
 - `auth_identity_request`
+
+**WebAuthn (HTTP):**
+- `POST /api/webauthn/register/begin`
+- `POST /api/webauthn/register/finish`
+- `POST /api/webauthn/login/begin`
+- `POST /api/webauthn/login/finish`
 
 **Vault:**
 - `user_vault_init`

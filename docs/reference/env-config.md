@@ -15,8 +15,10 @@ This file consolidates runtime configuration entry points.
 - `LIVEKIT_URL`
 - `VITE_LIVEKIT_URL`
 - `VITE_WS_URL`
+- `WEBAUTHN_RP_ID` (e.g., `localhost` for dev)
 
 ## Notes
 - Local dev typically uses WebSocket overlay.
 - Core mode requires `symfony-consumer`.
 - HTTP/3 mode requires certs and WebTransport support.
+- WebAuthn requires a secure context (HTTPS or localhost).

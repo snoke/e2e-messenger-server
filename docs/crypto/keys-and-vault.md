@@ -11,7 +11,7 @@ This document explains the key hierarchy and how vault unlock works.
 ## Storage Rules
 - Server stores only wrapped keys and metadata.
 - Client stores plaintext keys in RAM only.
- - Server is not provided with user key material and therefore cannot decrypt or unwrap it.
+- Server is not provided with key material and therefore cannot decrypt or unwrap client secrets.
 
 ## Vault Unlock Sequence (Password)
 1. Client authenticates and receives token.
@@ -27,6 +27,16 @@ This document explains the key hierarchy and how vault unlock works.
 3. UVK is unwrapped using the device key.
 4. If device wrap is missing, vault remains locked.
 
+## Vault Unlock Sequence (WebAuthn)
+1. Client calls `POST /api/webauthn/login/begin`.
+2. Server returns `publicKey` + `prf_salt`.
+3. Client calls `navigator.credentials.get(...)`.
+4. Client derives PRF output and unwraps UVK locally.
+5. Client calls `POST /api/webauthn/login/finish`.
+6. Client proceeds with normal bootstrap:
+   - `ensureUserKeyMaterial(...)`
+   - `user_device_vault_register`
+
 ## Persistence Locations
 - UVK plaintext: RAM only.
 - User key private: RAM only.
@@ -37,3 +47,4 @@ This document explains the key hierarchy and how vault unlock works.
 - CHK: [`docs/crypto/chk.md`](chk.md)
 - Wrapping: [`docs/crypto/wrapping.md`](wrapping.md)
 - Global crypto readiness: [`docs/states/global-crypto-ready.md`](../states/global-crypto-ready.md)
+- WebAuthn flow: [`docs/workflows/auth-webauthn.md`](../workflows/auth-webauthn.md)

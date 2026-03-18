@@ -3,6 +3,7 @@
 | Use Case | Algorithm | Key | Scope | Server Visibility |
 |---|---|---|---|---|
 | Live chat transport | MLS | MLS epoch keys | Conversation (live) | Ciphertext only |
+| MLS key agreement / welcome | X‑Wing (X25519 + ML‑KEM‑768) | MLS init keys | Conversation (live) | Ciphertext only |
 | History storage | AES-GCM | CHK | Conversation (history) | Ciphertext only |
 | CHK wrapping | ECDH + HKDF + AES-GCM | User key | User | Wrapped only |
 | Vault encryption | AES-KW / AES-GCM | UVK | User | Wrapped only |

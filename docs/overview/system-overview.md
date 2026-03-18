@@ -7,6 +7,8 @@ This document explains **what the system is** and how the major pieces fit toget
 - Centralized, authoritative backend for membership and persistence.
 - Thin, stateless gateway for realtime transport and routing.
 - Clear separation between live transport security (MLS) and storage security (CHK).
+- Multiple auth paths: password, identity (device-key), and WebAuthn (passkey).
+- MLS uses **X‑Wing (X25519 + ML‑KEM‑768)** for post‑quantum key agreement.
 
 ## Components (High Level)
 - **Frontend**: Vue/Vite client. Handles UI, E2EE, scopes, and local state.

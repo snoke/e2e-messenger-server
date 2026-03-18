@@ -14,6 +14,7 @@ Last verified: 2026-03-17.
 - `anonymous-dropbox`: public encrypted dropbox flow.
 - `audit-timeline`: audit event timeline viewer.
 - `auth`: password auth UI.
+- `help`: in-app documentation viewer (markdown).
 - `calls`: call signaling and LiveKit integration.
 - `chat`: legacy chat UI.
 - `client-devices`: device/session listing.
@@ -26,6 +27,7 @@ Last verified: 2026-03-17.
 - `file-transfer`: file transfer flow.
 - `identity`: profile / identity UI.
 - `identity-auth`: identity (device-key) login.
+- `webauthn-auth`: WebAuthn (passkey) login.
 - `key-trust-center`: key trust UI (verified/unverified/revoked).
 - `mobile`: mobile shell (experimental).
 - `notification`: notification UI + settings.
@@ -65,6 +67,7 @@ Last verified: 2026-03-17.
 ## Identity/Contacts
 - `identity` handles profile values and avatar.
 - `identity-auth` handles device-key login.
+- `webauthn-auth` handles passkey-based login and vault unlock (PRF).
 - `contact-book` manages contact graph and profiles.
 - `key-trust-center` tracks fingerprint verification and trust state.
 

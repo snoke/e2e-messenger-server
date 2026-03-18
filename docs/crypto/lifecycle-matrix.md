@@ -3,7 +3,7 @@
 | Phase | Action | Key Impact | Notes |
 |---|---|---|---|
 | Signup | Generate UVK + User Key | User keys created | Public key persisted; private key wrapped and stored server-side |
-| Login | Fetch vault + unlock | UVK unwrap | Device vault register if missing |
+| Login | Fetch vault + unlock | UVK unwrap | Password/identity/device or WebAuthn PRF; device vault register if missing |
 | Invite | Pre-provision CHK wrap | Wrap stored server-side | Invite != access |
 | Accept | Wrap returned | CHK unwrap | Accept = access |
 | Message send | MLS + CHK encrypt | Live + storage | Dual encryption |

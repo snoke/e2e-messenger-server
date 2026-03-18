@@ -8,6 +8,7 @@ This flow defines the **access boundary** and CHK delivery semantics.
 3. Creator sends `group_add` with `wrapped_chk`, `wrap_alg`, `key_version`.
 4. Server persists the wrap in `conversation_key_records`.
 5. Invitee remains **pending**.
+6. MLS welcome/commit uses **X‑Wing (X25519 + ML‑KEM‑768)** for post‑quantum KEX.
 
 ## Accept (Access Boundary)
 1. Invitee sends `group_membership_accept`.
