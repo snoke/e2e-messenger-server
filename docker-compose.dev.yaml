@@ -1,0 +1,27 @@
+services:
+  symfony:
+    volumes:
+      - ./symfony:/app
+
+  symfony-consumer:
+    volumes:
+      - ./symfony:/app
+
+  gateway:
+    build:
+      context: ./gateway/rust-http3-gateway
+      dockerfile: Dockerfile.dev
+    working_dir: /app
+    environment:
+      - CARGO_HOME=/cargo
+    volumes:
+      - ./gateway/rust-http3-gateway:/app
+      - gateway-target:/app/target
+      - cargo-registry:/cargo/registry
+      - cargo-git:/cargo/git
+    command: ["cargo", "watch", "-w", "src", "-w", "Cargo.toml", "-w", "Cargo.lock", "-x", "run --release"]
+
+volumes:
+  gateway-target:
+  cargo-registry:
+  cargo-git:
