@@ -7,6 +7,7 @@ This section documents encryption domains, key lifecycles, wrapping, and access 
 - Keys & vault: [docs/crypto/keys-and-vault.md](keys-and-vault.md)
 - CHK (history key): [docs/crypto/chk.md](chk.md)
 - Wrapping and distribution: [docs/crypto/wrapping.md](wrapping.md)
+- Live vs. history crypto: [docs/crypto/live-vs-history-crypto.md](live-vs-history-crypto.md)
 
 ## Matrices
 - Crypto matrix: [docs/crypto/crypto-matrix.md](crypto-matrix.md)

@@ -1,157 +1,66 @@
-# Tech Debt: Call- vs. Chat-Krypto, MLS-Optionen und User-Flow-Folgen
+# Tech Debt
 
-## 1) Wie Calls es aktuell löst
+This file tracks concrete, current technical debt items. It is not a design doc. Each item should describe what is missing today, why it matters, and what it would take to resolve it.
 
-**Kurzfassung**
-- LiveKit transportiert Media-Streams.
-- Optionales Media-E2EE läuft über Insertable Streams (SFrame-ähnlich).
-- **Media-Keys werden über MLS-geschützte Control-Conversations verteilt**.
-- Keine Persistenz von Media-Keys; alles ist **live/ephemeral**.
+## 1) E2E Trust and Device Verification (Not Implemented)
 
-**Details (vereinfacht)**
-- Beim Call wird ein Media-Key erzeugt.
-- Der Media-Key wird **per MLS verschlüsselt** (`call_media_key`) über den Control-Conversation-Kanal gesendet.
-- Empfänger entschlüsseln live und aktivieren E2EE für Streams.
-- **Es gibt keine History/Storage-Anforderung** für Media-Keys.
+**Current state**
+- Device keys are server-registered and mapped to users.
+- The system does not perform user-verified trust (no QR/code verification).
+- New devices are accepted without user confirmation.
+- Trust Center UI exists but does not drive mandatory trust flows.
 
-**Implikation**
-- Das Modell ist **sauber für Live**.
-- Es ist **nicht geeignet für History** oder späte Geräte/Reloads.
+**Why this matters**
+- Server mapping is not the same as E2E verification.
+- Users cannot prove a device is truly controlled by the contact.
+- MITM or compromised server scenarios are not detectable by users.
 
-## 2) Wie Chat es aktuell löst
+**Debt scope**
+- No per-contact/per-device trust state (trusted/untrusted/revoked) persisted client-side.
+- No cross-sign flow for new devices.
+- No explicit UX for verification on new device joins.
+- No policy that restricts history/visibility based on trust state.
 
-**Kurzfassung**
-- MLS bleibt **Live-Transport** (Realtime).
-- History/Storage wird **mit CHK** verschlüsselt.
-- **CHK wird user-bound** und serverseitig als Wrap gespeichert.
-- **Invite pre‑provisioniert** den Wrap; **Accept liefert ihn direkt** zurück.
-- `conversation_key_fetch` ist **Recovery**, nicht Normalfall.
+**Resolution direction (not yet implemented)**
+- Introduce trust state per contact + device.
+- Support QR/code verification and/or cross-sign.
+- Add notifications and UI warnings for unverified devices.
+- Decide policy: allow chat with warnings vs. block until verified.
 
-**Details (vereinfacht)**
-- Live-Message: MLS encrypt → Realtime Transport.
-- Storage-Message: CHK encrypt → DB.
-- CHK wird pro Member **gewrappt** und serverseitig gespeichert.
-- **Invite** erzeugt den Wrap; **Accept** liefert ihn zurück.
-- Neue Geräte nutzen `conversation_key_fetch` **nur als Recovery**.
+**Status**
+- Priority: Medium
+- Owner: TBD
+- Target: Pilot+1
 
-**Implikation**
-- History ist **stabil und reload/device-unabhängig**.
-- MLS-State muss **nicht** für History erhalten bleiben.
-- **Accept = Access + Key‑Delivery** (kein post‑accept Race).
+## 2) Terminology Alignment (Auth vs. Device Keys)
 
-## 3) Was wäre ein Umbau auf MLS-only History?
+**Current state**
+- "Device Key", "IdentityAuth", and "WebAuthn" are used inconsistently across docs.
+- Some docs still describe a single device-key-based auth flow.
 
-### Option A: History komplett mit MLS (keine CHK)
+**Why this matters**
+- Confusing for contributors and new developers.
+- Increases onboarding time and risks wrong assumptions.
 
-**Aufwand**: Sehr hoch.
+**Resolution direction**
+- Clarify: Device Key is the key material, IdentityAuth is the login flow using it, WebAuthn is a separate auth path.
+- Update affected docs in `docs/workflows/` and `docs/crypto/`.
 
-**Probleme**
-- MLS-Keys sind **ephemeral** und epoch-basiert.
-- Nach Reload / Device-Wechsel fehlen die alten Secrets → **History nicht lesbar**.
-- Das ist das bekannte Problem: **“Desired gen in the past”**.
+**Status**
+- Priority: Low
+- Owner: TBD
 
-**Folge**
-- Man müsste MLS-States/Secrets langfristig speichern → bricht Forward Secrecy.
-- Oder alte Epochen persistent sichern → extrem komplex.
+## 3) Trust/Verification Data Sync Across Devices
 
-### Option B: Storage-Keys pro MLS-Epoch
+**Current state**
+- No encrypted sync of trust decisions across a user's devices.
 
-**Aufwand**: Hoch bis sehr hoch.
+**Why this matters**
+- Trust decisions are device-local and can diverge.
 
-**Vorteile**
-- Besserer Schadensradius (Rotation bei Membership-Changes).
+**Resolution direction**
+- Store trust records encrypted with user key and sync via backend.
 
-**Nachteile**
-- Du brauchst dennoch **persistente Epoch-Keys**, sonst History weg.
-- Verteilung + Persistenz wird komplexer als 1 CHK.
-
-**Fazit**
-- Ohne Persistenz bleibt das alte Problem.
-- Mit Persistenz baust du effektiv wieder CHK-ähnliche Logik.
-
-### Option C: MLS nur für Key-Distribution, Storage-Keys persistent user-bound (Hybrid)
-
-**Aufwand**: Mittel.
-
-**Modell**
-- MLS transportiert Storage-Keys live (schneller Pfad).
-- **Source of Truth bleibt persistente Wraps** (serverseitig, user-bound).
-
-**Bewertung**
-- Funktioniert, solange MLS **nicht** die einzige Quelle ist.
-- Für neue Devices bleibt `conversation_key_fetch` der sichere Weg.
-
-## 4) User-Flow-Folgen (Signup, Sign-in, Device Change, Reload)
-
-### Current (CHK + user-bound)
-
-**Signup**
-- Device-Key Auth → Session
-- UVK/Vault init
-- User Key erzeugen + sichern
-- CHK wird bei Invite vorbereitet und bei Accept geliefert
-
-**Sign-in**
-- Device-Key Auth → Session
-- Vault fetch → UVK unlock
-- User Key unwrap → Accept liefert CHK (Fetch nur Recovery)
-
-**Device Change**
-- Neues Device auth
-- Vault unlock → User Key verfügbar
-- `conversation_key_fetch` (Recovery) → History lesbar
-
-**Reload**
-- Session + Vault unlock
-- CHK fetch (Recovery) → History lesbar
-
-**Ergebnis**
-- **History ist stabil und user-bound**.
-
-### MLS-only History (Option A)
-
-**Signup/Sign-in**
-- Session ok, aber History hängt an MLS-State
-
-**Device Change / Reload**
-- **History fehlt**, weil MLS-Secrets nicht persistiert.
-
-**Ergebnis**
-- **User-Flow bricht** (History nicht verlässlich).
-
-### MLS + Epoch-Keys (Option B)
-
-**Device Change / Reload**
-- Nur ok, wenn alle Epoch-Keys **persistiert & verteilt** werden.
-
-**Ergebnis**
-- Komplexer als CHK, gleiche Persistenz-Anforderung.
-
-### Hybrid (Option C)
-
-**Device Change / Reload**
-- Funktioniert, wenn serverseitige Wraps verfügbar sind.
-
-**Ergebnis**
-- Stable, aber MLS ist nur „schneller Pfad“, nicht Source of Truth.
-
-## 5) Gibt es „smarte“ Lösungen?
-
-**Kurz: Nur wenn Persistenz garantiert bleibt.**
-
-Smarte/tragfähige Varianten:
-- **CHK pro Conversation** (status quo, invite‑preprovisioniert) → simpel, stabil.
-- **CHK-Rotation bei Membership** → höherer Aufwand, besserer Schadensradius.
-- **Hybrid (MLS live + persistente Wraps)** → ok, aber Source of Truth bleibt Persistenz.
-
-Nicht smart/robust:
-- **MLS-only History ohne Persistenz** → History bricht bei Reload/Device-Wechsel.
-- **MLS-States langfristig speichern** → Forward Secrecy verwässert, hoher Aufwand.
-
-## 6) Fazit / Empfehlung
-
-- Calls ist sauber, **weil es nur Live-Keys braucht**.
-- Chat braucht **persistente Storage-Keys** für History.
-- MLS-only History würde den User-Flow verschlechtern.
-- Der aktuelle CHK-Ansatz ist **architektonisch korrekt**.
-- Optionaler Ausbau: **CHK-Rotation bei Membership-Changes**.
+**Status**
+- Priority: Low
+- Owner: TBD
