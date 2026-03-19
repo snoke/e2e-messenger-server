@@ -17,13 +17,12 @@ Last verified: 2026-03-17.
 - `help`: in-app documentation viewer (markdown).
 - `calls`: call signaling and LiveKit integration.
 - `chat`: legacy chat UI.
-- `client-devices`: device/session listing.
+- `client-devices`: Device Pairing (active sessions + pairing link).
 - `contact-book`: contacts UI and flows.
 - `dead-man-switch`: safety/trigger flows (experimental).
 - `desktop`: app shell / layout.
 - `desktop-logout`: desktop logout UX.
 - `device-key-manager`: device key creation/management.
-- `device-pairing`: device pairing/approval (experimental).
 - `file-transfer`: file transfer flow.
 - `identity`: profile / identity UI.
 - `identity-auth`: identity (device-key) login.
@@ -72,7 +71,7 @@ Last verified: 2026-03-17.
 - `key-trust-center` tracks fingerprint verification and trust state.
 
 ## Notes / Gaps
-- Several plugins are experimental or partial (e.g., `dead-man-switch`, `device-pairing`, `mobile`).
+- Several plugins are experimental or partial (e.g., `dead-man-switch`, `mobile`).
 - For authoritative flows, prefer the domain service in core messaging.
 
 ## Related
