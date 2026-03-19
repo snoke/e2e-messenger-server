@@ -2,14 +2,6 @@
 
 Identity auth is device-bound. Authentication and vault unlock are separate steps.
 
-## Signup (Identity)
-1. Client generates device identity keypair.
-2. Client sends `auth_identity_request` with device proof.
-3. Server returns JWT token.
-4. Client attempts device unlock (`user_device_vault_fetch`).
-5. If `wrapped_uvk_for_device` exists, UVK is unwrapped locally.
-6. If device is new, vault remains locked until recovery or approval.
-
 ## Signin (Identity)
 1. Client sends `auth_identity_request`.
 2. Server returns JWT token.
@@ -33,6 +25,7 @@ sequenceDiagram
 - Identity auth can succeed while vault remains locked.
 - UI must remain gated until vault unlock completes.
 - `user_vault_fetch` is **not** part of the normal identity flow (device vault is used).
+ - Identity signup is not supported; use password or WebAuthn to create accounts, then sign in via IdentityAuth.
 
 Related:
 - [`docs/crypto/security-current.md`](../crypto/security-current.md)
