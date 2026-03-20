@@ -7,7 +7,7 @@ This document defines how changes are classified, staged, committed, and pushed.
 2. Remove temporary workarounds once the root cause is fixed.
 3. One clear primary flow per behavior. No parallel paths.
 4. Commit only complete, working slices.
-5. Every commit should be reviewable without external context.
+5. Every commit should be reviewable without external context and justified in context.
 
 ## Change Classification
 Classify every change before you start coding.
@@ -23,8 +23,16 @@ Classify every change before you start coding.
 **Refactor**
 1. No change in behavior or output.
 2. Improves structure, readability, or testability.
+3. Refactor must be structurally complete (no remaining multi-block monolith or large closures).
 
 If a change includes multiple types, split into multiple commits.
+
+## Branch and Commit Discipline
+1. Fixes, features, and refactors must not be mixed in a single commit.
+2. No “misc cleanup” commits without a clear statement of intent.
+3. Each commit must stand alone and be traceable.
+4. Branch name and commit message must reflect the actual nature of the change.
+5. Cleanup after a root‑cause fix is part of the same logical workstream and must not be skipped.
 
 ## Branch Usage
 Use branch naming that matches classification.
@@ -66,6 +74,7 @@ Before committing:
 4. The change is minimal and focused.
 5. Tests were run or explicitly noted as not run.
 6. Documentation was updated when behavior changed.
+7. Refactors are structurally complete (no remaining multi-block monolith or large closures).
 
 ## Submodules and Multi-Repo Workflows
 This project includes multiple repos (frontend, symfony, gateway).
@@ -130,4 +139,4 @@ A task is DONE only when:
 3. Architecture is consistent.
 4. Code is commit-ready.
 5. Commit message follows this standard.
-
+6. do not commit .env or keys

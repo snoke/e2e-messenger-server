@@ -1,0 +1,115 @@
+# Refactor Task List (Updated)
+
+Leitplanken (Kurzfassung):
+- Thin Orchestrator: Runtime koordiniert nur, keine fachlichen Entscheidungsbloecke.
+- State Access Budget: Runtime darf nicht breit/unstrukturiert auf viele State-Maps/Sets/Refs zugreifen.
+- Inbound/Outbound strikt trennen.
+- Refactor Completeness: Refactor ist unvollstaendig, wenn mehrere Fachbloecke oder grosse Closures bleiben.
+- Soft Size Guardrail: Runtime 200–500 LOC Zielbereich (500–800 nur begruendet).
+
+---
+
+## 1) frontend/src/plugins/file-transfer/services/fileTransferService.ts
+Status: **in progress** (Refactor gestartet, Vollstaendigkeit offen)
+
+Noch offen:
+- Thin Orchestrator Check (Runtime noch zu breit?).
+- State/IO/Crypto/Inbound/Outbound final trennen.
+- State Access Budget einhalten.
+- Refactor Completeness pruefen (keine grossen Closures mit eigener Verantwortung verbleiben).
+
+Completion-Kriterium:
+- fileTransferService.ts ist Facade + Sequenz-Orchestrierung, Detail-Logik liegt in Modulen.
+
+---
+
+## 2) frontend/src/plugins/calls/services/callManager.ts
+Status: **completed** (thin facade erreicht)
+
+Erledigt:
+- Media-Key Runtime extrahiert (`callMediaKeyRuntime.ts`)
+- Session Runtime extrahiert (`callSessionRuntime.ts`)
+- Call Session Actions extrahiert (`callSessionActions.ts`)
+- State-Publish/Glue ausgelagert (`callStatePublish.ts`)
+- State-Zugriff reduziert (Runtimes arbeiten ueber `callState`)
+
+Completion-Kriterium:
+- createLivekitCallManager ist reine Koordination + Verkabelung, kein Fachblock.
+
+---
+
+## 3) frontend/src/plugins/vue-chat/components/VueChatHome.vue
+Status: **in progress** (Refactor gestartet, Vollstaendigkeit offen)
+
+Noch offen:
+- Sicherstellen: .vue nur Rendering/Binding, keine IO/Orchestrierung.
+- Restliche Logik in .ts auslagern (Media, Attachments, Scopes, Timers).
+- Runtime Thinness pruefen (vueChatRuntime nicht zum Mini-Monolith werden lassen).
+
+Completion-Kriterium:
+- .vue ist UI-Adapter, Runtime ist klar modularisiert.
+
+---
+
+## 4) frontend/src/app/core/messaging/services/messenger.ts
+Status: **in progress** (refactored, aber Completeness offen)
+
+Noch offen:
+- Thin Orchestrator Check (keine grossen Closures in messenger.ts).
+- State Access Budget einhalten (Runtime nicht allwissend).
+- Realtime-Handler weiter entkoppeln, falls noch gemischt.
+
+Completion-Kriterium:
+- messenger.ts ist Facade + Wiring, Fachlogik liegt in Modulen.
+
+---
+
+## 5) frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts
+Status: **not started** (nach 1–4)
+
+Ziel:
+- Event-Router bleibt thin
+- Parser/History/Recipients/Handlers in eigene Module
+
+---
+
+## 6) frontend/src/app/core/messaging/crypto/group/adapters/tsMlsAdapter.ts
+Status: **not started**
+
+Ziel:
+- Storage/Codec/KeyPackages/GroupOps getrennt
+
+---
+
+## 7) frontend/src/plugins/chat/components/ChatWindow.vue
+Status: **not started**
+
+Ziel:
+- Media/IO/Timers/Actions auslagern
+- .vue nur UI
+
+---
+
+## 8) frontend/src/plugins/chat/components/MessengerHome.vue
+Status: **not started**
+
+Ziel:
+- Streaming/Scopes/Actions auslagern
+- .vue nur UI
+
+---
+
+## 9) frontend/src/app/core/messaging/services/messenger/attachments.ts
+Status: **not started**
+
+Ziel:
+- Crypto/IO/Manifest/Requests getrennt
+
+---
+
+## 10) frontend/src/plugins/vue-storage/services/vueStorageDriver.ts
+Status: **not started**
+
+Ziel:
+- Paths/Entries/Uploads/Mutations separieren
+- Driver bleibt Facade
