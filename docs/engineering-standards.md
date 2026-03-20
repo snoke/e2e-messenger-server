@@ -128,6 +128,14 @@ Jeder Task folgt diesem Ablauf:
 - Temporäre Fixes entfernen.
 - Übergangslogik aktiv auf Entbehrlichkeit prüfen.
 
+### 7. Review & Push Gate (verbindlich)
+- Implementierung und lokale Validierung erfolgen **ohne Push**.
+- Nach Abschluss liefert der Agent einen Statusbericht:
+  - Änderungen (kurz)
+  - Tests/Checks (konkret)
+  - Risiken/Offene Punkte
+- **Push erfolgt erst nach explizitem OK** des Auftraggebers.
+
 ---
 
 ## Change Rules

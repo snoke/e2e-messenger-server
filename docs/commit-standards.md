@@ -76,6 +76,14 @@ Before committing:
 6. Documentation was updated when behavior changed.
 7. Refactors are structurally complete (no remaining multi-block monolith or large closures).
 
+## Push Policy
+1. No push without explicit approval ("ok") from the task owner.
+2. Provide a brief status report before asking for approval:
+   - Changes summary
+   - Tests/Checks run
+   - Risks/Open items
+3. Push only after approval, not automatically after commit.
+
 ## Submodules and Multi-Repo Workflows
 This project includes multiple repos (frontend, symfony, gateway).
 
