@@ -344,7 +344,7 @@ Beispiele:
 - LiveKit ↔ E2EE ↔ Signaling
 - Chunk → Encrypt → Send → Ack → Finalize → Store
 
-Sehr kleine, klar abgegrenzte Module (ca. 50–150 LOC) sind ein guter Zielzustand.
+Sehr kleine, klar abgegrenzte Module (ca. 50–150 LOC) sind ein optimaler Zielzustand.
 
 Diese entstehen als Ergebnis sauberer Verantwortungs-Trennung,
 nicht durch künstliches Aufsplitten.
