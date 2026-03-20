@@ -7,6 +7,3 @@
 [submodule "gateway/rust-http3-gateway"]
 	path = gateway/rust-http3-gateway
 	url = git@github.com:snoke/rust-http3-gateway.git
-[submodule "gateway/e2e-ws-gateway"]
-	path = gateway/e2e-ws-gateway
-	url = git@github.com:snoke/e2e-ws-gateway.git

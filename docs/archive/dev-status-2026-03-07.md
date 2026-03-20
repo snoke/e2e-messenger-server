@@ -14,7 +14,6 @@ This is a historical snapshot. For current dev instructions and state, use:
 
 - `frontend`: `dfdb642` (`MLS runtime hardening and secure store updates`)
 - `symfony`: `64db9e6` (`Add membership state semantics for MLS group flow`)
-- [`gateway/e2e-ws-gateway`](../../gateway/e2e-ws-gateway): `acf1fc6`
 - [`gateway/rust-http3-gateway`](../../gateway/rust-http3-gateway): `2fd5ccc`
 
 ## Current Runtime Defaults
