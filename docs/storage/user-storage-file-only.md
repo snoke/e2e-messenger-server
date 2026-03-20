@@ -44,6 +44,11 @@ The protocol is file-only and uses **file payload** naming:
 - Downloads fetch **one payload** and decrypt it.
 - No chunk sizing, no chunk indexes, no resume or missing-chunk checks.
 
+## Key Wrapping (OPFS Managed Files)
+Local OPFS managed files (e.g., VueFinder/UserStorage UI and FileTransfer persist)
+use per-file keys wrapped by the **User Vault Key (UVK)**. This keeps files
+readable across device sessions. Legacy device-bound wrapping is not supported.
+
 ## Exception: Transfer Temp Files
 Chunked **temporary** files are allowed in OPFS **only** for transfer flows
 (e.g., live file transfer). UserStorage itself does not use chunked storage.

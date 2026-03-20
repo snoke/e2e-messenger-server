@@ -8,3 +8,4 @@ This section documents storage policies and formats.
 ## Principles
 - Storage payloads are always encrypted client-side.
 - Server stores ciphertext and metadata only.
+- OPFS managed files are encrypted with per-file keys wrapped by the **User Vault Key (UVK)**.
