@@ -73,25 +73,7 @@ Ziel:
 
 ---
 
-## 7) frontend/src/plugins/chat/components/ChatWindow.vue
-Status: **not started**
-
-Ziel:
-- Media/IO/Timers/Actions auslagern
-- .vue nur UI
-
----
-
-## 8) frontend/src/plugins/chat/components/MessengerHome.vue
-Status: **not started**
-
-Ziel:
-- Streaming/Scopes/Actions auslagern
-- .vue nur UI
-
----
-
-## 9) frontend/src/app/core/messaging/services/messenger/attachments.ts
+## 7) frontend/src/app/core/messaging/services/messenger/attachments.ts
 Status: **not started**
 
 Ziel:
@@ -99,9 +81,14 @@ Ziel:
 
 ---
 
-## 10) frontend/src/plugins/vue-storage/services/vueStorageDriver.ts
+## 8) frontend/src/plugins/vue-storage/services/vueStorageDriver.ts
 Status: **not started**
 
 Ziel:
 - Paths/Entries/Uploads/Mutations separieren
 - Driver bleibt Facade
+
+---
+
+Hinweis:
+- `frontend/src/plugins/chat/` entfernt (Legacy-UI), ersetzt durch `frontend/src/plugins/vue-chat/`.
