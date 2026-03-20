@@ -66,10 +66,13 @@ Erledigt:
 ---
 
 ## 6) frontend/src/app/core/messaging/crypto/group/adapters/tsMlsAdapter.ts
-Status: **not started**
+Status: **completed** (thin facade erreicht)
 
-Ziel:
-- Storage/Codec/KeyPackages/GroupOps getrennt
+Erledigt:
+- Adapter ist Wiring + Delegation (`tsMlsAdapter.ts`).
+- Storage/Codec/KeyPackages/GroupOps in eigene Module getrennt:
+  `tsMlsAdapterStorage`, `tsMlsAdapterCodec`, `tsMlsAdapterKeyPackages`, `tsMlsAdapterGroupOps`,
+  plus `tsMlsAdapterTypes`.
 
 ---
 
