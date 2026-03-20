@@ -373,8 +373,8 @@ Ziel dieser Regeln ist es, Dateien modular, nachvollziehbar und wartbar zu halte
 ohne sinnvolle Orchestratoren künstlich zu zersplittern.
 
 ### 1. Soft Size Guardrail
-- **Allgemeine Dateien:** Zielbereich ca. **500–800 LOC**
-- **Runtimes/Orchestrators:** Zielbereich ca. **200–500 LOC**
+- **Allgemeine Dateien:** Zielbereich bis ca. **500–800 LOC**
+- **Runtimes/Orchestrators:** Zielbereich bis ca. **200–500 LOC**
 - Dateien oberhalb dieser Bereiche sind **Refactor-Kandidaten**
 - Das ist **keine harte Verbotsregel**, sondern ein Signal zur Prüfung
 
@@ -394,7 +394,7 @@ Beispiele:
 - LiveKit ↔ E2EE ↔ Signaling
 - Chunk → Encrypt → Send → Ack → Finalize → Store
 
-Sehr kleine, klar abgegrenzte Module (ca. 50–150 LOC) sind ein optimaler Zielzustand.
+Sehr kleine, klar abgegrenzte Module (bis ca. 50–150 LOC) sind ein optimaler Zielzustand.
 
 Diese entstehen als Ergebnis sauberer Verantwortungs-Trennung,
 nicht durch künstliches Aufsplitten.

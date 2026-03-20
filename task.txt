@@ -77,19 +77,24 @@ Erledigt:
 ---
 
 ## 7) frontend/src/app/core/messaging/services/messenger/attachments.ts
-Status: **not started**
+Status: **completed** (module split)
 
-Ziel:
-- Crypto/IO/Manifest/Requests getrennt
+Erledigt:
+- Crypto/IO/Manifest/Requests getrennt:
+  `attachmentCrypto`, `attachmentIO`, `attachmentManifest`, `attachmentRequests`
+  (+ `attachmentConstants`, `attachmentTypes`, `attachmentValidation`).
+- `attachments.ts` ist Facade + Flow-Koordination, keine Detail-Implementierung.
 
 ---
 
 ## 8) frontend/src/plugins/vue-storage/services/vueStorageDriver.ts
-Status: **not started**
+Status: **completed** (driver facade)
 
-Ziel:
-- Paths/Entries/Uploads/Mutations separieren
-- Driver bleibt Facade
+Erledigt:
+- Paths/Entries/Uploads/Mutations ausgelagert:
+  `vueStoragePaths`, `vueStorageEntries`, `vueStorageUploads`, `vueStorageMutations`
+  (+ `vueStorageTypes`).
+- Driver delegiert an Helper, `rebuildEntries` nutzt `buildStorageEntries`.
 
 ---
 
