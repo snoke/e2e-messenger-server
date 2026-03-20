@@ -372,6 +372,32 @@ Wenn Typfehler nicht low‑risk fixbar sind:
 Ziel dieser Regeln ist es, Dateien modular, nachvollziehbar und wartbar zu halten,
 ohne sinnvolle Orchestratoren künstlich zu zersplittern.
 
+### 0. Modulstruktur & Discoverability (Soft Rules)
+
+Diese Regeln beschreiben, wie fachliche Bereiche im Dateisystem sichtbar werden,
+damit neue Entwickler Struktur aus dem Pfad erkennen können.
+
+- **Feature-first / Subdomain-first:** Fachliche Bereiche (attachments, presence, conversations, calls)
+  sollen als **Ordner** sichtbar sein, nicht nur als Dateipräfixe.
+- **Pfad trägt Kontext, Dateiname Spezifik:** Im Kontextordner kein redundantes Präfix
+  (`messenger/state.ts` statt `messenger/messengerState.ts`).
+- **Präfix-Wiederholung ⇒ Unterordner:** Wenn ein Präfix mehrfach auftaucht
+  (`attachment*`, `conversation*`), ist das ein Modul und gehört in einen Unterordner.
+- **Root bleibt schlank:** Ein Root-Ordner enthält wenige Entry Points + Unterordner,
+  nicht viele lose Dateien ohne Struktur.
+- **Colocation:** Code, der zusammen geändert wird, liegt zusammen.
+- **Eine Abstraktionsebene pro Ordner (soft):** Domain, Runtime, IO, State sollten
+  nicht unstrukturiert vermischt werden; klare Unterordner oder Entry-Points schaffen.
+- **Sammelordner sind Verdachtsfälle:** `utils/`, `helpers/`, `common/` nur wenn klein,
+  stabil und klar abgegrenzt.
+- **Modulgrenzen sichtbar machen:** Ein Modul hat erkennbare Entry Points
+  (`index.ts`, `runtime.ts`, `handlers.ts`) und keine chaotischen Querimporte.
+- **Onboarding-Test:** Ein neuer Entwickler soll in <30 Sekunden sagen können,
+  wo ein Feature liegt. Wenn nicht, Struktur prüfen.
+
+Ausnahmen sind erlaubt, müssen aber begründbar sein (z. B. stark gekoppelte Sequenzen
+oder temporäre Übergangsphasen).
+
 ### 1. Soft Size Guardrail
 - **Allgemeine Dateien:** Zielbereich bis ca. **500–800 LOC**
 - **Runtimes/Orchestrators:** Zielbereich bis ca. **200–500 LOC**
