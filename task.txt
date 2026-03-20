@@ -9,6 +9,18 @@ Leitplanken (Kurzfassung):
 
 ---
 
+## 0) Frontend ESLint Cleanup
+Status: **completed**
+
+Erledigt:
+- ESLint warnings via `--fix` bereinigt.
+- `vue/no-v-html` fuer `HelpHome.vue` gezielt per ESLint-Override deaktiviert.
+
+Hinweis:
+- `HelpHome.vue` bleibt bewusst mit `v-html` (Trusted Markdown Rendering).
+
+---
+
 ## 1) frontend/src/plugins/file-transfer/services/fileTransferService.ts
 Status: **in progress** (Refactor gestartet, Vollstaendigkeit offen)
 
