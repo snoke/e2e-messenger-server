@@ -55,11 +55,13 @@ Erledigt:
 ---
 
 ## 5) frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts
-Status: **not started** (nach 1–4)
+Status: **completed** (thin router erreicht)
 
-Ziel:
-- Event-Router bleibt thin
-- Parser/History/Recipients/Handlers in eigene Module
+Erledigt:
+- Router ist reine Re-Export-Fassade (`conversations.ts` → `handlers.ts`).
+- Parser/History/Recipients/Handlers in eigene Module ausgelagert
+  (`conversationListHandlers`, `groupHandlers`, `historyHandlers`,
+  `membershipHandlers`, `recipients`, `helpers`, `types`).
 
 ---
 

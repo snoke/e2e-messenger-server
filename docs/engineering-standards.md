@@ -317,6 +317,48 @@ In diesem Fall muss der Refactor weitergeführt werden.
 
 ---
 
+## Frontend Type Safety
+
+Ziel: Der Frontend-Code ist **konsequent typisiert**, besonders an Modulgrenzen,
+Realtimelines und Crypto/IO-APIs. Typisierung ist Teil der Architektur-Qualität.
+
+### Grundregeln
+- **Keine `any` an Modulgrenzen.**  
+  Für Payloads und externe Datenquellen: `unknown` + Guards/Parser.
+- **Explizite Dep-/Context-Typen** für Runtime/Facade-Module.  
+  Jeder Runtime-Entry hat klar typisierte `Deps`/`Context`-Interfaces.
+- **Keine stillen Casts.**  
+  `as` nur, wenn es eine legitime Boundary ist und der Grund nachvollziehbar bleibt.
+- **Record statt loose Object.**  
+  Für wire‑Payloads: `Record<string, unknown>` + gezielte Validierung.
+
+### Crypto/Web-API Typen
+- BufferSource‑Eingaben **konsequent normalisieren**.  
+  Für `crypto.subtle` und IO: `toArrayBuffer(...)` statt rohe `Uint8Array`.
+- Keine ad‑hoc Konvertierungen ohne Helper; **ein zentraler Helper** ist der Standard.
+
+### Vue/State Typen
+- `Ref<T>`/`ComputedRef<T>` **immer mit generics** definieren.
+- Für Klassen/SDK‑Objekte (z. B. LiveKit Tracks) **`shallowRef`** nutzen,
+  um ungewolltes Unwrap/Struktur‑Type‑Leaks zu vermeiden.
+
+### Validation (Frontend)
+Für **Frontend-Änderungen** gilt:
+- Ziel ist **eslint + tsc sauber** (keine Errors).
+- **Beide** Checks laufen lassen, außer wenn klar begründet.
+- `npm -C frontend run lint`
+- `cd frontend && npx tsc -p tsconfig.json --noEmit`
+
+Hinweis:
+- `npx -C frontend tsc ...` funktioniert nicht zuverlässig; `cd frontend` verwenden.
+
+Wenn Typfehler nicht low‑risk fixbar sind:
+- klar markieren,
+- begründen,
+- **nicht** mit `any` verdecken.
+
+---
+
 ## Refactoring Guidelines (Soft Rules)
 
 Ziel dieser Regeln ist es, Dateien modular, nachvollziehbar und wartbar zu halten,
