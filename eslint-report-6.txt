@@ -1,0 +1,132 @@
+
+> frontend@0.0.0 lint
+> eslint . --ext .ts,.vue
+
+
+/Users/stefafn/Documents/websocket-test/Symfony-Realtime-Stack/frontend/src/app/messaging/messenger/index.ts
+  120:5  error  'conversationSessionUpdatedAt' is assigned a value but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+  180:5  error  'markMessageRead' is assigned a value but never used. Allowed unused vars must match /^_/u                      @typescript-eslint/no-unused-vars
+  181:5  error  'markMessageDeliveryStatus' is assigned a value but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+  234:5  error  'setConversationEpoch' is assigned a value but never used. Allowed unused vars must match /^_/u                 @typescript-eslint/no-unused-vars
+  235:5  error  'setHandshakeState' is assigned a value but never used. Allowed unused vars must match /^_/u                    @typescript-eslint/no-unused-vars
+  236:5  error  'markConversationEstablished' is assigned a value but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+  237:5  error  'transitionConversationToRecovery' is assigned a value but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+  240:5  error  'clearHandshakePending' is assigned a value but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+  246:5  error  'bootstrapConversationSession' is assigned a value but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+  248:5  error  'upsertConversation' is assigned a value but never used. Allowed unused vars must match /^_/u                   @typescript-eslint/no-unused-vars
+  249:5  error  'parseEncryptedPayload' is assigned a value but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+  250:5  error  'getGroupCommitEventType' is assigned a value but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+  251:5  error  'getGroupWelcomeAckEventType' is assigned a value but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+  252:5  error  'groupWelcomeSessionKey' is assigned a value but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+  253:5  error  'queueMlsWelcomeTask' is assigned a value but never used. Allowed unused vars must match /^_/u                  @typescript-eslint/no-unused-vars
+  254:5  error  'queueMlsInbound' is assigned a value but never used. Allowed unused vars must match /^_/u                      @typescript-eslint/no-unused-vars
+  255:5  error  'flushMlsInboundForConversation' is assigned a value but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+  256:5  error  'maybeRecoverMlsConversation' is assigned a value but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+  257:5  error  'maybeSendPendingMlsCommit' is assigned a value but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+  258:5  error  'getGroupCryptoProvider' is assigned a value but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+  259:5  error  'isGroupEnvelope' is assigned a value but never used. Allowed unused vars must match /^_/u                      @typescript-eslint/no-unused-vars
+  266:5  error  'recoverFromDecryptFailure' is assigned a value but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+  269:5  error  'promoteSessionIfNeeded' is assigned a value but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+  271:5  error  'ackMessages' is assigned a value but never used. Allowed unused vars must match /^_/u                          @typescript-eslint/no-unused-vars
+  272:5  error  'cancelPendingMessageRequests' is assigned a value but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+  273:5  error  'publishPrekeyBundle' is assigned a value but never used. Allowed unused vars must match /^_/u                  @typescript-eslint/no-unused-vars
+  274:5  error  'resetRuntimeHandshakeState' is assigned a value but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+  278:5  error  'flushHistoryForSession' is assigned a value but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+  279:5  error  'queueInbound' is assigned a value but never used. Allowed unused vars must match /^_/u                         @typescript-eslint/no-unused-vars
+  281:5  error  'bootHistoryRequestedConversationIds' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  317:5  error  'markConversationCryptoReady' is assigned a value but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+  318:5  error  'markConversationCryptoPending' is assigned a value but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+  319:5  error  'markConversationCryptoError' is assigned a value but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+
+/Users/stefafn/Documents/websocket-test/Symfony-Realtime-Stack/frontend/src/components/DesktopModal.vue
+  11:5   warning  Prop 'title' requires default value to be set                                vue/require-default-prop
+  12:5   warning  Prop 'subtitle' requires default value to be set                             vue/require-default-prop
+  98:30  warning  Expected 1 line break after opening tag (`<p>`), but no line breaks found    vue/singleline-html-element-content-newline
+  98:44  warning  Expected 1 line break before closing tag (`</p>`), but no line breaks found  vue/singleline-html-element-content-newline
+
+/Users/stefafn/Documents/websocket-test/Symfony-Realtime-Stack/frontend/src/plugins/file-transfer/components/FileSelectorModal.vue
+  520:1  warning  Expected indentation of 4 spaces but found 6 spaces    vue/html-indent
+  521:1  warning  Expected indentation of 6 spaces but found 8 spaces    vue/html-indent
+  522:1  warning  Expected indentation of 8 spaces but found 10 spaces   vue/html-indent
+  523:1  warning  Expected indentation of 8 spaces but found 10 spaces   vue/html-indent
+  524:1  warning  Expected indentation of 8 spaces but found 10 spaces   vue/html-indent
+  525:1  warning  Expected indentation of 6 spaces but found 8 spaces    vue/html-indent
+  526:1  warning  Expected indentation of 8 spaces but found 10 spaces   vue/html-indent
+  527:1  warning  Expected indentation of 10 spaces but found 12 spaces  vue/html-indent
+  528:1  warning  Expected indentation of 10 spaces but found 12 spaces  vue/html-indent
+  529:1  warning  Expected indentation of 10 spaces but found 12 spaces  vue/html-indent
+  530:1  warning  Expected indentation of 10 spaces but found 12 spaces  vue/html-indent
+  531:1  warning  Expected indentation of 10 spaces but found 12 spaces  vue/html-indent
+  532:1  warning  Expected indentation of 10 spaces but found 12 spaces  vue/html-indent
+  533:1  warning  Expected indentation of 10 spaces but found 12 spaces  vue/html-indent
+  534:1  warning  Expected indentation of 8 spaces but found 10 spaces   vue/html-indent
+  535:1  warning  Expected indentation of 10 spaces but found 12 spaces  vue/html-indent
+  536:1  warning  Expected indentation of 12 spaces but found 14 spaces  vue/html-indent
+  537:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  538:1  warning  Expected indentation of 16 spaces but found 18 spaces  vue/html-indent
+  539:1  warning  Expected indentation of 16 spaces but found 18 spaces  vue/html-indent
+  540:1  warning  Expected indentation of 16 spaces but found 18 spaces  vue/html-indent
+  541:1  warning  Expected indentation of 16 spaces but found 18 spaces  vue/html-indent
+  542:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  543:1  warning  Expected indentation of 16 spaces but found 18 spaces  vue/html-indent
+  544:1  warning  Expected indentation of 18 spaces but found 20 spaces  vue/html-indent
+  545:1  warning  Expected indentation of 18 spaces but found 20 spaces  vue/html-indent
+  546:1  warning  Expected indentation of 16 spaces but found 18 spaces  vue/html-indent
+  547:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  548:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  549:1  warning  Expected indentation of 16 spaces but found 18 spaces  vue/html-indent
+  550:1  warning  Expected indentation of 16 spaces but found 18 spaces  vue/html-indent
+  551:1  warning  Expected indentation of 16 spaces but found 18 spaces  vue/html-indent
+  552:1  warning  Expected indentation of 16 spaces but found 18 spaces  vue/html-indent
+  553:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  554:1  warning  Expected indentation of 16 spaces but found 18 spaces  vue/html-indent
+  555:1  warning  Expected indentation of 18 spaces but found 20 spaces  vue/html-indent
+  556:1  warning  Expected indentation of 18 spaces but found 20 spaces  vue/html-indent
+  557:1  warning  Expected indentation of 16 spaces but found 18 spaces  vue/html-indent
+  558:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  559:1  warning  Expected indentation of 12 spaces but found 14 spaces  vue/html-indent
+  560:1  warning  Expected indentation of 10 spaces but found 12 spaces  vue/html-indent
+  561:1  warning  Expected indentation of 10 spaces but found 12 spaces  vue/html-indent
+  562:1  warning  Expected indentation of 12 spaces but found 14 spaces  vue/html-indent
+  563:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  564:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  565:1  warning  Expected indentation of 12 spaces but found 14 spaces  vue/html-indent
+  566:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  567:1  warning  Expected indentation of 12 spaces but found 14 spaces  vue/html-indent
+  568:1  warning  Expected indentation of 10 spaces but found 12 spaces  vue/html-indent
+  569:1  warning  Expected indentation of 8 spaces but found 10 spaces   vue/html-indent
+  570:1  warning  Expected indentation of 8 spaces but found 10 spaces   vue/html-indent
+  571:1  warning  Expected indentation of 10 spaces but found 12 spaces  vue/html-indent
+  572:1  warning  Expected indentation of 10 spaces but found 12 spaces  vue/html-indent
+  573:1  warning  Expected indentation of 8 spaces but found 10 spaces   vue/html-indent
+  574:1  warning  Expected indentation of 10 spaces but found 12 spaces  vue/html-indent
+  575:1  warning  Expected indentation of 12 spaces but found 14 spaces  vue/html-indent
+  576:1  warning  Expected indentation of 12 spaces but found 14 spaces  vue/html-indent
+  577:1  warning  Expected indentation of 12 spaces but found 14 spaces  vue/html-indent
+  578:1  warning  Expected indentation of 10 spaces but found 12 spaces  vue/html-indent
+  579:1  warning  Expected indentation of 12 spaces but found 14 spaces  vue/html-indent
+  580:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  581:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  582:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  583:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  584:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  585:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  586:1  warning  Expected indentation of 12 spaces but found 14 spaces  vue/html-indent
+  587:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  588:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  589:1  warning  Expected indentation of 14 spaces but found 16 spaces  vue/html-indent
+  590:1  warning  Expected indentation of 12 spaces but found 14 spaces  vue/html-indent
+  591:1  warning  Expected indentation of 10 spaces but found 12 spaces  vue/html-indent
+  592:1  warning  Expected indentation of 8 spaces but found 10 spaces   vue/html-indent
+  593:1  warning  Expected indentation of 6 spaces but found 8 spaces    vue/html-indent
+  594:1  warning  Expected indentation of 6 spaces but found 8 spaces    vue/html-indent
+  595:1  warning  Expected indentation of 8 spaces but found 10 spaces   vue/html-indent
+  596:1  warning  Expected indentation of 8 spaces but found 10 spaces   vue/html-indent
+  597:1  warning  Expected indentation of 6 spaces but found 8 spaces    vue/html-indent
+  598:1  warning  Expected indentation of 8 spaces but found 10 spaces   vue/html-indent
+  599:1  warning  Expected indentation of 6 spaces but found 8 spaces    vue/html-indent
+  600:1  warning  Expected indentation of 4 spaces but found 6 spaces    vue/html-indent
+
+✖ 118 problems (33 errors, 85 warnings)
+  0 errors and 83 warnings potentially fixable with the `--fix` option.
+

@@ -7,9 +7,10 @@ services:
       - VITE_GROUP_CRYPTO_MODE=${VITE_GROUP_CRYPTO_MODE:-mls}
       - VITE_MLS_CLIENT_ADAPTER=${VITE_MLS_CLIENT_ADAPTER:-ts_mls}
       - VITE_CALL_MEDIA_E2EE_ENABLED=${VITE_CALL_MEDIA_E2EE_ENABLED:-false}
+      - VITE_E2EE_DEBUG=${VITE_E2EE_DEBUG:-}
       - VITE_WEBRTC_STUN_URL=${VITE_WEBRTC_STUN_URL:-stun:127.0.0.1:3478}
-      - VITE_WEBRTC_TURN_URL=${VITE_WEBRTC_TURN_URL:-turn:127.0.0.1:3478?transport=udp}
-      - VITE_WEBRTC_TURN_URL_TCP=${VITE_WEBRTC_TURN_URL_TCP:-turn:127.0.0.1:3478?transport=tcp}
+      - VITE_WEBRTC_TURN_URL=${VITE_WEBRTC_TURN_URL:-turn:void.lan:3478?transport=tcp}
+      - VITE_WEBRTC_TURN_URL_TCP=${VITE_WEBRTC_TURN_URL_TCP:-turn:void.lan:3478?transport=tcp}
       - VITE_WEBRTC_TURN_USERNAME=${VITE_WEBRTC_TURN_USERNAME:-turn}
       - VITE_WEBRTC_TURN_PASSWORD=${VITE_WEBRTC_TURN_PASSWORD:-turn}
       - VITE_LIVEKIT_URL=${VITE_LIVEKIT_URL:-ws://localhost:7880}
@@ -109,6 +110,10 @@ services:
       - WS_REDIS_EVENTS_STREAM=ws.events
       - "WS_REDIS_PREFIX=presence:"
       - WS_CONSUMER_LOG_LEVEL=info
+      - LIVEKIT_URL=${LIVEKIT_URL:-ws://localhost:7880}
+      - LIVEKIT_API_KEY=${LIVEKIT_API_KEY:-devkey}
+      - LIVEKIT_API_SECRET=${LIVEKIT_API_SECRET:-secret}
+      - LIVEKIT_TOKEN_TTL=${LIVEKIT_TOKEN_TTL:-600}
       - CHAT_MAX_FILE_SIZE_BYTES=${CHAT_MAX_FILE_SIZE_BYTES:-5242880}
       - CHAT_MAX_VIDEO_SIZE_BYTES=${CHAT_MAX_VIDEO_SIZE_BYTES:-15728640}
       - CHAT_MAX_VIDEO_DURATION_SECONDS=${CHAT_MAX_VIDEO_DURATION_SECONDS:-20}
@@ -162,6 +167,8 @@ services:
 
   coturn:
     image: coturn/coturn:latest
+    environment:
+      - TURN_EXTERNAL_IP=192.168.178.105
     command: >
       sh -ec '
         RELAY_IP="$$(hostname -i | cut -d" " -f1)";
@@ -195,6 +202,8 @@ services:
 
   livekit:
     image: livekit/livekit-server:latest
+    environment:
+      - LIVEKIT_NODE_IP=192.168.178.105
     command:
       - --config
       - /etc/livekit.yaml
@@ -202,7 +211,7 @@ services:
       - --bind
       - 0.0.0.0
       - --node-ip
-      - ${LIVEKIT_NODE_IP:-127.0.0.1}
+      - ${LIVEKIT_NODE_IP:-192.168.178.105}
       - --keys
       - "${LIVEKIT_API_KEY:-devkey}: ${LIVEKIT_API_SECRET:-secret}"
       - --udp-port

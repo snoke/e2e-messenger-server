@@ -13,7 +13,7 @@ A user is global-crypto-ready when all are true:
 - Ensures contact and chat flows can derive keys immediately.
 
 ## Where It Is Enforced
-- [`frontend/src/app/core/messaging/services/sessionGate.ts`](../../frontend/src/app/core/messaging/services/sessionGate.ts)
+- [`frontend/src/app/messaging/sessionGate.ts`](../../frontend/src/app/messaging/sessionGate.ts)
 - Gating applied in routing and UI shells.
 
 ## Logs

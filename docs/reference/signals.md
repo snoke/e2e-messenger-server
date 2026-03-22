@@ -44,21 +44,21 @@ Implementation references:
 - **Backend**: [`symfony/src/Entity/Conversation.php`](../../symfony/src/Entity/Conversation.php) (`scopeKey`)
 - **Builder**: [`symfony/src/Plugins/Chat/Application/ConversationItemBuilder.php`](../../symfony/src/Plugins/Chat/Application/ConversationItemBuilder.php) (generated and persisted)
 - **Frontend mapping**:
-  - [`frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts`](../../frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts)
-  - [`frontend/src/app/core/messaging/services/messenger/realtime/presence.ts`](../../frontend/src/app/core/messaging/services/messenger/realtime/presence.ts)
+  - [`frontend/src/app/messaging/messenger/realtime/conversations.ts`](../../frontend/src/app/messaging/messenger/realtime/conversations.ts)
+  - [`frontend/src/app/messaging/messenger/realtime/presence.ts`](../../frontend/src/app/messaging/messenger/realtime/presence.ts)
 
 ## 4) Current Usage
 
 Currently, signals are used for **chat typing** only.
 
 Sender path:
-- [`frontend/src/app/core/messaging/services/messenger/send.ts`](../../frontend/src/app/core/messaging/services/messenger/send.ts)
+- [`frontend/src/app/messaging/messenger/send.ts`](../../frontend/src/app/messaging/messenger/send.ts)
   - builds MLS ciphertext
   - sends `type: "signal"` when `scopeKey` is available
   - falls back to `chat_typing_state` if `scopeKey` is missing
 
 Receiver path:
-- [`frontend/src/app/core/messaging/services/messenger/realtime/presence.ts`](../../frontend/src/app/core/messaging/services/messenger/realtime/presence.ts)
+- [`frontend/src/app/messaging/messenger/realtime/presence.ts`](../../frontend/src/app/messaging/messenger/realtime/presence.ts)
   - accepts `type: "signal"`
   - resolves `scope_key` → `conversation_id`
   - decrypts MLS payload
@@ -95,7 +95,7 @@ There is **no runtime flag** yet. For metadata debugging you can temporarily rev
 
 ### Option A: Force the Legacy Path in Frontend (fastest)
 
-In [`frontend/src/app/core/messaging/services/messenger/send.ts`](../../frontend/src/app/core/messaging/services/messenger/send.ts):
+In [`frontend/src/app/messaging/messenger/send.ts`](../../frontend/src/app/messaging/messenger/send.ts):
 - temporarily bypass the `scope_key` branch so it always sends `chat_typing_state`.
 
 This makes websocket traffic show:

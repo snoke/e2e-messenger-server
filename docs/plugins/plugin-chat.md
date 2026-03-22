@@ -14,8 +14,8 @@
 
 ## Key Files
 - [`frontend/src/plugins/vue-chat/components/VueChatHome.vue`](../../frontend/src/plugins/vue-chat/components/VueChatHome.vue)
-- [`frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts`](../../frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts)
-- [`frontend/src/app/core/messaging/services/messenger/conversationKeys.ts`](../../frontend/src/app/core/messaging/services/messenger/conversationKeys.ts)
+- [`frontend/src/app/messaging/messenger/realtime/conversations.ts`](../../frontend/src/app/messaging/messenger/realtime/conversations.ts)
+- [`frontend/src/app/messaging/messenger/conversationKeys.ts`](../../frontend/src/app/messaging/messenger/conversationKeys.ts)
 
 Related:
 - [`docs/workflows/invite-accept.md`](../workflows/invite-accept.md)

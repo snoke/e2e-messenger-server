@@ -354,8 +354,11 @@ Realtimelines und Crypto/IO-APIs. Typisierung ist Teil der Architektur-Qualität
 Für **Frontend-Änderungen** gilt:
 - Ziel ist **eslint + tsc sauber** (keine Errors).
 - **Beide** Checks laufen lassen, außer wenn klar begründet.
-- `npm -C frontend run lint`
+- **Reihenfolge verpflichtend:** zuerst `tsc`, dann `eslint`.
+- **Pflicht nach jedem Task:** `tsc` muss erfolgreich sein, sonst gilt der Task **nicht** als abgeschlossen.
+- **Pflicht vor jedem Push:** `eslint` muss gelaufen sein.
 - `cd frontend && npx tsc -p tsconfig.json --noEmit`
+- `npm -C frontend run lint`
 
 Hinweis:
 - `npx -C frontend tsc ...` funktioniert nicht zuverlässig; `cd frontend` verwenden.

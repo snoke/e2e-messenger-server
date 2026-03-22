@@ -15,3 +15,4 @@ services:
     environment:
       - VITE_REALTIME_TRANSPORT=ws
       - VITE_WS_URL=${VITE_WS_URL:-}
+      - VITE_E2EE_DEBUG=${VITE_E2EE_DEBUG:-}

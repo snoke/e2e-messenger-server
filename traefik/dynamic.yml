@@ -63,6 +63,27 @@ http:
         - cors
         - rate-limit
         - ip-allowlist
+    livekit:
+      rule: "PathPrefix(`/rtc`)"
+      service: livekit
+      entryPoints:
+        - websecure
+      tls: {}
+      middlewares:
+        - secure-headers
+        - cors
+        - ip-allowlist
+      priority: 10
+    livekit-http:
+      rule: "PathPrefix(`/rtc`)"
+      service: livekit
+      entryPoints:
+        - web
+      middlewares:
+        - secure-headers
+        - cors
+        - ip-allowlist
+      priority: 10
     frontend:
       rule: "PathPrefix(`/`)"
       service: frontend
@@ -97,6 +118,10 @@ http:
       loadBalancer:
         servers:
           - url: "http://symfony:8000"
+    livekit:
+      loadBalancer:
+        servers:
+          - url: "http://livekit:7880"
     frontend:
       loadBalancer:
         servers:
@@ -125,7 +150,9 @@ http:
           - "http://localhost:8180"
           - "http://localhost:8443"
           - "https://localhost:8443"
-          - "https://192.168.8.201:8443"
+          - "https://192.168.178.105:8443"
+          - "http://void.lan:8443"
+          - "https://void.lan:8443"
         accessControlAllowCredentials: true
     rate-limit:
       rateLimit:

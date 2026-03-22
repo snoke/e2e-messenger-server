@@ -29,3 +29,4 @@ services:
       - VITE_REALTIME_TRANSPORT=http3
       - VITE_WT_URL=${VITE_WT_URL:-https://127.0.0.1:4433/}
       - VITE_WT_CERT_HASH=${VITE_WT_CERT_HASH:-}
+      - VITE_E2EE_DEBUG=${VITE_E2EE_DEBUG:-}

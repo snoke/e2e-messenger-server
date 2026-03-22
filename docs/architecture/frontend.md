@@ -22,13 +22,13 @@ flowchart LR
 ```
 
 ## Key Services and Entry Points
-- Messenger orchestration: [`frontend/src/app/core/messaging/services/messenger.ts`](../../frontend/src/app/core/messaging/services/messenger.ts)
-- Realtime router: [`frontend/src/app/core/messaging/services/realtimeRouter.ts`](../../frontend/src/app/core/messaging/services/realtimeRouter.ts)
-- Transport clients: [`frontend/src/app/core/messaging/services/client/wsClient.ts`](../../frontend/src/app/core/messaging/services/client/wsClient.ts)
-- Session gate (global crypto readiness): [`frontend/src/app/core/messaging/services/sessionGate.ts`](../../frontend/src/app/core/messaging/services/sessionGate.ts)
-- Conversation key logic: [`frontend/src/app/core/messaging/services/messenger/conversationKeys.ts`](../../frontend/src/app/core/messaging/services/messenger/conversationKeys.ts)
-- Background event bridge: [`frontend/src/app/core/messaging/services/messenger/backgroundEventBridge.ts`](../../frontend/src/app/core/messaging/services/messenger/backgroundEventBridge.ts)
-- Notification delivery: [`frontend/src/app/core/messaging/services/messenger/notificationCenter.ts`](../../frontend/src/app/core/messaging/services/messenger/notificationCenter.ts)
+- Messenger orchestration: [`frontend/src/app/messaging/messenger/index.ts`](../../frontend/src/app/messaging/messenger/index.ts)
+- Realtime router: [`frontend/src/app/messaging/realtimeRouter.ts`](../../frontend/src/app/messaging/realtimeRouter.ts)
+- Transport clients: [`frontend/src/app/messaging/client/wsClient.ts`](../../frontend/src/app/messaging/client/wsClient.ts)
+- Session gate (global crypto readiness): [`frontend/src/app/messaging/sessionGate.ts`](../../frontend/src/app/messaging/sessionGate.ts)
+- Conversation key logic: [`frontend/src/app/messaging/messenger/conversationKeys.ts`](../../frontend/src/app/messaging/messenger/conversationKeys.ts)
+- Background event bridge: [`frontend/src/app/messaging/messenger/backgroundEventBridge.ts`](../../frontend/src/app/messaging/messenger/backgroundEventBridge.ts)
+- Notification delivery: [`frontend/src/app/messaging/messenger/notificationCenter.ts`](../../frontend/src/app/messaging/messenger/notificationCenter.ts)
 
 ## Scope Model
 - UI scopes only represent visibility.

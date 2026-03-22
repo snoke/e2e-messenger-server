@@ -42,7 +42,7 @@ Erledigt:
 
 ---
 
-## 4) frontend/src/app/core/messaging/services/messenger.ts
+## 4) frontend/src/app/messaging/messenger/index.ts
 Status: **completed** (thin facade erreicht)
 
 Erledigt:
@@ -54,7 +54,7 @@ Erledigt:
 
 ---
 
-## 5) frontend/src/app/core/messaging/services/messenger/realtime/conversations.ts
+## 5) frontend/src/app/messaging/messenger/realtime/conversations.ts
 Status: **completed** (thin router erreicht)
 
 Erledigt:
@@ -65,7 +65,7 @@ Erledigt:
 
 ---
 
-## 6) frontend/src/app/core/messaging/crypto/group/adapters/tsMlsAdapter.ts
+## 6) frontend/src/app/messaging/crypto/group/adapters/tsMlsAdapter.ts
 Status: **completed** (thin facade erreicht)
 
 Erledigt:
@@ -76,7 +76,7 @@ Erledigt:
 
 ---
 
-## 7) frontend/src/app/core/messaging/services/messenger/attachments.ts
+## 7) frontend/src/app/messaging/messenger/attachments.ts
 Status: **completed** (module split)
 
 Erledigt:

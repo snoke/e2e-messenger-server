@@ -103,10 +103,13 @@ Rules:
 1. Always mention what was tested in the commit body.
 2. If tests were not run, say why.
 3. Prefer small, fast checks over none.
+4. **Frontend:** `tsc` ist Pflicht nach **jedem Task** und muss erfolgreich sein, sonst gilt der Task nicht als abgeschlossen.
+5. **Frontend:** vor **jedem Push** muss `eslint` gelaufen sein (nach `tsc`), außer klar begründet.
 
 Examples:
 1. `Tests: not run (UI-only change)`
 2. `Tests: docker compose up -d --build frontend; manual flow: invite/accept`
+3. `Tests: npx tsc -p tsconfig.json --noEmit; npm -C frontend run lint`
 
 ## Examples
 **Bugfix**
