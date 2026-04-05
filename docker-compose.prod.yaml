@@ -151,6 +151,30 @@ services:
       - mysql
       - redis
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+      args:
+        VITE_PROXY_TARGET: ${VITE_PROXY_TARGET:-http://symfony:8000}
+        VITE_E2EE_ENABLED: ${VITE_E2EE_ENABLED:-true}
+        VITE_E2EE_DEBUG: ${VITE_E2EE_DEBUG:-false}
+        VITE_WS_URL: ${VITE_WS_URL:-}
+        VITE_LIVEKIT_URL: ${VITE_LIVEKIT_URL:-ws://localhost:7880}
+        VITE_WEBRTC_STUN_URL: ${VITE_WEBRTC_STUN_URL:-stun:127.0.0.1:3478}
+        VITE_WEBRTC_TURN_URL: ${VITE_WEBRTC_TURN_URL:-turn:127.0.0.1:3478?transport=udp}
+        VITE_WEBRTC_TURN_URL_TCP: ${VITE_WEBRTC_TURN_URL_TCP:-turn:127.0.0.1:3478?transport=tcp}
+        VITE_WEBRTC_TURN_USERNAME: ${VITE_WEBRTC_TURN_USERNAME:-turn}
+        VITE_WEBRTC_TURN_PASSWORD: ${VITE_WEBRTC_TURN_PASSWORD:-turn}
+        VITE_GROUP_CRYPTO_MODE: ${VITE_GROUP_CRYPTO_MODE:-mls}
+        VITE_MLS_CLIENT_ADAPTER: ${VITE_MLS_CLIENT_ADAPTER:-ts_mls}
+        VITE_CALL_MEDIA_E2EE_ENABLED: ${VITE_CALL_MEDIA_E2EE_ENABLED:-false}
+        VITE_CHAT_HISTORY_PAGE_SIZE: ${VITE_CHAT_HISTORY_PAGE_SIZE:-5}
+    restart: unless-stopped
+    ports: []
+    volumes: []
+    command: ["nginx", "-g", "daemon off;"]
+
   mysql:
     image: mariadb:10.11
     restart: unless-stopped
